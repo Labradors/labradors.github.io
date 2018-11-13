@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JavaScript,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前面一篇文章简单的记录了DOM的创建，插入，删除，复制。这篇文章也是学习笔记，记录了前端使用javascript创建Banner的全过程。从利用循环动态生成dot到使用定时器实现轮播的效果。还有一些Date的使用。这几天算法题就一直做链表相加算法。啥都能停，算法不能停。地球不爆炸，我就不放假，宇宙不重启，我就不休息，风里雨里节日里我都在这里等着你。">
+<meta name="keywords" content="JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Date和前端Banner实现">
+<meta property="og:url" content="http://yoursite.com/2017/03/14/Date和前端Banner实现/index.html">
+<meta property="og:site_name" content="Labradors">
+<meta property="og:description" content="前面一篇文章简单的记录了DOM的创建，插入，删除，复制。这篇文章也是学习笔记，记录了前端使用javascript创建Banner的全过程。从利用循环动态生成dot到使用定时器实现轮播的效果。还有一些Date的使用。这几天算法题就一直做链表相加算法。啥都能停，算法不能停。地球不爆炸，我就不放假，宇宙不重启，我就不休息，风里雨里节日里我都在这里等着你。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/20170313678392017-03-14.jpg">
+<meta property="og:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/2017031621261Screen Shot 2017-03-16 at 10.44.39 PM.png">
+<meta property="og:updated_time" content="2018-11-13T12:01:18.476Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Date和前端Banner实现">
+<meta name="twitter:description" content="前面一篇文章简单的记录了DOM的创建，插入，删除，复制。这篇文章也是学习笔记，记录了前端使用javascript创建Banner的全过程。从利用循环动态生成dot到使用定时器实现轮播的效果。还有一些Date的使用。这几天算法题就一直做链表相加算法。啥都能停，算法不能停。地球不爆炸，我就不放假，宇宙不重启，我就不休息，风里雨里节日里我都在这里等着你。">
+<meta name="twitter:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/20170313678392017-03-14.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/03/14/Date和前端Banner实现/">
+
+
+
+
+
+  <title>Date和前端Banner实现 | Labradors</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Labradors</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Follow your heart</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/14/Date和前端Banner实现/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Date和前端Banner实现</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-14T04:32:45+08:00">
+                2017-03-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://7xk0q3.com1.z0.glb.clouddn.com/20170313678392017-03-14.jpg" alt="20170313678392017-03-14.jpg"></p>
+<p>前面一篇文章简单的记录了DOM的创建，插入，删除，复制。这篇文章也是学习笔记，记录了前端使用<code>javascript</code>创建Banner的全过程。从利用循环动态生成<code>dot</code>到使用定时器实现轮播的效果。还有一些<code>Date</code>的使用。这几天算法题就一直做<a href="http://blog.jiangtao.tech/2017/03/12/%E9%93%BE%E8%A1%A8%E7%9B%B8%E5%8A%A0%E7%AE%97%E6%B3%95/" target="_blank" rel="noopener">链表相加算法</a>。啥都能停，算法不能停。地球不爆炸，我就不放假，宇宙不重启，我就不休息，风里雨里节日里我都在这里等着你。</p>
+<a id="more"></a>
+<h2 id="布局"><a href="#布局" class="headerlink" title="布局"></a>布局</h2><p>没有什么是div解决不了的。一个解决不了就两个。先来五张图片，然后设置其绝对布局，让其显示一张。然后用一个div存放dot，如下:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"banner"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"img"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">"img current"</span> <span class="attr">src</span>=<span class="string">"image/2017-03-12.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"img"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">"img"</span> <span class="attr">src</span>=<span class="string">"image/2017-03-13.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"img"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">"img"</span> <span class="attr">src</span>=<span class="string">"image/2017-03-14.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"img"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">"img"</span> <span class="attr">src</span>=<span class="string">"image/2017-03-14.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"img"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">class</span>=<span class="string">"img"</span> <span class="attr">src</span>=<span class="string">"image/2017-03-14.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"dot"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>CSS设置, 先将dot的CSS部分设置好，<code>javascript</code>直接调用</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">&lt;style type="text/css"&gt;</span><br><span class="line">        <span class="selector-id">#container</span> &#123;</span><br><span class="line">            <span class="attribute">max-width</span>: <span class="number">600px</span>;</span><br><span class="line">            <span class="attribute">max-height</span>: <span class="number">600px</span>;</span><br><span class="line">            <span class="attribute">margin</span>: <span class="number">0</span> auto;</span><br><span class="line">            <span class="attribute">position</span>: relative;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="selector-class">.banner</span> &#123;</span><br><span class="line">            <span class="attribute">width</span>: <span class="number">600px</span>;</span><br><span class="line">            <span class="attribute">height</span>: <span class="number">600px</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="selector-class">.img</span> <span class="selector-tag">img</span> &#123;</span><br><span class="line">            <span class="attribute">width</span>: <span class="number">600px</span>;</span><br><span class="line">            <span class="attribute">height</span>: <span class="number">600px</span>;</span><br><span class="line">            <span class="attribute">float</span>: left;</span><br><span class="line">            <span class="attribute">display</span>: none;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="selector-class">.img</span><span class="selector-class">.current</span> &#123;</span><br><span class="line">            <span class="attribute">display</span>: inline-block;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="selector-class">.dot</span> &#123;</span><br><span class="line">            <span class="attribute">position</span>: absolute;</span><br><span class="line">            <span class="attribute">bottom</span>: <span class="number">20px</span>;</span><br><span class="line">            <span class="attribute">left</span>: <span class="number">40%</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="selector-class">.dot_class</span> &#123;</span><br><span class="line">            <span class="attribute">width</span>: <span class="number">10px</span>;</span><br><span class="line">            <span class="attribute">height</span>: <span class="number">10px</span>;</span><br><span class="line">            <span class="attribute">float</span>: left;</span><br><span class="line">            <span class="attribute">margin</span>: <span class="number">10px</span>;</span><br><span class="line">            <span class="attribute">background-color</span>: whitesmoke;</span><br><span class="line">            <span class="attribute">border-radius</span>: <span class="number">10px</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="selector-class">.dot_current</span> &#123;</span><br><span class="line">            <span class="attribute">background-color</span>: red;</span><br><span class="line">        &#125;</span><br><span class="line">    &lt;/style&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="动态创建Dot"><a href="#动态创建Dot" class="headerlink" title="动态创建Dot"></a>动态创建Dot</h2><p> 直接看代码:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;		</span><br><span class="line">		<span class="comment">// 首先实现创建过程</span></span><br><span class="line">        <span class="keyword">var</span> imgs = <span class="built_in">document</span>.getElementsByTagName(<span class="string">"img"</span>);</span><br><span class="line">        <span class="comment">//根据img张数去创建dot</span></span><br><span class="line">        <span class="keyword">var</span> dot = <span class="built_in">document</span>.getElementsByClassName(<span class="string">"dot"</span>);</span><br><span class="line">        <span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="function"><span class="keyword">function</span> <span class="title">$</span>(<span class="params">id</span>) </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">document</span>.getElementById(id);</span><br><span class="line">            &#125;</span><br><span class="line">          <span class="comment">// 根据图片数量生成dot</span></span><br><span class="line">            <span class="function"><span class="keyword">function</span> <span class="title">create</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; imgs.length; i++) &#123;</span><br><span class="line">                    <span class="keyword">var</span> dotDiv = <span class="built_in">document</span>.createElement(<span class="string">"div"</span>);</span><br><span class="line">                    dotDiv.className = <span class="string">"dot_class"</span>;</span><br><span class="line">                  <span class="comment">// 添加到dot中，并且默认为白色</span></span><br><span class="line">                    dot[<span class="number">0</span>].appendChild(dotDiv);</span><br><span class="line">                &#125;</span><br><span class="line">              <span class="comment">// 设置第一个dot为红色</span></span><br><span class="line">                <span class="keyword">var</span> dotChildren = dot[<span class="number">0</span>].children;</span><br><span class="line">                dotChildren[<span class="number">0</span>].className = <span class="string">"dot_class dot_current"</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="设置点击切换"><a href="#设置点击切换" class="headerlink" title="设置点击切换"></a>设置点击切换</h2><p>设置dot的点击事件，点击进行图片切换，原理是对其进行隐藏。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">  <span class="keyword">var</span> dotChild = dot[<span class="number">0</span>].children;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; dotChild.length; j++) &#123;</span><br><span class="line">                dotChild[j].index = j;</span><br><span class="line">                dotChild[j].onclick = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">                    <span class="keyword">for</span>(<span class="keyword">var</span> a = <span class="number">0</span>;a&lt;dotChild.length;a++)&#123;</span><br><span class="line">                        <span class="comment">//设置所有图片不可见</span></span><br><span class="line">                        imgs[a].setAttribute(<span class="string">"class"</span>,<span class="string">"img"</span>);</span><br><span class="line">                    &#125;</span><br><span class="line">                  	<span class="comment">// 显示当前图片</span></span><br><span class="line">                    imgs[<span class="keyword">this</span>.index].setAttribute(<span class="string">"class"</span>,<span class="string">"img current"</span>);</span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; dotChild.length; j++) &#123;</span><br><span class="line">                      	<span class="comment">// 设置所有dot为白色</span></span><br><span class="line">                        dotChild[j].className = <span class="string">"dot_class"</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                  <span class="comment">// 设置当前dot为红色</span></span><br><span class="line">                    <span class="keyword">this</span>.setAttribute(<span class="string">"class"</span>,<span class="string">"dot_class dot_current"</span>);</span><br><span class="line">                &#125;;</span><br><span class="line">            &#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="轮播"><a href="#轮播" class="headerlink" title="轮播"></a>轮播</h2><p>利用<code>window.setInterval</code>方法进行轮播，我知道的还有利用CSS animate进行轮播。但还没有学到那个地方，等学到了再来写。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">  <span class="keyword">var</span> location = <span class="number">0</span>;</span><br><span class="line">            <span class="built_in">window</span>.setInterval(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">              	<span class="keyword">if</span> (location&gt;=dotChild.length)&#123;</span><br><span class="line">                    location=<span class="number">0</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">var</span> a = <span class="number">0</span>;a&lt;dotChild.length;a++)&#123;</span><br><span class="line">                    <span class="comment">//设置所有图片不可见</span></span><br><span class="line">                    imgs[a].setAttribute(<span class="string">"class"</span>,<span class="string">"img"</span>);</span><br><span class="line">                &#125;</span><br><span class="line">              <span class="comment">// 指明当前位置的图片可见</span></span><br><span class="line">                imgs[location].setAttribute(<span class="string">"class"</span>,<span class="string">"img current"</span>);</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; dotChild.length; j++) &#123;</span><br><span class="line">                  <span class="comment">//  设置所有dot为白色</span></span><br><span class="line">                    dotChild[j].className = <span class="string">"dot_class"</span>;</span><br><span class="line">                &#125;</span><br><span class="line">              <span class="comment">// 设置当前dot为白色</span></span><br><span class="line">                dotChild[location].setAttribute(<span class="string">"class"</span>,<span class="string">"dot_class dot_current"</span>);</span><br><span class="line">                location++;</span><br><span class="line">            &#125;,<span class="number">2000</span>);</span><br><span class="line">  &lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这种方式比较粗鲁，等慢慢完善吧。本想录制个gif，但没找到软件。智能看看静态图了。</p>
+<p><img src="http://7xk0q3.com1.z0.glb.clouddn.com/2017031621261Screen Shot 2017-03-16 at 10.44.39 PM.png" alt="2017031621261Screen Shot 2017-03-16 at 10.44.39 PM.png"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/13/JavaScript的Class封装和Dom操作/" rel="next" title="JavaScript的Class封装和Dom操作">
+                <i class="fa fa-chevron-left"></i> JavaScript的Class封装和Dom操作
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/15/Tigase开发环境搭建/" rel="prev" title="Tigase开发环境搭建">
+                Tigase开发环境搭建 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Labradors</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">113</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#布局"><span class="nav-number">1.</span> <span class="nav-text">布局</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态创建Dot"><span class="nav-number">2.</span> <span class="nav-text">动态创建Dot</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置点击切换"><span class="nav-number">3.</span> <span class="nav-text">设置点击切换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#轮播"><span class="nav-number">4.</span> <span class="nav-text">轮播</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Labradors</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

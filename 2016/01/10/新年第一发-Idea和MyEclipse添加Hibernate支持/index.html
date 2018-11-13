@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hibernate,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;前言: 前面练习或者所做项目都是直接使用MVC模式下Dao层直接使用sql语句对数据库进行操作，这种方式简单但是效率低下并且更新和维护困难，空闲下学习使用ORM的方式来操作数据库。Hibernate就是一种Java EE中比较完善的框架，利用xml或者注释的方式作为数据库层与上层之间的桥梁。">
+<meta name="keywords" content="Hibernate">
+<meta property="og:type" content="article">
+<meta property="og:title" content="新年第一发-Idea和MyEclipse添加Hibernate支持">
+<meta property="og:url" content="http://yoursite.com/2016/01/10/新年第一发-Idea和MyEclipse添加Hibernate支持/index.html">
+<meta property="og:site_name" content="Labradors">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;前言: 前面练习或者所做项目都是直接使用MVC模式下Dao层直接使用sql语句对数据库进行操作，这种方式简单但是效率低下并且更新和维护困难，空闲下学习使用ORM的方式来操作数据库。Hibernate就是一种Java EE中比较完善的框架，利用xml或者注释的方式作为数据库层与上层之间的桥梁。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/idea-test.png">
+<meta property="og:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BE-new-hibernate-project.png">
+<meta property="og:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BE-hibernate-project-name.png">
+<meta property="og:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BEhibernate-database.png">
+<meta property="og:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BEimpot-database-schema.png">
+<meta property="og:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BE-MyEclipse-connection-database.png">
+<meta property="og:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BEsession-factory.png">
+<meta property="og:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BEmyeclipse-database-engineering.png">
+<meta property="og:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BEquery-result.png">
+<meta property="og:updated_time" content="2016-01-13T02:50:45.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="新年第一发-Idea和MyEclipse添加Hibernate支持">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;前言: 前面练习或者所做项目都是直接使用MVC模式下Dao层直接使用sql语句对数据库进行操作，这种方式简单但是效率低下并且更新和维护困难，空闲下学习使用ORM的方式来操作数据库。Hibernate就是一种Java EE中比较完善的框架，利用xml或者注释的方式作为数据库层与上层之间的桥梁。">
+<meta name="twitter:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/idea-test.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/01/10/新年第一发-Idea和MyEclipse添加Hibernate支持/">
+
+
+
+
+
+  <title>新年第一发-Idea和MyEclipse添加Hibernate支持 | Labradors</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Labradors</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Follow your heart</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/01/10/新年第一发-Idea和MyEclipse添加Hibernate支持/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">新年第一发-Idea和MyEclipse添加Hibernate支持</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-10T17:42:45+08:00">
+                2016-01-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/后端/" itemprop="url" rel="index">
+                    <span itemprop="name">后端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://7xk0q3.com1.z0.glb.clouddn.com/idea-test.png" alt=""><br>&nbsp;&nbsp;&nbsp;&nbsp;前言: 前面练习或者所做项目都是直接使用MVC模式下Dao层直接使用sql语句对数据库进行操作，这种方式简单但是效率低下并且更新和维护困难，空闲下学习使用<a href="https://zh.wikipedia.org/zh-cn/%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84" target="_blank" rel="noopener">ORM</a>的方式来操作数据库。Hibernate就是一种Java EE中比较完善的框架，利用xml或者注释的方式作为数据库层与上层之间的桥梁。<br><a id="more"></a></p>
+<h2 id="Hibernate原理"><a href="#Hibernate原理" class="headerlink" title="Hibernate原理"></a>Hibernate原理</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;在JDBC编程中,我们是使用sql语句直接对数据库进行增删查该的操作，如果实体类改变，我们就需要改与之相关的所有sql语句，<a href="https://zh.wikipedia.org/zh-cn/%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84" target="_blank" rel="noopener">ORM</a>的出现解决了这种难题，Hibernate的作用就是替换MVC模式下的Dao层，利用POJO与实体类的映射自动生成相应的SQL语句。当实体类发生改变时，我们只需要更改实体类的配置即可。简单，方便，易维护。</p>
+<h2 id="Idea中配置Hibernate"><a href="#Idea中配置Hibernate" class="headerlink" title="Idea中配置Hibernate"></a>Idea中配置Hibernate</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;在这里使用Idea配置Hibernate，因为在Idea下比在MyEclipse下更加方便，而且Idea拥有更强大的代码提示功能。ok,开始:</p>
+<ol>
+<li><p>File-&gt;New Project-&gt;Java Enterprise-&gt;配置Java-&gt;Java EE版本-&gt;Application Server。勾选Web Application,Hibernate,create hibernate configure and main class,import database schema,选择下载Hibernate库,点击next.如图:<img src="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BE-new-hibernate-project.png" alt=""></p>
+</li>
+<li><p>配置项目名-&gt;点击next,如图:<img src="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BE-hibernate-project-name.png" alt=""></p>
+</li>
+<li>弹出一个import database schema-&gt;choose data source-&gt;主机-&gt;数据库-&gt;用户名-&gt;密码-&gt;测试一下-&gt;成功点击apply-&gt;ok,如图:<img src="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BEhibernate-database.png" alt=""></li>
+<li>点击package-&gt;选择实体类的包。</li>
+<li>刷新database schema mapping-&gt;选择需要映射的表-&gt;ok,最后如图：<img src="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BEimpot-database-schema.png" alt=""></li>
+</ol>
+<h2 id="MyEclipse中配置Hibernate支持"><a href="#MyEclipse中配置Hibernate支持" class="headerlink" title="MyEclipse中配置Hibernate支持"></a>MyEclipse中配置Hibernate支持</h2><ol>
+<li>File-&gt;New-&gt;Web Project</li>
+<li>选择菜单Window-&gt;open perspictive-&gt;MyEclipse Database explore-&gt;选择MyEclise Derby-&gt;右键-&gt;新建MySql Connection-&gt;如下图，填写内容跟idea一样。-》finish<img src="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BE-MyEclipse-connection-database.png" alt=""></li>
+<li>右键点击新建的连接-&gt;open connection</li>
+<li>右键项目-&gt;MyEclipse-&gt;Project Facets-&gt;install Hibernate facet-&gt;选择Hibernate版本-&gt;next-&gt;finish,如图：<img src="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BEsession-factory.png" alt=""></li>
+<li>进入database explore-&gt;右键表-&gt;Hebernate reverse engineering-&gt;选择那种方式映射，那个项目逆向工程-&gt;finish,如图：<img src="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BEmyeclipse-database-engineering.png" alt=""></li>
+<li><p>配置cfg.xml,添加:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"myeclipse.connection.profile"</span>&gt;</span>Kevin<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"show_sql"</span>&gt;</span>true<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hbm2ddl.auto"</span>&gt;</span>create<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"current_session_context_class"</span>&gt;</span>thread<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"javax.persistence.validation.mode"</span>&gt;</span>none<span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新建servlet</p>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> org.jiangtao.servlet;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.io.PrintWriter;</span><br><span class="line"><span class="keyword">import</span> java.sql.Time;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletException;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.annotation.WebServlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServlet;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.hibernate.Session;</span><br><span class="line"><span class="keyword">import</span> org.hibernate.Transaction;</span><br><span class="line"><span class="keyword">import</span> org.jiangtao.bean.Person;</span><br><span class="line"><span class="keyword">import</span> org.jiangtao.sessionfactory.HibernateSessionFactory;</span><br><span class="line"></span><br><span class="line"><span class="comment">//@WebServlet(urlPatterns="/queryObject")</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">QueryObjectServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">			<span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line"></span><br><span class="line">		response.setContentType(<span class="string">"text/html"</span>);</span><br><span class="line">		PrintWriter out = response.getWriter();</span><br><span class="line">		Session session = HibernateSessionFactory.getSessionFactory()</span><br><span class="line">				.openSession();</span><br><span class="line">		Transaction aTransaction = session.beginTransaction();</span><br><span class="line">		Person person = <span class="keyword">new</span> Person(<span class="number">1</span>, <span class="string">"你好"</span>, <span class="number">21</span>, <span class="string">"1"</span>, <span class="string">"1234"</span>, <span class="keyword">new</span> Time(<span class="number">121212</span>));</span><br><span class="line">		session.persist(person);</span><br><span class="line">		List&lt;Person&gt; persons = session.createQuery(<span class="string">" from Person "</span>).list();</span><br><span class="line">		StringBuffer buffer = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">		buffer.append(<span class="string">"所有的用户:"</span>);</span><br><span class="line">		<span class="keyword">for</span> (Person person2 : persons) &#123;</span><br><span class="line">			buffer.append(person2.toString());</span><br><span class="line">		&#125;</span><br><span class="line">		System.out.println(buffer);</span><br><span class="line">		aTransaction.commit();</span><br><span class="line">		session.close();</span><br><span class="line">		out.flush();</span><br><span class="line">		out.close();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>查询结果如下:</p>
+<p><img src="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BEquery-result.png" alt=""><br>January 13, 2016 10:53 AM</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Hibernate/" rel="tag"># Hibernate</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/01/13/Hibernate实体关系映射-单边的一对多关系/" rel="prev" title="Hibernate实体关系映射-单边的一对多关系">
+                Hibernate实体关系映射-单边的一对多关系 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Labradors</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">113</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Hibernate原理"><span class="nav-number">1.</span> <span class="nav-text">Hibernate原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Idea中配置Hibernate"><span class="nav-number">2.</span> <span class="nav-text">Idea中配置Hibernate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MyEclipse中配置Hibernate支持"><span class="nav-number">3.</span> <span class="nav-text">MyEclipse中配置Hibernate支持</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Labradors</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

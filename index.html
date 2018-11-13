@@ -229,7 +229,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/13/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/13/三角套利项目搭建之蓝图/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Labradors">
@@ -248,7 +248,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/13/hello-world/" itemprop="url">Hello World</a></h1>
+                <a class="post-title-link" href="/2018/11/13/三角套利项目搭建之蓝图/" itemprop="url">未命名</a></h1>
         
 
         <div class="post-meta">
@@ -260,7 +260,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-13T19:12:57+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-13T20:01:18+08:00">
                 2018-11-13
               </time>
             
@@ -300,15 +300,2881 @@
       
         
           
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+            <h1 id="三角套利项目搭建之Flask蓝图"><a href="#三角套利项目搭建之Flask蓝图" class="headerlink" title="三角套利项目搭建之Flask蓝图"></a>三角套利项目搭建之Flask蓝图</h1><p>学了几天Django，会用，但还是很懵比，还是准备使用Flask ,Flask在模块中导入app,但是在模块内部直接导入app会导致app的循环调用问题．那么在这里会使用蓝图．那么蓝图是什么呢?<br><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu4c89fopij20zk0k0jui.jpg" alt=""></p>
+<blockquote>
+<p>Flask 用 <em>蓝图（blueprints）</em> 的概念来在一个应用中或跨应用制作应用组件和支持通用的模式。蓝图很好地简化了大型应用工作的方式，并提供给 Flask 扩展在应用上注册操作的核心方法。一个 <code>Blueprint</code> 对象与 <code>Flask</code> 应用对象的工作方式很像，但它确实不是一个应用，而是一个描述如何构建或扩展应用的 <em>蓝图</em> 。</p>
+</blockquote>
+<h2 id="为什么使用蓝图"><a href="#为什么使用蓝图" class="headerlink" title="为什么使用蓝图"></a>为什么使用蓝图</h2><p>Flask 中的蓝图为这些情况设计:</p>
+<ul>
+<li>把一个应用分解为一个蓝图的集合。这对大型应用是理想的。一个项目可以实例化一个应用对象，初始化几个扩展，并注册一集合的蓝图。</li>
+<li>以 URL 前缀和/或子域名，在应用上注册一个蓝图。 URL 前缀/子域名中的参数即成为这个蓝图下的所有视图函数的共同的视图参数（默认情况下）。</li>
+<li>在一个应用中用不同的 URL 规则多次注册一个蓝图。</li>
+<li>通过蓝图提供模板过滤器、静态文件、模板和其它功能。一个蓝图不一定要实现应用或者视图函数。</li>
+<li>初始化一个 Flask 扩展时，在这些情况中注册一个蓝图。</li>
+</ul>
+<p>##　蓝图创建和注册</p>
+<h3 id="蓝图创建"><a href="#蓝图创建" class="headerlink" title="蓝图创建"></a>蓝图创建</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">api = Blueprint(<span class="string">'user'</span>, __name__)</span><br></pre></td></tr></table></figure>
+<h3 id="蓝图注册"><a href="#蓝图注册" class="headerlink" title="蓝图注册"></a>蓝图注册</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_app</span><span class="params">()</span>:</span></span><br><span class="line">    app = Flask(__name__)</span><br><span class="line">    app.register_blueprint(api)</span><br><span class="line">    <span class="keyword">return</span> app</span><br></pre></td></tr></table></figure>
+<p>这样就可以在项目中以模块化的方式来进行架构，并且不会造成循环导入的问题.但是如果我注册一个问题细化，在views中编写一个接口如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@api.route('/v1/user/get', methods=['GET'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_user</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"I am get"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@api.route('/v1/user/set', methods=['POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_user</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"I am set"</span></span><br></pre></td></tr></table></figure>
+<p>如上我们所有的接口使用了重复的前缀，那如何解决这个问题呢，我们可以使用自定义的红图.</p>
+<h2 id="红图"><a href="#红图" class="headerlink" title="红图"></a>红图</h2><p>先看红图的代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RedPrint</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.mound = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">route</span><span class="params">(self, rule, **options)</span>:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">decorator</span><span class="params">(f)</span>:</span></span><br><span class="line">            self.mound.append((f, rule, options))</span><br><span class="line">            <span class="keyword">return</span> f</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> decorator</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">register</span><span class="params">(self, bp, url_prefix=None)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> url_prefix <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            url_prefix = <span class="string">'/'</span> + self.name</span><br><span class="line">        <span class="keyword">for</span> f, rule, options <span class="keyword">in</span> self.mound:</span><br><span class="line">            endpoint = self.name + <span class="string">'+'</span> + \</span><br><span class="line">                       options.pop(<span class="string">"endpoint"</span>, f.__name__)</span><br><span class="line">            bp.add_url_rule(url_prefix + rule, endpoint, f, **options)</span><br></pre></td></tr></table></figure>
+<p>下面在views中直接使用红图的装饰器．</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">api = RedPrint(<span class="string">'user'</span>)</span><br><span class="line"><span class="meta">@api.route('/get', methods=['GET'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_user</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"I am labradors"</span></span><br></pre></td></tr></table></figure>
+<p>然后将红图注入到蓝图，并且创建蓝图</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_blueprint_v1</span><span class="params">()</span>:</span></span><br><span class="line">    bp_v1 = Blueprint(<span class="string">'v1'</span>, __name__)</span><br><span class="line">    user.api.register(bp_v1)</span><br><span class="line">    <span class="keyword">return</span> bp_v1</span><br></pre></td></tr></table></figure>
+<p>最后将蓝图注入到app中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_app</span><span class="params">()</span>:</span></span><br><span class="line">    app = Flask(__name__)</span><br><span class="line">    app.register_blueprint(create_blueprint_v1(), url_prefix=<span class="string">'/v1'</span>)</span><br><span class="line">    <span class="keyword">return</span> app</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本篇文章记录蓝图在Flask项目中的使用，并且对蓝图进行了细化，创建了红图．架构更加完善．</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/13/电梯公共服务平台数据/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/13/电梯公共服务平台数据/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-13T20:01:18+08:00">
+                2018-11-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="电梯公共服务平台数据"><a href="#电梯公共服务平台数据" class="headerlink" title="电梯公共服务平台数据"></a>电梯公共服务平台数据</h2><h3 id="电梯数据接口"><a href="#电梯数据接口" class="headerlink" title="电梯数据接口"></a>电梯数据接口</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">是否必须</th>
+<th style="text-align:center">参数位置</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">默认值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">id</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td>电梯应急救援识别码/二维码编号</td>
+</tr>
+<tr>
+<td style="text-align:center">device_install_address</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td>电梯安装地址</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_brand</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td>电梯品牌</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_maintenance_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td>电梯维保单位</td>
+</tr>
+<tr>
+<td style="text-align:center">maintenance_manager</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td>维保负责人</td>
+</tr>
+<tr>
+<td style="text-align:center">manager_phone</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td>负责人手机</td>
+</tr>
+<tr>
+<td style="text-align:center">use_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td>使用单位</td>
+</tr>
+<tr>
+<td style="text-align:center">security_officer</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td>安全员</td>
+</tr>
+<tr>
+<td style="text-align:center">security_phone</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td>安全员电话</td>
+</tr>
+<tr>
+<td style="text-align:center">project_name</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td>项目名称</td>
+</tr>
+<tr>
+<td style="text-align:center">unit_code</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td>使用单位内部编码</td>
+</tr>
+<tr>
+<td style="text-align:center">maintenance_ inspection_agency</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td>电梯检验机构</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_address</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td>电梯所在地</td>
+</tr>
+<tr>
+<td style="text-align:center">annual_inspection_date</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td>年检日期</td>
+</tr>
+<tr>
+<td style="text-align:center">maintenance_date</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td>保养日期</td>
+</tr>
+<tr>
+<td style="text-align:center">rescue_phone</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td>救援电话</td>
+</tr>
+</tbody>
+</table>
+<h3 id="报修投诉接口"><a href="#报修投诉接口" class="headerlink" title="报修投诉接口"></a>报修投诉接口</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">是否必须</th>
+<th style="text-align:center">参数位置</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">默认值</th>
+<th style="text-align:center">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">id</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯编号</td>
+</tr>
+<tr>
+<td style="text-align:center">project_name</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">项目名称</td>
+</tr>
+<tr>
+<td style="text-align:center">unit_code</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">使用单位内部编码</td>
+</tr>
+<tr>
+<td style="text-align:center">user_phone</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">报修人电话</td>
+</tr>
+<tr>
+<td style="text-align:center">repair_des</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">报修问题描述</td>
+</tr>
+<tr>
+<td style="text-align:center">picture</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">图片参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">当前场景拍照图片</td>
+</tr>
+</tbody>
+</table>
+<h3 id="投诉接口"><a href="#投诉接口" class="headerlink" title="投诉接口"></a>投诉接口</h3><table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">是否必须</th>
+<th style="text-align:center">参数位置</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">默认值</th>
+<th style="text-align:center">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">id</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯编号</td>
+</tr>
+<tr>
+<td style="text-align:center">project_name</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">项目名称</td>
+</tr>
+<tr>
+<td style="text-align:center">unit_code</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">使用单位内部编码</td>
+</tr>
+<tr>
+<td style="text-align:center">complaint_phone</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">投诉人电Complaint</td>
+</tr>
+<tr>
+<td style="text-align:center">complaint_des</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">投诉问题描述</td>
+</tr>
+<tr>
+<td style="text-align:center">picture</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">当前场景拍照图片</td>
+</tr>
+</tbody>
+</table>
+<h2 id="特种特备安全监察信息系统数据接口"><a href="#特种特备安全监察信息系统数据接口" class="headerlink" title="特种特备安全监察信息系统数据接口"></a>特种特备安全监察信息系统数据接口</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">是否必须</th>
+<th style="text-align:center">参数位置</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">默认值</th>
+<th style="text-align:center">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">id</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯应急救援识别码/二维码编号</td>
+</tr>
+<tr>
+<td style="text-align:center">device_reg_code</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">设备注册代码</td>
+</tr>
+<tr>
+<td style="text-align:center">device_install_address</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯安装地址</td>
+</tr>
+<tr>
+<td style="text-align:center">maintenance_type</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保类型</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_maintenance_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯维保单位</td>
+</tr>
+<tr>
+<td style="text-align:center">maintenance_manager</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保负责人</td>
+</tr>
+<tr>
+<td style="text-align:center">manager_phone</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">负责人手机</td>
+</tr>
+<tr>
+<td style="text-align:center">use_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">使用单位</td>
+</tr>
+<tr>
+<td style="text-align:center">unit_code</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">使用单位内部编码</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_property_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯产权单位</td>
+</tr>
+<tr>
+<td style="text-align:center">manufacture_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">制造单位</td>
+</tr>
+<tr>
+<td style="text-align:center">manufacture_code</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">制造许可证编号</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_brand</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯品牌</td>
+</tr>
+<tr>
+<td style="text-align:center">appearance_num</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">出厂编号</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_install_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯安装单位</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_install_date</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯安装日期</td>
+</tr>
+<tr>
+<td style="text-align:center">repair_date</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">时间戳</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">改造日期</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_type</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯类型</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_model</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯型号</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_load</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯额定荷载</td>
+</tr>
+<tr>
+<td style="text-align:center">layer_num</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">整形</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">层数</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_st</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">整形</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">站数</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_door</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">整形</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">门数</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_speed</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">整形</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">额定速度</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_weight</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">浮点型</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">载重量</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_drag_model</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">拖动方式</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_status</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯使用状态</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_mechanism</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯检验机构</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_address</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯所在地</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_address_type</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">使用场所分类</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_annual_last_date</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">时间戳</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">上次年检日期</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_maintenance_last_date</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">时间戳</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">上次保养日期</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_annual_report_code</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯年检报告编号</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_propety_unit_email</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">物业单位邮箱</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_propety_unit_intro</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">物业单位简介</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_maintenance_unit_eamil</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位邮箱</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_maintenance_unit_intro</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位简介</td>
+</tr>
+</tbody>
+</table>
+<h2 id="四川省-成都市检验系统接口"><a href="#四川省-成都市检验系统接口" class="headerlink" title="四川省/成都市检验系统接口"></a>四川省/成都市检验系统接口</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">是否必须</th>
+<th style="text-align:center">参数位置</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">默认值</th>
+<th style="text-align:center">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">id</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯应急救援识别码/二维码编号</td>
+</tr>
+<tr>
+<td style="text-align:center">device_reg_code</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">设备注册代码</td>
+</tr>
+<tr>
+<td style="text-align:center">device_install_address</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯安装地址</td>
+</tr>
+<tr>
+<td style="text-align:center">maintenance_type</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保类型</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_maintenance_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯维保单位</td>
+</tr>
+<tr>
+<td style="text-align:center">maintenance_manager</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保负责人</td>
+</tr>
+<tr>
+<td style="text-align:center">manager_phone</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">负责人手机</td>
+</tr>
+<tr>
+<td style="text-align:center">use_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">使用单位</td>
+</tr>
+<tr>
+<td style="text-align:center">unit_code</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">使用单位内部编码</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_property_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯产权单位</td>
+</tr>
+<tr>
+<td style="text-align:center">manufacture_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">制造单位</td>
+</tr>
+<tr>
+<td style="text-align:center">manufacture_code</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">制造许可证编号</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_brand</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯品牌</td>
+</tr>
+<tr>
+<td style="text-align:center">appearance_num</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">出厂编号</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_install_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯安装单位</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_install_date</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯安装日期</td>
+</tr>
+<tr>
+<td style="text-align:center">repair_date</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">时间戳</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">改造日期</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_type</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯类型</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_model</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯型号</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_load</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯额定荷载</td>
+</tr>
+<tr>
+<td style="text-align:center">layer_num</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">整形</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">层数</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_st</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">整形</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">站数</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_door</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">整形</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">门数</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_speed</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">整形</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">额定速度</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_weight</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">浮点型</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">载重量</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_drag_model</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">拖动方式</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_status</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯使用状态</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_mechanism</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯检验机构</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_address</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯所在地</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_address_type</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">使用场所分类</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_annual_last_date</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">时间戳</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">上次年检日期</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_maintenance_last_date</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">时间戳</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">上次保养日期</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_annual_report_code</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">时间戳</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯年检报告编号</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_propety_unit_email</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">物业单位邮箱</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_propety_unit_intro</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">物业单位简介</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_maintenance_unit_eamil</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位邮箱</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_maintenance_unit_intro</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位简介</td>
+</tr>
+</tbody>
+</table>
+<h2 id="电梯维保数据接口"><a href="#电梯维保数据接口" class="headerlink" title="电梯维保数据接口"></a>电梯维保数据接口</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">是否必须</th>
+<th style="text-align:center">参数位置</th>
+<th>类型</th>
+<th style="text-align:center">默认值</th>
+<th style="text-align:center">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">id</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯应急救援识别码/二维码编号</td>
+</tr>
+<tr>
+<td style="text-align:center">device_reg_code</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">设备注册代码</td>
+</tr>
+<tr>
+<td style="text-align:center">device_install_address</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯安装地址</td>
+</tr>
+<tr>
+<td style="text-align:center">maintenance_type</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保类型</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_maintenance_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯维保单位</td>
+</tr>
+<tr>
+<td style="text-align:center">maintenance_manager</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保负责人</td>
+</tr>
+<tr>
+<td style="text-align:center">manager_phone</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">负责人手机</td>
+</tr>
+<tr>
+<td style="text-align:center">use_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">使用单位</td>
+</tr>
+<tr>
+<td style="text-align:center">unit_code</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">使用单位内部编码</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_property_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯产权单位</td>
+</tr>
+<tr>
+<td style="text-align:center">manufacture_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">制造单位</td>
+</tr>
+<tr>
+<td style="text-align:center">manufacture_code</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">制造许可证编号</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_brand</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯品牌</td>
+</tr>
+<tr>
+<td style="text-align:center">appearance_num</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">出厂编号</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_install_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯安装单位</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_install_date</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>时间戳</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯安装日期</td>
+</tr>
+<tr>
+<td style="text-align:center">repair_date</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>时间戳</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">改造日期</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_type</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯类型</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_model</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯型号</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_load</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯额定荷载</td>
+</tr>
+<tr>
+<td style="text-align:center">layer_num</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">层数</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_st</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">站数</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_door</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">门数</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_speed</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">额定速度</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_weight</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">载重量</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_drag_model</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">拖动方式</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_status</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯使用状态</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_mechanism</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯检验机构</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_address</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯所在地</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_address_type</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">使用场所分类</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_annual_last_date</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">上次年检日期</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_maintenance_last_date</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">上次保养日期</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_annual_report_code</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯年检报告编号</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_unit_reg_address</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位注册地址</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_unit_office_address</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位办公地址</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_unit_business</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位营业执照（三证合一）</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_unit_address</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位所在地址</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_unit_level</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位资质等级</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_unit_phone</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位值守电话</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_unit_manager</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位主要负责人</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_unit_manager_phone</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位负责人电话</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_unit_rescue_team</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">应急救援人员</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_unit_rescue_team_phone</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">–</td>
+<td style="text-align:center">应急救援人员电话</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_propety_unit_email</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">物业单位邮箱</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_propety_unit_intro</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">物业单位简介</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_maintenance_unit_eamil</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位邮箱</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_maintenance_unit_intro</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td>字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位简介</td>
+</tr>
+</tbody>
+</table>
+<h2 id="物业企业平台数据接口"><a href="#物业企业平台数据接口" class="headerlink" title="物业企业平台数据接口"></a>物业企业平台数据接口</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">是否必须</th>
+<th style="text-align:center">参数位置</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">默认值</th>
+<th style="text-align:center">备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">id</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯应急救援识别码/二维码编号</td>
+</tr>
+<tr>
+<td style="text-align:center">device_reg_code</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">设备注册代码</td>
+</tr>
+<tr>
+<td style="text-align:center">device_install_address</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯安装地址</td>
+</tr>
+<tr>
+<td style="text-align:center">maintenance_type</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保类型</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_maintenance_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯维保单位</td>
+</tr>
+<tr>
+<td style="text-align:center">maintenance_manager</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保负责人</td>
+</tr>
+<tr>
+<td style="text-align:center">manager_phone</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">负责人手机</td>
+</tr>
+<tr>
+<td style="text-align:center">use_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">使用单位</td>
+</tr>
+<tr>
+<td style="text-align:center">unit_code</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">使用单位内部编码</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_property_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯产权单位</td>
+</tr>
+<tr>
+<td style="text-align:center">manufacture_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">制造单位</td>
+</tr>
+<tr>
+<td style="text-align:center">manufacture_code</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">制造许可证编号</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_brand</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯品牌</td>
+</tr>
+<tr>
+<td style="text-align:center">appearance_num</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">出厂编号</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_install_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯安装单位</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_install_date</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">时间戳</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯安装日期</td>
+</tr>
+<tr>
+<td style="text-align:center">repair_date</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">时间戳</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">改造日期</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_type</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯类型</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_model</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯型号</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_load</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯额定荷载</td>
+</tr>
+<tr>
+<td style="text-align:center">layer_num</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">层数</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_st</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">站数</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_door</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">门数</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_speed</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">额定速度</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_weight</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">载重量</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_drag_model</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">拖动方式</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_status</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯使用状态</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_mechanism</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯检验机构</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_address</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯所在地</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_address_type</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">使用场所分类</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_annual_last_date</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">上次年检日期</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_maintenance_last_date</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">上次保养日期</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_annual_report_code</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯年检报告编号</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_unit_reg_address</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位注册地址</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_unit_office_address</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位办公地址</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_unit_business</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位营业执照（三证合一）</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_unit_address</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位所在地址</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_unit_level</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位资质等级</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_unit_phone</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位值守电话</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_unit_manager</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位主要负责人</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_unit_manager_phone</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位负责人电话</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_unit_rescue_team</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">应急救援人员</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_unit_rescue_team_phone</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">应急救援人员电话</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_maintenance_history</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">电梯维保记录</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_property_unit</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">物业使用单位</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_property_office_address</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">物业办公地址</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_property_manager</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">物业负责人</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_property_manager_phone</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">物业负责人联系电话</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_property_safe_name</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">物业安全员姓名</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_property_safe_phone</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">物业安全员电话</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_propety_unit_email</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">物业单位邮箱</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_propety_unit_intro</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">物业单位简介</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_maintenance_unit_eamil</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位邮箱</td>
+</tr>
+<tr>
+<td style="text-align:center">elevator_maintenance_unit_intro</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">普通参数</td>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">维保单位简介</td>
+</tr>
+</tbody>
+</table>
+<pre><code>电梯维保记录            物业使用单位            物业办公地址            物业负责人            物业负责人联系电话            物业安全员姓名            物业安全员电话                      
+</code></pre>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/13/交易所之间的三角交易/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/13/交易所之间的三角交易/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-13T20:01:18+08:00">
+                2018-11-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="交易所之间的三角交易"><a href="#交易所之间的三角交易" class="headerlink" title="交易所之间的三角交易"></a>交易所之间的三角交易</h1><p>本是一介程序员，没钱逼得搞金融，区块链就不介绍了，毕竟都这时候了。这篇文章主要写对冲和三角交易的。无论是股票还是币，都是割韭菜的地方。想要从中捞利，就要动脑子。首先，交易所之间币价是由差异的，大多都查不到几个点，但是有部分币差距还是蛮大的，这就是我们今天所讲的对冲。看下图：</p>
+<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu156nvnnmj20kj0chmxg.jpg" alt=""></p>
+<p>假如小明在交易所A有5BTC，在交易所有5W元。因为币圈是24H制，价格有时候也受交易所波动。当交易所B受外部因素导致BTC价格下降到9800，小明将交易所A的5BTC卖掉，然后在交易所B买入5个BTC，交易完成。</p>
+<p>交易前: 5BTC+50000CNY</p>
+<p>交易后: 5BTC+51000CNY</p>
+<h2 id="搬砖"><a href="#搬砖" class="headerlink" title="搬砖"></a>搬砖</h2><p>如果小明只在交易所A有资金，而交易所B啥都没有，那还可以这样搬砖。如下图:</p>
+<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu15cmpuglj20j509hjrh.jpg" alt=""></p>
+<p>交易所B有10000CNY,直接从交易所B买入一个BTC，然后将交易所B的BTC转到交易所B，到账后在交易所A将BTC卖掉。最后获得10200元，这趟搬砖获利200元。</p>
+<h2 id="三角套利"><a href="#三角套利" class="headerlink" title="三角套利"></a>三角套利</h2><blockquote>
+<p>三角套利是指利用多种币种在不同市场间的差价进行套利动作的交易策略。因其一次交易一般由三种币进行三次操作，形成一种三角关系，故称三角套利。</p>
+</blockquote>
+<p>由于每种交易对的价格都是在不断变化的，经常会出现某个货币以其中一种代币（如BTC）计价的价格上涨或下跌的时候，但以另一种代币（如ETH）计价的该币种，还没有来得及跟着上涨或下跌，从而导致其中存在较大的价格差。</p>
+<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu15ko26cij20k40geab3.jpg" alt=""></p>
+<p>通过三个币之间的交易实现套利，这趟交易赚取10USDT利润。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>文章就记录到这儿，后面做四角套利的时候再写博客。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/13/三角套利项目搭建之Flask全局异常处理/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/13/三角套利项目搭建之Flask全局异常处理/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-13T20:01:18+08:00">
+                2018-11-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="三角套利项目搭建之Flask全局异常处理"><a href="#三角套利项目搭建之Flask全局异常处理" class="headerlink" title="三角套利项目搭建之Flask全局异常处理"></a>三角套利项目搭建之Flask全局异常处理</h1><p>在 Flask 上实现 RESTful API 很普通。开发人员遇到最头疼的一件事是意识到内建 的异常对 API 没有足够的表达能力，并且它们触发的 <em>text/html</em> 的内 容类型对于 API 消费者来说如同鸡肋。</p>
+<p>对于非法使用 API 来说，比仅仅对信号错误使用 <code>abort</code> 更好的是，实现你自己 的异常类型并为之安装一个错误处理器，这样更符合用户的预期。</p>
+<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu6ykq8d7ij217y0qygpl.jpg" alt=""></p>
+<h2 id="定义异常基类"><a href="#定义异常基类" class="headerlink" title="定义异常基类"></a>定义异常基类</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 　_*_coding:utf-8_*_</span></span><br><span class="line"><span class="comment"># author: labradors</span></span><br><span class="line"><span class="comment"># time: 18-8-10 上午9:09</span></span><br><span class="line"><span class="comment"># file: exception.py</span></span><br><span class="line"><span class="comment"># ide: PyCharm</span></span><br><span class="line"><span class="comment"># desc:</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> request, json</span><br><span class="line"><span class="keyword">from</span> werkzeug.exceptions <span class="keyword">import</span> HTTPException</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">APIException</span><span class="params">(HTTPException)</span>:</span></span><br><span class="line">    code = <span class="number">500</span></span><br><span class="line">    msg = <span class="string">"发生异常..."</span></span><br><span class="line">    error_code = <span class="number">999</span></span><br><span class="line">    obj = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, code=None, msg=None, error_code=None, obj=None)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> code:</span><br><span class="line">            self.code = code</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> msg:</span><br><span class="line">            self.msg = msg</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> error_code:</span><br><span class="line">            self.error_code = error_code</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> obj:</span><br><span class="line">            self.obj = obj</span><br><span class="line"></span><br><span class="line">        super(APIException, self).__init__(msg, <span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_body</span><span class="params">(self, environ=None)</span>:</span></span><br><span class="line">        body = dict(</span><br><span class="line">            msg=self.msg,</span><br><span class="line">            error_code=self.error_code,</span><br><span class="line">            request=request.method + <span class="string">' '</span> + self.get_url_no_param(),</span><br><span class="line">            obj=json.dumps(self.obj)</span><br><span class="line">        )</span><br><span class="line">        text = json.dumps(body)</span><br><span class="line">        <span class="keyword">return</span> text</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_headers</span><span class="params">(self, environ=None)</span>:</span></span><br><span class="line">        <span class="string">"""Get a list of headers."""</span></span><br><span class="line">        <span class="keyword">return</span> [(<span class="string">'Content-Type'</span>, <span class="string">'application/json'</span>)]</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_url_no_param</span><span class="params">()</span>:</span></span><br><span class="line">        full_path = str(request.full_path)</span><br><span class="line">        main_path = full_path.split(<span class="string">'?'</span>)</span><br><span class="line">        <span class="keyword">return</span> main_path[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="定义不同的异常"><a href="#定义不同的异常" class="headerlink" title="定义不同的异常"></a>定义不同的异常</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 　_*_coding:utf-8_*_</span></span><br><span class="line"><span class="comment"># author: labradors</span></span><br><span class="line"><span class="comment"># time: 18-8-10 上午9:19</span></span><br><span class="line"><span class="comment"># file: exception_code.py</span></span><br><span class="line"><span class="comment"># ide: PyCharm</span></span><br><span class="line"><span class="comment"># desc:</span></span><br><span class="line"><span class="keyword">from</span> app.lib.exception <span class="keyword">import</span> APIException</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Success</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">201</span></span><br><span class="line">    msg = <span class="string">'ok'</span></span><br><span class="line">    error_code = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DeleteSuccess</span><span class="params">(Success)</span>:</span></span><br><span class="line">    code = <span class="number">202</span></span><br><span class="line">    error_code = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ServerError</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">500</span></span><br><span class="line">    msg = <span class="string">'服务器发生异常 (*￣︶￣)!'</span></span><br><span class="line">    error_code = <span class="number">999</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ParameterError</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">400</span></span><br><span class="line">    msg = <span class="string">'参数类型错误(*￣︶￣)!'</span></span><br><span class="line">    error_code = <span class="number">1006</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ParameterException</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">400</span></span><br><span class="line">    msg = <span class="string">'参数不正确(*￣︶￣)!'</span></span><br><span class="line">    error_code = <span class="number">1000</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NotFound</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">404</span></span><br><span class="line">    msg = <span class="string">'没有找到该资源 O__O...'</span></span><br><span class="line">    error_code = <span class="number">1001</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AuthFailed</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">401</span></span><br><span class="line">    error_code = <span class="number">1005</span></span><br><span class="line">    msg = <span class="string">'认证失败(*￣︶￣)!'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Forbidden</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">403</span></span><br><span class="line">    error_code = <span class="number">1004</span></span><br><span class="line">    msg = <span class="string">'禁止访问(*￣︶￣)!'</span></span><br></pre></td></tr></table></figure>
+<p>异常处理类定义完成后我们要定义一个异常处理器，告诉flask，如下:</p>
+<h2 id="异常处理器"><a href="#异常处理器" class="headerlink" title="异常处理器"></a>异常处理器</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.errorhandler(Exception)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">handle_invalid_usage</span><span class="params">(error)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(error, APIException):</span><br><span class="line">        <span class="keyword">return</span> error.get_body()</span><br><span class="line">    <span class="keyword">elif</span> isinstance(error, HTTPException):</span><br><span class="line">        code = error.code</span><br><span class="line">        msg = error.description</span><br><span class="line">        error_code = <span class="number">1007</span></span><br><span class="line">        <span class="keyword">return</span> APIException(msg, code, error_code).get_body()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># if not app.config['DEBUG']:</span></span><br><span class="line">        <span class="comment">#     return ServerError()</span></span><br><span class="line">        <span class="comment"># else:</span></span><br><span class="line">        <span class="keyword">raise</span> error</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>文章代码比较多，没有深入的异常处理核心代码。算是工作笔记吧。以后flask源码分析的时候再写。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/13/三角套利项目搭建之Flask WTForms表单处理/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/13/三角套利项目搭建之Flask WTForms表单处理/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-13T20:01:18+08:00">
+                2018-11-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="三角套利项目搭建之Flask-WTForms表单处理"><a href="#三角套利项目搭建之Flask-WTForms表单处理" class="headerlink" title="三角套利项目搭建之Flask WTForms表单处理"></a>三角套利项目搭建之Flask WTForms表单处理</h1><p>项目中需要使用登陆，注册等，很多字段需要进行验证，其实我们自己编写代码进行实现，不过不太清真，而且也麻烦，所以使用WTForms库。文章记录在Flask下表单框架WTForms的使用。</p>
+<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu6yl6mbtwj212g0dsgon.jpg" alt=""></p>
+<h2 id="表单"><a href="#表单" class="headerlink" title="表单"></a>表单</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RegForm</span><span class="params">(Form)</span>:</span></span><br><span class="line">    account = StringField(validators=[DataRequired(message=<span class="string">'不允许为空'</span>),</span><br><span class="line">                                      length(min=<span class="number">5</span>, max=<span class="number">32</span>)])</span><br><span class="line">    secret = StringField(validators=[</span><br><span class="line">        DataRequired(),</span><br><span class="line">        Regexp(<span class="string">r'^[A-Za-z0-9_*&amp;$#@]&#123;6,22&#125;$'</span>)</span><br><span class="line">    ])</span><br><span class="line">    nickname = StringField(validators=[DataRequired(),</span><br><span class="line">                                       length(min=<span class="number">2</span>, max=<span class="number">22</span>)])</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate_account</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        user = User.query.filter_by(email=value.data).first()</span><br><span class="line">        <span class="keyword">if</span> user:</span><br><span class="line">            <span class="keyword">raise</span> ParameterError(msg=<span class="string">"邮箱已使用..."</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate_nickname</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        user = User.query.filter_by(nickname=value.data).first()</span><br><span class="line">        <span class="keyword">if</span> user:</span><br><span class="line">            <span class="keyword">raise</span> ParameterError(msg=<span class="string">"用户名已使用..."</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginForm</span><span class="params">(Form)</span>:</span></span><br><span class="line">    account = StringField(validators=[DataRequired(message=<span class="string">'不允许为空'</span>),</span><br><span class="line">                                      length(min=<span class="number">5</span>, max=<span class="number">32</span>)])</span><br><span class="line">    secret = StringField(validators=[</span><br><span class="line">        DataRequired(),</span><br><span class="line">        Regexp(<span class="string">r'^[A-Za-z0-9_*&amp;$#@]&#123;6,22&#125;$'</span>)</span><br><span class="line">    ])</span><br></pre></td></tr></table></figure>
+<p>上面一部分是注册表单，一部分是登陆表单。</p>
+<h2 id="views中使用"><a href="#views中使用" class="headerlink" title="views中使用"></a>views中使用</h2><p>写完表单代码后，我们需要在views中实现，具体代码如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@api.route('/create', methods=['POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_user</span><span class="params">()</span>:</span></span><br><span class="line">    form = RegForm().validate_for_api()</span><br><span class="line">    user = User.register_by_email(form.nickname.data,</span><br><span class="line">                                  form.account.data,</span><br><span class="line">                                  form.secret.data)</span><br><span class="line">    <span class="keyword">return</span> Success(obj=user)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@api.route('/login', methods=['POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">login_user</span><span class="params">()</span>:</span></span><br><span class="line">    form = LoginForm().validate_for_api()</span><br><span class="line">    user = Auth().authenticate(form.account.data, form.secret.data)</span><br><span class="line">    <span class="keyword">return</span> Success(obj=user)</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>文章记录flask表单的使用，后续会涉及表单文件上传等内容。。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/13/三角套利项目搭建之Flask Jwt用户认证/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/13/三角套利项目搭建之Flask Jwt用户认证/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-13T20:01:18+08:00">
+                2018-11-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="三角套利项目搭建之Flask-Jwt用户认证"><a href="#三角套利项目搭建之Flask-Jwt用户认证" class="headerlink" title="三角套利项目搭建之Flask Jwt用户认证"></a>三角套利项目搭建之Flask Jwt用户认证</h1><p>jwt就不过多介绍了，记得之前有写过一篇文章。这篇文章仅仅记录在Flask下jwt的使用。整个流程分为三步,1. 认证生成token。2. token认证。3. 在flask下进行注册。</p>
+<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu6yljf8eej20ac03ra9y.jpg" alt=""></p>
+<h2 id="生成Token"><a href="#生成Token" class="headerlink" title="生成Token"></a>生成Token</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">encode_auth_token</span><span class="params">(self, user_id, login_time)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        生成认证Token</span></span><br><span class="line"><span class="string">        :param user_id: int</span></span><br><span class="line"><span class="string">        :param login_time: int(timestamp)</span></span><br><span class="line"><span class="string">        :return: string</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            payload = &#123;</span><br><span class="line">                <span class="string">'sub'</span>: user_id,</span><br><span class="line">                <span class="string">'exp'</span>: datetime.utcnow() + timedelta(days=<span class="number">7</span>),</span><br><span class="line">                <span class="string">'iat'</span>: datetime.utcnow(),</span><br><span class="line">                <span class="string">'nbf'</span>: datetime.utcnow(),</span><br><span class="line">                <span class="string">'iss'</span>: <span class="string">'ken'</span>,</span><br><span class="line">                <span class="string">'data'</span>: &#123;</span><br><span class="line">                    <span class="string">'id'</span>: user_id,</span><br><span class="line">                    <span class="string">'login_time'</span>: login_time</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> jwt.encode(</span><br><span class="line">                payload,</span><br><span class="line">                secure.SECRET_KEY,</span><br><span class="line">                algorithm=<span class="string">'HS256'</span></span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            <span class="keyword">return</span> e</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">authenticate</span><span class="params">(self, email, password)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        用户登录，登录成功返回token，写将登录时间写入数据库；登录失败返回失败原因</span></span><br><span class="line"><span class="string">        :param email:</span></span><br><span class="line"><span class="string">        :param password:</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        userInfo = User.verify(email, password)</span><br><span class="line">        <span class="keyword">if</span> userInfo <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">raise</span> NotFound(msg=<span class="string">'找不到该用户'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            token = self.encode_auth_token(userInfo.id, int(datetime.now().timestamp()))</span><br><span class="line">            print(token)</span><br><span class="line">            <span class="keyword">return</span> &#123;<span class="string">'id'</span>: userInfo.id,</span><br><span class="line">                    <span class="string">'email'</span>: userInfo.email,</span><br><span class="line">                    <span class="string">'nickname'</span>: userInfo.nickname,</span><br><span class="line">                    <span class="string">'token'</span>: str(token, encoding=<span class="string">"utf-8"</span>)</span><br><span class="line">                    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="认证获取数据"><a href="#认证获取数据" class="headerlink" title="认证获取数据"></a>认证获取数据</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">identity</span><span class="params">(self, payload)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> User.query.filter_by(id=payload[<span class="string">'data'</span>][<span class="string">'id'</span>]).first()</span><br></pre></td></tr></table></figure>
+<h2 id="Flask注册"><a href="#Flask注册" class="headerlink" title="Flask注册"></a>Flask注册</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reg_jwt</span><span class="params">(app)</span>:</span></span><br><span class="line">    auth = Auth()</span><br><span class="line">    jwt = JWT(app, auth.authenticate, auth.identity)</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>配置方面可以查看<a href="https://pythonhosted.org/Flask-JWT/" target="_blank" rel="noopener">官方文档</a>,不过多解释了，不懂的可以在公众号下面留言。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/13/呼叫中心组网方案/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/13/呼叫中心组网方案/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-13T20:01:18+08:00">
+                2018-11-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="呼叫中心组网方案"><a href="#呼叫中心组网方案" class="headerlink" title="呼叫中心组网方案"></a>呼叫中心组网方案</h2><h2 id="专用术语"><a href="#专用术语" class="headerlink" title="专用术语"></a>专用术语</h2><ul>
+<li>PBX：用户电话交换机</li>
+<li>PSTN：公共交换电话网</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/13/问题整理/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/13/问题整理/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-13T20:01:18+08:00">
+                2018-11-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="问题整理"><a href="#问题整理" class="headerlink" title="问题整理"></a>问题整理</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">MAL-Daemon:  (void* rilproxy_task_hdl(,  439) rilproxy_task_hdl(), receive event = 401</span><br><span class="line">     (void* rilproxy_task_hdl(,  505) RILD is disconnected</span><br><span class="line">MAL-Daemon: ( simmngr_cache_reply, 297) [SIM_MNGR] 297 EN_SIM:Non cache data request()!!</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/13/推送集成/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/13/推送集成/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-13T20:01:18+08:00">
+                2018-11-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="推送集成"><a href="#推送集成" class="headerlink" title="推送集成"></a>推送集成</h2><h3 id="build-gradle"><a href="#build-gradle" class="headerlink" title="build.gradle"></a><code>build.gradle</code></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">    mavenCentral()</span><br><span class="line">    maven &#123;</span><br><span class="line">        url &quot;http://mvn.gt.igexin.com/nexus/content/repositories/releases/&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    compile <span class="string">'com.gexin.platform:gexin-rp-sdk-http:4.0.1.17'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Application-yml"><a href="#Application-yml" class="headerlink" title="Application.yml"></a><code>Application.yml</code></h3><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">getui:</span></span><br><span class="line"><span class="attr">  url:</span> <span class="attr">http://sdk.open.api.igexin.com/apiex.htm</span></span><br><span class="line"><span class="attr">  appId:</span> <span class="string">dWdMXTe8Rt836BXSU3AjP9</span></span><br><span class="line"><span class="attr">  appKey:</span> <span class="string">BR3XCaRuiv8bhtHfvimhX8</span></span><br><span class="line"><span class="attr">  masterSecret:</span> <span class="number">3</span><span class="string">GdFgUH7qv7jE8ERKQeux1</span></span><br></pre></td></tr></table></figure>
+<h3 id="AppPushService-java"><a href="#AppPushService-java" class="headerlink" title="AppPushService.java"></a><code>AppPushService.java</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppPushService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;getui.url&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String url;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;getui.appId&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String appId;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;getui.appKey&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String appKey;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;getui.masterSecret&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String masterSecret;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> type: &#123;NOTICE,WARNING,OFFICE&#125;</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> messageId: 记录ID</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IPushResult <span class="title">pushTransmission</span><span class="params">(String type,String messageId)</span> </span>&#123;</span><br><span class="line">        IGtPush push = <span class="keyword">new</span> IGtPush(url, appKey, masterSecret);</span><br><span class="line">        TransmissionTemplate template = <span class="keyword">new</span> TransmissionTemplate();</span><br><span class="line">        template.setAppId(appId);</span><br><span class="line">        template.setAppkey(appKey);</span><br><span class="line">        template.setTransmissionType(<span class="number">2</span>);</span><br><span class="line">        Map&lt;String,String&gt; value = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        value.put(<span class="string">"type"</span>,type);</span><br><span class="line">        value.put(<span class="string">"content"</span>,messageId);</span><br><span class="line">        template.setTransmissionContent(<span class="keyword">new</span> Gson().toJson(value));</span><br><span class="line">        List&lt;String&gt; appIds = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        appIds.add(appId);</span><br><span class="line">        AppMessage message = <span class="keyword">new</span> AppMessage();</span><br><span class="line">        message.setData(template);</span><br><span class="line">        message.setAppIdList(appIds);</span><br><span class="line">        message.setOffline(<span class="keyword">true</span>);</span><br><span class="line">        message.setOfflineExpireTime(<span class="number">1000</span> * <span class="number">600</span>);</span><br><span class="line">       <span class="keyword">return</span> push.pushMessageToApp(message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/13/公司资料/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/13/公司资料/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-13T20:01:18+08:00">
+                2018-11-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="公司资料"><a href="#公司资料" class="headerlink" title="公司资料"></a>公司资料</h1><ul>
+<li>名字：时芯，佐威，木鱼，点石(网络科技，科技，技术)</li>
+<li>注册资本:100w</li>
+<li>股权: 姜陶100%</li>
+<li>营业范围: 计算机软硬件开发，应用及技术服务，技术咨询，技术转让。计算机系统集成及综合布线，计算机网络工程的设计与施工。数据处理及存储服务。设计，制作，代理，发布国内各类广告，健康信息咨询，教育信息咨询。企业管理咨询，商务信息咨询，组织文化艺术交流活动。承办会议及商品展览展示活动。翻译服务，国内贸易，物流供销。</li>
+<li>法人代表人: 姜陶</li>
+<li>监事: 杨小翠。</li>
+</ul>
 
           
         
@@ -347,6 +3213,10 @@
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -390,14 +3260,32 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">113</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
             
 
             
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
             
 
           </nav>

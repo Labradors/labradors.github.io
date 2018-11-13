@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="OrangePi通话音频采集模糊解决方案本篇文章记录香橙派语音通话问题，首先插上耳机，拨打电话，接通电话，我能听清楚对方说的话，而对方听不清楚我说的话。分析原因应该是我这边语音输入采集有问题，首先列举一下音频设备定义。首先看图  图中包含耳机和麦克风两个语音相关模块，麦克风只做语音输入，耳机做语音输入和输出都可。通过正常耳机试过。声音模糊，通过麦克风也是，那么确定是软件问题．在网上搜索一番，最终找">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Labradors">
+<meta property="og:url" content="http://yoursite.com/2018/11/13/OrangePi通话音频采集模糊解决方案/index.html">
+<meta property="og:site_name" content="Labradors">
+<meta property="og:description" content="OrangePi通话音频采集模糊解决方案本篇文章记录香橙派语音通话问题，首先插上耳机，拨打电话，接通电话，我能听清楚对方说的话，而对方听不清楚我说的话。分析原因应该是我这边语音输入采集有问题，首先列举一下音频设备定义。首先看图  图中包含耳机和麦克风两个语音相关模块，麦克风只做语音输入，耳机做语音输入和输出都可。通过正常耳机试过。声音模糊，通过麦克风也是，那么确定是软件问题．在网上搜索一番，最终找">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu0yli7ci3j20j10ciag8.jpg">
+<meta property="og:updated_time" content="2018-11-13T12:01:18.505Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Labradors">
+<meta name="twitter:description" content="OrangePi通话音频采集模糊解决方案本篇文章记录香橙派语音通话问题，首先插上耳机，拨打电话，接通电话，我能听清楚对方说的话，而对方听不清楚我说的话。分析原因应该是我这边语音输入采集有问题，首先列举一下音频设备定义。首先看图  图中包含耳机和麦克风两个语音相关模块，麦克风只做语音输入，耳机做语音输入和输出都可。通过正常耳机试过。声音模糊，通过麦克风也是，那么确定是软件问题．在网上搜索一番，最终找">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu0yli7ci3j20j10ciag8.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/11/13/OrangePi通话音频采集模糊解决方案/">
+
+
+
+
+
+  <title> | Labradors</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Labradors</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Follow your heart</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/13/OrangePi通话音频采集模糊解决方案/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-13T20:01:18+08:00">
+                2018-11-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="OrangePi通话音频采集模糊解决方案"><a href="#OrangePi通话音频采集模糊解决方案" class="headerlink" title="OrangePi通话音频采集模糊解决方案"></a>OrangePi通话音频采集模糊解决方案</h1><p>本篇文章记录香橙派语音通话问题，首先插上耳机，拨打电话，接通电话，我能听清楚对方说的话，而对方听不清楚我说的话。分析原因应该是我这边语音输入采集有问题，首先列举一下音频设备定义。首先看图</p>
+<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu0yli7ci3j20j10ciag8.jpg" alt=""></p>
+<p>图中包含耳机和麦克风两个语音相关模块，麦克风只做语音输入，耳机做语音输入和输出都可。通过正常耳机试过。声音模糊，通过麦克风也是，那么确定是软件问题．在网上搜索一番，最终找到答案．</p>
+<ol>
+<li>修改底层默认设置</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">`*#*#3646633#*#*`</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>进入硬件测试,选择audio</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- normal模式</span><br><span class="line">    - 设置sip 112 160</span><br><span class="line">    - 设置media 32 160</span><br><span class="line">    - 设置mic 255 160</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">- 设置headset model</span><br><span class="line">    - 设置sip 112   160</span><br><span class="line">    - 设置media 88 160 </span><br><span class="line">    - 设置mic 255 160</span><br></pre></td></tr></table></figure>
+<h2 id="音频输出设备"><a href="#音频输出设备" class="headerlink" title="音频输出设备"></a>音频输出设备</h2><table>
+<thead>
+<tr>
+<th style="text-align:left">设备名称</th>
+<th style="text-align:center">值</th>
+<th style="text-align:left">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">DEVICE_OUT_EARPIECE</td>
+<td style="text-align:center">0x1</td>
+<td style="text-align:left">听筒</td>
+</tr>
+<tr>
+<td style="text-align:left">DEVICE_OUT_SPEAKER</td>
+<td style="text-align:center">0x02</td>
+<td style="text-align:left">扬声器</td>
+</tr>
+<tr>
+<td style="text-align:left">DEVICE_OUT_WIRED_HEADSET</td>
+<td style="text-align:center">0x4</td>
+<td style="text-align:left">线控耳机，可以通过耳机控制远端播放、暂停、音量调节等功能的耳机</td>
+</tr>
+<tr>
+<td style="text-align:left">DEVICE_OUT_WIRED_HEADPHONE</td>
+<td style="text-align:center">0x8</td>
+<td style="text-align:left">普通耳机，只能听，不能操控播放</td>
+</tr>
+<tr>
+<td style="text-align:left">DEVICE_OUT_BLUETOOTH_SCO</td>
+<td style="text-align:center">0x10</td>
+<td style="text-align:left">单声道蓝牙耳机 蓝牙 SCO,用于语音通话，十进制32</td>
+</tr>
+<tr>
+<td style="text-align:left">DEVICE_OUT_BLUETOOTH_SCO_HEADSET</td>
+<td style="text-align:center">0x20</td>
+<td style="text-align:left">蓝牙SCO耳机，十进制64</td>
+</tr>
+<tr>
+<td style="text-align:left">DEVICE_OUT_BLUETOOTH_SCO_CARKIT</td>
+<td style="text-align:center">0x40</td>
+<td style="text-align:left">蓝牙SCO车载</td>
+</tr>
+<tr>
+<td style="text-align:left">DEVICE_OUT_BLUETOOTH_A2DP</td>
+<td style="text-align:center">0x80</td>
+<td style="text-align:left">蓝牙高保真设备,用于听音乐， 十进制128</td>
+</tr>
+<tr>
+<td style="text-align:left">DEVICE_OUT_BLUETOOTH_A2DP_HEADPHONES</td>
+<td style="text-align:center">0x100</td>
+<td style="text-align:left">蓝牙高保真耳机，十进制256</td>
+</tr>
+<tr>
+<td style="text-align:left">DEVICE_OUT_BLUETOOTH_A2DP_SPEAKER</td>
+<td style="text-align:center">0x200</td>
+<td style="text-align:left">蓝牙高保真扬声器 ，十进制512</td>
+</tr>
+<tr>
+<td style="text-align:left">DEVICE_OUT_AUX_DIGITAL</td>
+<td style="text-align:center">0x400</td>
+<td style="text-align:left">辅助数字输出,HDMI，十进制1024</td>
+</tr>
+<tr>
+<td style="text-align:left">DEVICE_OUT_ANLG_DOCK_HEADSET</td>
+<td style="text-align:center">0x800</td>
+<td style="text-align:left">通过基座连接的模拟有线耳机，十进制2048</td>
+</tr>
+<tr>
+<td style="text-align:left">DEVICE_OUT_DGTL_DOCK_HEADSET</td>
+<td style="text-align:center">0x1000</td>
+<td style="text-align:left">通过基座连接的数字有线耳机，十进制4096</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="音频输入设备"><a href="#音频输入设备" class="headerlink" title="音频输入设备"></a>音频输入设备</h2><table>
+<thead>
+<tr>
+<th>设备名称</th>
+<th>值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AUDIO_DEVICE_IN_COMMUNICATION</td>
+<td>0x1</td>
+<td>手机上的话筒</td>
+</tr>
+<tr>
+<td>AUDIO_DEVICE_IN_BUILTIN_MIC</td>
+<td>0x4</td>
+<td>蓝牙麦克</td>
+</tr>
+<tr>
+<td>AUDIO_DEVICE_IN_BLUETOOTH_SCO_HEADSET</td>
+<td>0x8</td>
+<td>蓝牙耳机上的话筒</td>
+</tr>
+<tr>
+<td>AUDIO_DEVICE_IN_WIRED_HEADSET</td>
+<td>0x10</td>
+<td>有线耳机上的话筒</td>
+</tr>
+<tr>
+<td>AUDIO_DEVICE_IN_ANLG_DOCK_HEADSET</td>
+<td>0x200</td>
+<td>通过基座连接的模拟有线耳机</td>
+</tr>
+<tr>
+<td>AUDIO_DEVICE_IN_DGTL_DOCK_HEADSET</td>
+<td>0x400</td>
+<td>通过基座连接的数字有线耳机</td>
+</tr>
+<tr>
+<td>AUDIO_DEVICE_IN_USB_ACCESSORY</td>
+<td>0x800</td>
+<td>USB配件</td>
+</tr>
+<tr>
+<td>AUDIO_DEVICE_IN_USB_DEVICE</td>
+<td>0x1000</td>
+<td>USB设备</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="音频模式"><a href="#音频模式" class="headerlink" title="音频模式"></a>音频模式</h2><table>
+<thead>
+<tr>
+<th>通道名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MODE_NORMAL</td>
+<td>正常模式，即在没有铃音与电话的情况</td>
+</tr>
+<tr>
+<td>MODE_RINGTONE</td>
+<td>铃响模式</td>
+</tr>
+<tr>
+<td>MODE_IN_CALL</td>
+<td>接通电话模式</td>
+</tr>
+<tr>
+<td>MODE_IN_COMMUNICATION</td>
+<td>通话模式</td>
+</tr>
+</tbody>
+</table>
+<h2 id="音频通道"><a href="#音频通道" class="headerlink" title="音频通道"></a>音频通道</h2><table>
+<thead>
+<tr>
+<th>通道名称</th>
+<th>描述</th>
+<th>音量级别定义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MEDIA</td>
+<td>媒体通道</td>
+<td>15</td>
+</tr>
+<tr>
+<td>PHONE</td>
+<td>电话类型</td>
+<td>7</td>
+</tr>
+<tr>
+<td>SONIFICATION</td>
+<td>通知类型</td>
+<td>—</td>
+</tr>
+<tr>
+<td>DTMF</td>
+<td>DTMF 类型</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h2 id="音频路由策略"><a href="#音频路由策略" class="headerlink" title="音频路由策略"></a>音频路由策略</h2><table>
+<thead>
+<tr>
+<th>策略名称</th>
+<th>值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>STRATEGY_MEDIA</td>
+<td>0</td>
+<td>媒体通道</td>
+</tr>
+<tr>
+<td>STRATEGY_PHONE</td>
+<td>1</td>
+<td>电话类型</td>
+</tr>
+<tr>
+<td>STRATEGY_SONIFICATION</td>
+<td>2</td>
+<td>通知类型</td>
+</tr>
+<tr>
+<td>STRATEGY_DTMF</td>
+<td>3</td>
+<td>DTMF 类型</td>
+</tr>
+</tbody>
+</table>
+<h2 id="音频流类型"><a href="#音频流类型" class="headerlink" title="音频流类型"></a>音频流类型</h2><table>
+<thead>
+<tr>
+<th>音频流类型</th>
+<th>值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AUDIO_STREAM_VOICE_CALL</td>
+<td>0</td>
+<td>通话</td>
+</tr>
+<tr>
+<td>AUDIO_STREAM_BLUETOOTH_SCO</td>
+<td>6</td>
+<td>蓝牙</td>
+</tr>
+<tr>
+<td>AUDIO_STREAM_RING</td>
+<td>2</td>
+<td>铃声</td>
+</tr>
+<tr>
+<td>AUDIO_STREAM_ALARM</td>
+<td>4</td>
+<td>闹铃</td>
+</tr>
+<tr>
+<td>AUDIO_STREAM_NOTIFICATION</td>
+<td>5</td>
+<td>通知声音</td>
+</tr>
+<tr>
+<td>AUDIO_STREAM_ENFORCED_AUDIBLE</td>
+<td>7</td>
+<td>开机声音</td>
+</tr>
+<tr>
+<td>AUDIO_STREAM_DTMF</td>
+<td>8</td>
+<td>按键声音</td>
+</tr>
+<tr>
+<td>AUDIO_STREAM_TTS</td>
+<td>9</td>
+<td>语音播报</td>
+</tr>
+<tr>
+<td>AUDIO_STREAM_SYSTEM</td>
+<td>1</td>
+<td>系统声音</td>
+</tr>
+<tr>
+<td>AUDIO_STREAM_MUSIC</td>
+<td>3</td>
+<td>音乐</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/13/Mac下虚拟环境问题总结/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/13/Youth/" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Labradors</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">113</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OrangePi通话音频采集模糊解决方案"><span class="nav-number">1.</span> <span class="nav-text">OrangePi通话音频采集模糊解决方案</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#音频输出设备"><span class="nav-number">1.1.</span> <span class="nav-text">音频输出设备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#音频输入设备"><span class="nav-number">1.2.</span> <span class="nav-text">音频输入设备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#音频模式"><span class="nav-number">1.3.</span> <span class="nav-text">音频模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#音频通道"><span class="nav-number">1.4.</span> <span class="nav-text">音频通道</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#音频路由策略"><span class="nav-number">1.5.</span> <span class="nav-text">音频路由策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#音频流类型"><span class="nav-number">1.6.</span> <span class="nav-text">音频流类型</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Labradors</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

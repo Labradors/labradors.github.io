@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Jenkins,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="因为项目需要，又重新搭建了一次Seafile和Jenkins,Seafile是个人的私有云盘。之前搭建过一次，因为服务器太贵，一气之下全部卸了。这次搭建更加顺手，但是还是没能快速搭建和部署，还是花了半天。所以记录一下，下次再次搭建的时候，如果忘了直接照着做就ok。节约时间。Jenkins是自动化测试，部署，打包工具，两者都使得工作或者生活更方便，安全。这篇文章实在Centos7下进行搭建。Deb">
+<meta name="keywords" content="Jenkins">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从Seafile到Jenkins">
+<meta property="og:url" content="http://yoursite.com/2017/03/16/从Seafile到Jenkins/index.html">
+<meta property="og:site_name" content="Labradors">
+<meta property="og:description" content="因为项目需要，又重新搭建了一次Seafile和Jenkins,Seafile是个人的私有云盘。之前搭建过一次，因为服务器太贵，一气之下全部卸了。这次搭建更加顺手，但是还是没能快速搭建和部署，还是花了半天。所以记录一下，下次再次搭建的时候，如果忘了直接照着做就ok。节约时间。Jenkins是自动化测试，部署，打包工具，两者都使得工作或者生活更方便，安全。这篇文章实在Centos7下进行搭建。Deb">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/20170315254652017-03-16.jpg">
+<meta property="og:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/2017031552461Screen Shot 2017-03-15 at 11.17.00 PM.png">
+<meta property="og:updated_time" content="2018-11-13T12:01:18.535Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从Seafile到Jenkins">
+<meta name="twitter:description" content="因为项目需要，又重新搭建了一次Seafile和Jenkins,Seafile是个人的私有云盘。之前搭建过一次，因为服务器太贵，一气之下全部卸了。这次搭建更加顺手，但是还是没能快速搭建和部署，还是花了半天。所以记录一下，下次再次搭建的时候，如果忘了直接照着做就ok。节约时间。Jenkins是自动化测试，部署，打包工具，两者都使得工作或者生活更方便，安全。这篇文章实在Centos7下进行搭建。Deb">
+<meta name="twitter:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/20170315254652017-03-16.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/03/16/从Seafile到Jenkins/">
+
+
+
+
+
+  <title>从Seafile到Jenkins | Labradors</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Labradors</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Follow your heart</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/16/从Seafile到Jenkins/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">从Seafile到Jenkins</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-16T10:32:45+08:00">
+                2017-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/后端/" itemprop="url" rel="index">
+                    <span itemprop="name">后端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://7xk0q3.com1.z0.glb.clouddn.com/20170315254652017-03-16.jpg" alt="20170315254652017-03-16.jpg"></p>
+<p>因为项目需要，又重新搭建了一次Seafile和Jenkins,Seafile是个人的私有云盘。之前搭建过一次，因为服务器太贵，一气之下全部卸了。这次搭建更加顺手，但是还是没能快速搭建和部署，还是花了半天。所以记录一下，下次再次搭建的时候，如果忘了直接照着做就ok。节约时间。Jenkins是自动化测试，部署，打包工具，两者都使得工作或者生活更方便，安全。这篇文章实在Centos7下进行搭建。Debian系列也没什么差别，上车。</p>
+<a id="more"></a>
+<h2 id="Jenkins搭建CI环境"><a href="#Jenkins搭建CI环境" class="headerlink" title="Jenkins搭建CI环境"></a>Jenkins搭建CI环境</h2><p><a href="https://jenkins.io/" target="_blank" rel="noopener">Jenkins</a>是开源软件，并且更新很快。对比较流行的<code>git</code>仓库,如果<strong>Github,Gitlab,Bitbuck</strong>等等都有良好的支持，对项目构建工具<strong>Maven,Gradle,ant</strong>等等也支持的很好。包括邮件提醒，XMPP机器人集成，现在还包含丁丁集成。算是比较完善了。而且Jenkins的主题图标也是我喜欢的风格。来欣赏一波。</p>
+<p><img src="" alt="2017031590034Screen Shot 2017-03-15 at 11.01.31 PM.png"></p>
+<p>好了，不扯犊子了。首先我们检查，更新一下源。</p>
+<h3 id="更新源"><a href="#更新源" class="headerlink" title="更新源"></a>更新源</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install epel-release</span><br><span class="line">sudo yum update</span><br></pre></td></tr></table></figure>
+<h3 id="安装Java8"><a href="#安装Java8" class="headerlink" title="安装Java8"></a>安装Java8</h3><ul>
+<li>下载</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget --header &quot;Cookie: oraclelicense=accept-securebackup-cookie&quot; http://download.oracle.com/otn-pub/java/jdk/8u102-b14/jdk-8u102-linux-x64.rpm</span><br></pre></td></tr></table></figure>
+<ul>
+<li>安装</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum localinstall jdk-8u102-linux-x64.rpm</span><br></pre></td></tr></table></figure>
+<p>下载JDK的位置在<code>/usr/java/jdk1.8.0_102</code></p>
+<ul>
+<li>配置</li>
+</ul>
+<p>打开<code>/etc/profile</code><br><code>sudo vim /etc/profile</code><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/java/jdk1.8.0_102/</span><br><span class="line">export JRE_HOME=/usr/java/jdk1.8.0_102/jre</span><br><span class="line">PATH=$PATH:$HOME/bin:$JAVA_HOME/bin</span><br><span class="line">export PATH</span><br></pre></td></tr></table></figure></p>
+<p>然后<code>source /etc/profile</code>，测试一下<code>java -version</code>。</p>
+<h3 id="安装Jenkins"><a href="#安装Jenkins" class="headerlink" title="安装Jenkins"></a>安装Jenkins</h3><ul>
+<li>下载</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo</span><br></pre></td></tr></table></figure>
+<ul>
+<li>安装 </li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo rpm --import http://pkg.jenkins-ci.org/redhat-stable/jenkins-ci.org.key</span><br><span class="line">sudo yum install jenkins</span><br></pre></td></tr></table></figure>
+<ul>
+<li>运行</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start jenkins.service</span><br><span class="line">sudo systemctl enable jenkins.service</span><br></pre></td></tr></table></figure>
+<h3 id="Nginx安装配置"><a href="#Nginx安装配置" class="headerlink" title="Nginx安装配置"></a>Nginx安装配置</h3><ul>
+<li>安装</li>
+</ul>
+<p>找到server，在下边再添加一个server，如下，因为Jenkins默认开启端口是8080，所以配置如下:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install nginx</span><br></pre></td></tr></table></figure>
+<ul>
+<li>配置</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/nginx/nginx.conf</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  jenkins.jiangtao.tech;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">                proxy_redirect off;</span><br><span class="line">                proxy_set_header Host $host;</span><br><span class="line">                proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">                proxy_pass http://127.0.0.1:8080;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>好了，用域名访问吧。</p>
+<p>打开网页后有个初始密码，用vim打开文件进入，创建用户。最后进入主页，如下:</p>
+<p><img src="http://7xk0q3.com1.z0.glb.clouddn.com/2017031552461Screen Shot 2017-03-15 at 11.17.00 PM.png" alt="2017031552461Screen Shot 2017-03-15 at 11.17.00 PM.png"></p>
+<p>我使用的是Gitlab+Jenkins进行动态部署，都比较简单。</p>
+<h3 id="安装一波Maven"><a href="#安装一波Maven" class="headerlink" title="安装一波Maven"></a>安装一波Maven</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">wget http://www-eu.apache.org/dist/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz</span><br><span class="line">tar xzf apache-maven-3.3.9-bin.tar.gz</span><br><span class="line">sudo mv apache-maven-3.3.9 /usr/local/</span><br><span class="line">sudo vim /etc/profile</span><br><span class="line">export M2_HOME=/usr/local/apache-maven-3.3.9</span><br><span class="line">export PATH=$&#123;M2_HOME&#125;/bin:$&#123;PATH&#125;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 检查一下</span></span><br><span class="line">mvn -version</span><br></pre></td></tr></table></figure>
+<h3 id="安装一波Git"><a href="#安装一波Git" class="headerlink" title="安装一波Git"></a>安装一波Git</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install git</span><br><span class="line">git config --global user.name "xxx"</span><br><span class="line">git config --global user.email "xxx@gmail.com"</span><br><span class="line">ssh-keygen -t rsa -C "xxx@gmail.com"</span><br></pre></td></tr></table></figure>
+<p>一路回车，最后将<code>.ssh</code>下面的<code>.pub</code>文件复制到Git仓库配置。</p>
+<p>剩下的就自己去折腾吧。一定要记得，使用Maven构建的时候千万不要加mvn，因为插件默认已经给你加了。</p>
+<h2 id="Seafile"><a href="#Seafile" class="headerlink" title="Seafile"></a>Seafile</h2><p>关于Seafile,相比之下就简单了好多，可以直接看<a href="https://manual-cn.seafile.com/deploy/using_mysql.html" target="_blank" rel="noopener">官方文档</a>进行安装。</p>
+<p>事情太多了，但每天一篇博客还是要写的。就当记笔记吧。前端的东西又是一天没动了。实在太忙。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Jenkins/" rel="tag"># Jenkins</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/15/Tigase开发环境搭建/" rel="next" title="Tigase开发环境搭建">
+                <i class="fa fa-chevron-left"></i> Tigase开发环境搭建
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/17/Tigase运行流程分析/" rel="prev" title="Tigase运行流程分析">
+                Tigase运行流程分析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Labradors</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">113</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Jenkins搭建CI环境"><span class="nav-number">1.</span> <span class="nav-text">Jenkins搭建CI环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#更新源"><span class="nav-number">1.1.</span> <span class="nav-text">更新源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Java8"><span class="nav-number">1.2.</span> <span class="nav-text">安装Java8</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Jenkins"><span class="nav-number">1.3.</span> <span class="nav-text">安装Jenkins</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx安装配置"><span class="nav-number">1.4.</span> <span class="nav-text">Nginx安装配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装一波Maven"><span class="nav-number">1.5.</span> <span class="nav-text">安装一波Maven</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装一波Git"><span class="nav-number">1.6.</span> <span class="nav-text">安装一波Git</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Seafile"><span class="nav-number">2.</span> <span class="nav-text">Seafile</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Labradors</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

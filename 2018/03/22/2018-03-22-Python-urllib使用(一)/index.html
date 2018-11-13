@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="urllib是python自带的一个包，主要用于做爬虫的(暂时接触到的是这样)。爬虫也叫网络蜘蛛，主要功能是获取网页数据。urllib包含四个模块.request用于模拟发送请求,error处理异常模块.parse提供url处理,robotparser处理网站的reboot.txt。今天只学一学request，毕竟正加班呢。">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python urllib使用(一)">
+<meta property="og:url" content="http://yoursite.com/2018/03/22/2018-03-22-Python-urllib使用(一)/index.html">
+<meta property="og:site_name" content="Labradors">
+<meta property="og:description" content="urllib是python自带的一个包，主要用于做爬虫的(暂时接触到的是这样)。爬虫也叫网络蜘蛛，主要功能是获取网页数据。urllib包含四个模块.request用于模拟发送请求,error处理异常模块.parse提供url处理,robotparser处理网站的reboot.txt。今天只学一学request，毕竟正加班呢。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/c0bee4a0ly1fpm0zjrhe8j20uk0g0q3g.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fplxuhw3rmj21km0o2dkb.jpg">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fplyql6k8uj21ms03ognf.jpg">
+<meta property="og:updated_time" content="2018-11-13T12:01:18.447Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python urllib使用(一)">
+<meta name="twitter:description" content="urllib是python自带的一个包，主要用于做爬虫的(暂时接触到的是这样)。爬虫也叫网络蜘蛛，主要功能是获取网页数据。urllib包含四个模块.request用于模拟发送请求,error处理异常模块.parse提供url处理,robotparser处理网站的reboot.txt。今天只学一学request，毕竟正加班呢。">
+<meta name="twitter:image" content="https://ws1.sinaimg.cn/large/c0bee4a0ly1fpm0zjrhe8j20uk0g0q3g.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/22/2018-03-22-Python-urllib使用(一)/">
+
+
+
+
+
+  <title>Python urllib使用(一) | Labradors</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Labradors</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Follow your heart</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/22/2018-03-22-Python-urllib使用(一)/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python urllib使用(一)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-22T10:32:45+08:00">
+                2018-03-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/技术/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="https://ws1.sinaimg.cn/large/c0bee4a0ly1fpm0zjrhe8j20uk0g0q3g.jpg" alt=""><br><code>urllib</code>是python自带的一个包，主要用于做爬虫的(暂时接触到的是这样)。爬虫也叫网络蜘蛛，主要功能是获取网页数据。<code>urllib</code>包含四个模块.<code>request</code>用于模拟发送请求,<code>error</code>处理异常模块.<code>parse</code>提供url处理,<code>robotparser</code>处理网站的reboot.txt。今天只学一学<code>request</code>，毕竟正加班呢。</p>
+<a id="more"></a>
+<h2 id="爬网站数据"><a href="#爬网站数据" class="headerlink" title="爬网站数据"></a>爬网站数据</h2><p>使用<code>request</code>获取Python主页内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.request</span><br><span class="line"></span><br><span class="line">response = urllib.request.urlopen(<span class="string">'https://www.python.org'</span>)</span><br><span class="line">print(response.read().decode(<span class="string">'utf-8'</span>))</span><br></pre></td></tr></table></figure>
+<p>两行代码轻松拿到网页源码</p>
+<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fplxuhw3rmj21km0o2dkb.jpg" alt=""></p>
+<p>使用<code>print(type(response))</code>，我们可以看出打印结果为<code>HTTPResponse</code>,我们能从<code>HTTPResponse</code>中拿到哪些数据呢，打开<code>HTTPResponse</code>源码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">self.headers = self.msg = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">      <span class="comment"># from the Status-Line of the response</span></span><br><span class="line">      self.version = _UNKNOWN <span class="comment"># HTTP-Version</span></span><br><span class="line">      self.status = _UNKNOWN  <span class="comment"># Status-Code</span></span><br><span class="line">      self.reason = _UNKNOWN  <span class="comment"># Reason-Phrase</span></span><br><span class="line"></span><br><span class="line">      self.chunked = _UNKNOWN         <span class="comment"># is "chunked" being used?</span></span><br><span class="line">      self.chunk_left = _UNKNOWN      <span class="comment"># bytes left to read in current chunk</span></span><br><span class="line">      self.length = _UNKNOWN          <span class="comment"># number of bytes left in response</span></span><br><span class="line">      self.will_close = _UNKNOWN      <span class="comment"># conn will close at end of response</span></span><br></pre></td></tr></table></figure>
+<p>如图，我们可以拿到<code>headers,version,status,reason,chunked,chunk_left,length</code>等属性。有兴趣可以打印看看。</p>
+<p>上面的代码中，如果想添加其他参数呢，比如上传请求体data。看看<code>request</code>的<code>urlopen()</code>方法。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">urlopen</span><span class="params">(url, data=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT,</span></span></span><br><span class="line"><span class="function"><span class="params">            *, cafile=None, capath=None, cadefault=False, context=None)</span>:</span></span><br></pre></td></tr></table></figure>
+<p>除了传递url之外，还可以上传请求数据，超时时间，证书等，拿淘宝IP接口测试一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.parse</span><br><span class="line"><span class="keyword">import</span> urllib.request</span><br><span class="line"></span><br><span class="line">data = bytes(urllib.parse.urlencode(&#123;<span class="string">'ip'</span>: <span class="string">'63.223.108.42'</span>&#125;), encoding=<span class="string">'utf8'</span>)</span><br><span class="line">response = urllib.request.urlopen(<span class="string">'http://ip.taobao.com/service/getIpInfo.php'</span>, data=data)</span><br><span class="line">print(response.read())</span><br></pre></td></tr></table></figure>
+<p>结果:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	<span class="attr">"code"</span>: <span class="number">0</span>,</span><br><span class="line">	<span class="attr">"data"</span>: &#123;</span><br><span class="line">		<span class="attr">"ip"</span>: <span class="string">"63.223.108.42"</span>,</span><br><span class="line">		<span class="attr">"country"</span>: <span class="string">"\xe7\xbe\x8e\xe5\x9b\xbd"</span>,</span><br><span class="line">		<span class="attr">"area"</span>: <span class="string">""</span>,</span><br><span class="line">		<span class="attr">"region"</span>: <span class="string">"\xe5\x8d\x8e\xe7\x9b\x9b\xe9\xa1\xbf"</span>,</span><br><span class="line">		<span class="attr">"city"</span>: <span class="string">"\xe8\xa5\xbf\xe9\x9b\x85\xe5\x9b\xbe"</span>,</span><br><span class="line">		<span class="attr">"county"</span>: <span class="string">"XX"</span>,</span><br><span class="line">		<span class="attr">"isp"</span>: <span class="string">"\xe7\x94\xb5\xe8\xae\xaf\xe7\x9b\x88\xe7\xa7\x91"</span>,</span><br><span class="line">		<span class="attr">"country_id"</span>: <span class="string">"US"</span>,</span><br><span class="line">		<span class="attr">"area_id"</span>: <span class="string">""</span>,</span><br><span class="line">		<span class="attr">"region_id"</span>: <span class="string">"US_WA"</span>,</span><br><span class="line">		<span class="attr">"city_id"</span>: <span class="string">"US_1107"</span>,</span><br><span class="line">		<span class="attr">"county_id"</span>: <span class="string">"xx"</span>,</span><br><span class="line">		<span class="attr">"isp_id"</span>: <span class="string">"3000107"</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fplyql6k8uj21ms03ognf.jpg" alt=""></p>
+<p>拿到了想要的数据，但是如果想加请求头headers咋办呢，上面的方法没有这个参数，可以使用构建<code>request</code>的方式来添加请求头信息。往下看。</p>
+<h2 id="构建request"><a href="#构建request" class="headerlink" title="构建request"></a>构建request</h2><p>先看看<code>request</code>的基本用法，可以看出，现在并不是直接通过传递url参数的方式来发送请求，而是通过包装<code>request</code>的方式。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.request</span><br><span class="line"></span><br><span class="line">request = urllib.request.Request(<span class="string">'https://python.org'</span>)</span><br><span class="line">response = urllib.request.urlopen(request)</span><br><span class="line">print(response.read().decode(<span class="string">'utf-8'</span>))</span><br></pre></td></tr></table></figure>
+<p>再看下<code>Request</code>的构造方法:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, url, data=None, headers=&#123;&#125;,</span></span></span><br><span class="line"><span class="function"><span class="params">              origin_req_host=None, unverifiable=False,</span></span></span><br><span class="line"><span class="function"><span class="params">              method=None)</span>:</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>data</code>: 请求数据体</li>
+<li><code>headers</code>: 请求头</li>
+<li><code>origin_req_host</code>: 当前IP地址，做爬虫的时候就是通过这个伪装IP</li>
+<li><code>unverifiable</code>: 请求是否是无法验证的,默认为false.</li>
+<li><code>method</code>: 指定请求方法，比如GET,POST,PUT…</li>
+</ul>
+<p>还是使用淘宝的接口，看看使用方式，懒得写接口:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib <span class="keyword">import</span> request,parse</span><br><span class="line"></span><br><span class="line">url = <span class="string">'http://ip.taobao.com/service/getIpInfo.php'</span></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">'User-Agent'</span>:<span class="string">'Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)'</span>,</span><br><span class="line">    <span class="string">'Host'</span>:<span class="string">'hip.taobao.com'</span></span><br><span class="line">&#125;</span><br><span class="line">dict1 = &#123;</span><br><span class="line">    <span class="string">'ip'</span>:<span class="string">'63.223.108.42'</span></span><br><span class="line">&#125;</span><br><span class="line">data = bytes(parse.urlencode(dict1),encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">req = request.Request(url=url,data=data,headers=headers,method=<span class="string">'GET'</span>)</span><br><span class="line">response = request.urlopen(req)</span><br><span class="line">print(response.read().decode(<span class="string">'utf-8'</span>))</span><br></pre></td></tr></table></figure>
+<p>同样，我们仍然可以拿到上边的数据。现在可以添加头信息了，那如果想实现认证，cookie处理等，上面的方法处理不了，继续往下.</p>
+<h2 id="Handler"><a href="#Handler" class="headerlink" title="Handler"></a>Handler</h2><p><code>urllib</code>使用<code>handler</code>来处理这些操作，针对不同的功能，有不同的<code>handler</code>，比如处理cookie,认证，代理等等，所有<code>handler</code>都继承自基类<code>BaseHandler</code>.</p>
+<ul>
+<li><code>HTTPDefaultErrorHandler</code>：处理HTTP错误</li>
+<li><code>HTTPRedirectHandler</code>：处理重定向</li>
+<li><code>HTTPCookieProcessor</code>：处理cookie</li>
+<li><code>ProxyHandler</code>：处理代理</li>
+<li><code>HTTPPasswordMgr</code>：管理密码</li>
+<li><code>HTTPBasicAuthHandler</code>：管理认证</li>
+</ul>
+<p>还有一些可以在<a href="https://docs.python.org/3/library/urllib.request.html#urllib.request.BaseHandler" target="_blank" rel="noopener">BaseHandler</a>中查看。</p>
+<h3 id="登陆"><a href="#登陆" class="headerlink" title="登陆"></a>登陆</h3><p>handler是处理逻辑的，发送请求我们使用<code>OpenerDirector</code>。我们用<code>OpenerDirector</code>包装<code>handler</code>，然后发送请求到服务器。直接上源码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib.request <span class="keyword">import</span> HTTPPasswordMgrWithDefaultRealm,HTTPBasicAuthHandler,build_opener</span><br><span class="line"><span class="keyword">from</span> urllib.error <span class="keyword">import</span> URLError</span><br><span class="line"></span><br><span class="line">username = <span class="string">'username'</span></span><br><span class="line">password = <span class="string">'password'</span></span><br><span class="line">url = <span class="string">'https://jenkins.labradors.work/login?from=%2F'</span></span><br><span class="line">p = HTTPPasswordMgrWithDefaultRealm()</span><br><span class="line">p.add_password(<span class="keyword">None</span>,url,username,password)</span><br><span class="line">auth_handler = HTTPBasicAuthHandler(p)</span><br><span class="line">opener = build_opener(auth_handler)</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    result = opener.open(url)</span><br><span class="line">    html = result.read().decode(<span class="string">'utf-8'</span>)</span><br><span class="line">    print(html)</span><br><span class="line"><span class="keyword">except</span> URLError <span class="keyword">as</span> e:</span><br><span class="line">    print(e.reason)</span><br></pre></td></tr></table></figure>
+<p>将用户名和密码包装到<code>HTTPPasswordMgrWithDefaultRealm</code>,然后再将<code>HTTPPasswordMgrWithDefaultRealm</code>包装为<code>HTTPBasicAuthHandler</code>,最后通过<code>OpenerDirector</code>发送请求。</p>
+<h3 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> urllib.error <span class="keyword">import</span> URLError</span><br><span class="line"><span class="keyword">from</span> urllib.request <span class="keyword">import</span> ProxyHandler, build_opener</span><br><span class="line"></span><br><span class="line">proxy_handler = ProxyHandler(&#123;</span><br><span class="line">    <span class="string">'http'</span>: <span class="string">'http://127.0.0.1:1086'</span>,</span><br><span class="line">    <span class="string">'https'</span>: <span class="string">'https://127.0.0.1:1086'</span></span><br><span class="line">&#125;)</span><br><span class="line">opener = build_opener(proxy_handler)</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    response = opener.open(<span class="string">'https://www.baidu.com'</span>)</span><br><span class="line">    print(response.read().decode(<span class="string">'utf-8'</span>))</span><br><span class="line"><span class="keyword">except</span> URLError <span class="keyword">as</span> e:</span><br><span class="line">    print(e.reason)</span><br></pre></td></tr></table></figure>
+<p>在本地搭建一个代理，运行在1086端口，利用<code>ProxyHandler</code>包装，然后发送数据…</p>
+<h3 id="Cookies"><a href="#Cookies" class="headerlink" title="Cookies"></a>Cookies</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> http.cookiejar, urllib.request</span><br><span class="line"></span><br><span class="line">cookie = http.cookiejar.CookieJar()</span><br><span class="line">handler = urllib.request.HTTPCookieProcessor(cookie)</span><br><span class="line">opener = urllib.request.build_opener(handler)</span><br><span class="line">response = opener.open(<span class="string">'http://www.baidu.com'</span>)</span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> cookie:</span><br><span class="line">    print(item.name+<span class="string">"="</span>+item.value)</span><br></pre></td></tr></table></figure>
+<p>利用<code>HTTPCookieProcessor</code>构建<code>opener</code>发送数据，最后打印出所有的<code>cookie</code>值。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/21/2018-03-21-拆分盘/" rel="next" title="拆分盘">
+                <i class="fa fa-chevron-left"></i> 拆分盘
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/23/2018-03-23-Eclipse-NDK迁移到Android-Studio/" rel="prev" title="Eclipse NDK迁移到Android Studio">
+                Eclipse NDK迁移到Android Studio <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Labradors</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">113</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#爬网站数据"><span class="nav-number">1.</span> <span class="nav-text">爬网站数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建request"><span class="nav-number">2.</span> <span class="nav-text">构建request</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Handler"><span class="nav-number">3.</span> <span class="nav-text">Handler</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#登陆"><span class="nav-number">3.1.</span> <span class="nav-text">登陆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代理"><span class="nav-number">3.2.</span> <span class="nav-text">代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Cookies"><span class="nav-number">3.3.</span> <span class="nav-text">Cookies</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Labradors</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

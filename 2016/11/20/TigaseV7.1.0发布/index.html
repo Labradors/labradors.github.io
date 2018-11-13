@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="翻译,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Note:TigaseV7.1.0发布，原文链接：Tigase v7.1.0 announcement。 近期一直在忙看英语文档，前面欠的四五篇博客，只有过段时间再补上了。Tigase的中文文档实在太少，很多写的也不太详细。自己慢慢看也能看懂，只是看了这篇上一篇又不太记得。记录一下。以后能把英文文档完全当中文看了，就不用记录了。">
+<meta name="keywords" content="翻译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TigaseV7.1.0发布">
+<meta property="og:url" content="http://yoursite.com/2016/11/20/TigaseV7.1.0发布/index.html">
+<meta property="og:site_name" content="Labradors">
+<meta property="og:description" content="Note:TigaseV7.1.0发布，原文链接：Tigase v7.1.0 announcement。 近期一直在忙看英语文档，前面欠的四五篇博客，只有过段时间再补上了。Tigase的中文文档实在太少，很多写的也不太详细。自己慢慢看也能看懂，只是看了这篇上一篇又不太记得。记录一下。以后能把英文文档完全当中文看了，就不用记录了。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-11-13T12:01:18.517Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="TigaseV7.1.0发布">
+<meta name="twitter:description" content="Note:TigaseV7.1.0发布，原文链接：Tigase v7.1.0 announcement。 近期一直在忙看英语文档，前面欠的四五篇博客，只有过段时间再补上了。Tigase的中文文档实在太少，很多写的也不太详细。自己慢慢看也能看懂，只是看了这篇上一篇又不太记得。记录一下。以后能把英文文档完全当中文看了，就不用记录了。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2016/11/20/TigaseV7.1.0发布/">
+
+
+
+
+
+  <title>TigaseV7.1.0发布 | Labradors</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Labradors</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Follow your heart</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/20/TigaseV7.1.0发布/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">TigaseV7.1.0发布</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-11-20T10:32:45+08:00">
+                2016-11-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/后端/" itemprop="url" rel="index">
+                    <span itemprop="name">后端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Note:TigaseV7.1.0发布，原文链接：<a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#tigase710" target="_blank" rel="noopener">Tigase v7.1.0 announcement</a>。</p>
+<p>近期一直在忙看英语文档，前面欠的四五篇博客，只有过段时间再补上了。Tigase的中文文档实在太少，很多写的也不太详细。自己慢慢看也能看懂，只是看了这篇上一篇又不太记得。记录一下。以后能把英文文档完全当中文看了，就不用记录了。<a id="more"></a></p>
+</blockquote>
+<p><strong>欢迎查看Tigase管理员指南</strong>,为了给你提供更安全，更精简，更好的<code>XMPP</code>服务，我们一直在改进和实现一些Tigase服务器程序的新功能。</p>
+<p>我们分享了一些新功能，组件和大量的补丁。请注意，不是所有的补丁都可以查看，因为有一些补丁可能包含客户权限问题。</p>
+<h2 id="重大改变"><a href="#重大改变" class="headerlink" title="重大改变"></a>重大改变</h2><p><code>Tigase V7.1.0</code>已经从代码和结构上有重大的改变。为了继续使用<code>Tigase</code>，一些改变可能需要对你的系统进行相应的改变。具体内容请继续看：</p>
+<h3 id="HTTP组件重命名"><a href="#HTTP组件重命名" class="headerlink" title="HTTP组件重命名"></a>HTTP组件重命名</h3><p>我们重命名了<code>HTTP</code>组建，如果你仍然在<em>init.properties</em>配置文件中使用过时的配置<code>tigase.rest.RestMessageReciever</code>，请更新组建名为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tigase.http.HttpMessageReceiver</span><br></pre></td></tr></table></figure>
+<h3 id="需要jdk8"><a href="#需要jdk8" class="headerlink" title="需要jdk8"></a>需要<code>jdk8</code></h3><p>因为<strong>Oracle</strong>已经放弃对<code>jdk7</code>的支持，所以我们不得不升级为<code>jdk8</code>。此外，一些新特性和一些补丁也需要<code>jdk8</code> 版本的支持。请更新你的<code>jdk</code>版本。</p>
+<h3 id="数据库模式改变"><a href="#数据库模式改变" class="headerlink" title="数据库模式改变"></a>数据库模式改变</h3><p>Tigase已经对数据库模式进行了更改，最近的版本主要是<em>database schema v7.1</em>和<em>pubsub schema v3.2.0</em>。如果你想从以前的数据库版本升级至当前<code>v7.1</code>版本，我们推荐你阅读<a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#v710notice" target="_blank" rel="noopener">这一节</a>准备新的安装。</p>
+<h3 id="Presence插件拆分"><a href="#Presence插件拆分" class="headerlink" title="Presence插件拆分"></a><code>Presence</code>插件拆分</h3><p><code>Presence.java</code>这个处理<code>presence</code>相关操作的插件已经被分离出来。<code>PresenceAbstract.java</code>一般处理大多数与<code>presence</code>相关的方法。他同时也被以下两个插件所使用。</p>
+<ul>
+<li><code>PresenceSubscription.java</code>负责用户状态的更新，如花名册处理等。</li>
+<li><code>PresenceState.java</code>负责一个新的连接，登录的初始化操作。</li>
+</ul>
+<h2 id="新特性与组建"><a href="#新特性与组建" class="headerlink" title="新特性与组建"></a>新特性与组建</h2><h3 id="新的-HTTP-API"><a href="#新的-HTTP-API" class="headerlink" title="新的 HTTP API"></a>新的 HTTP API</h3><p>Tigase具有<code>http api</code>,所有可以进行<code>web</code>端的聊天，管理员可以改变设置，管理用户，甚至可以从浏览器窗口中编写和运行脚本。此外，可以通过<code>rest api</code>接口来运行自定义的脚本和命令。我们正在计划改进这个ui的界面设计。使其越来越丰富。让用户享受这个实时的通信和漂亮的界面。</p>
+<h3 id="新的管理员接口"><a href="#新的管理员接口" class="headerlink" title="新的管理员接口"></a>新的管理员接口</h3><p>Tigase现在内置了<code>Web XMPP</code>客户端。你可以从<a href="http://yourhost.com:8080/ui/" target="_blank" rel="noopener">http://yourhost.com:8080/ui/</a>.这个链接访问。关于更多细节，请查看Admin UI guide。</p>
+<h3 id="添加XEP-0334支持"><a href="#添加XEP-0334支持" class="headerlink" title="添加XEP-0334支持"></a>添加XEP-0334支持</h3><p>XEP-0334 现在已经被支持，具体详情，请查看<a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#nonBodyElements" target="_blank" rel="noopener">这一节</a>。也可以查看<a href="http://xmpp.org/extensions/xep-0334.html" target="_blank" rel="noopener">XEP-0334: Message Processing Hints</a>,后面专门写一篇博文来描述这些协议的具体内容。</p>
+<h3 id="核心Kernel-Bean配置器改进"><a href="#核心Kernel-Bean配置器改进" class="headerlink" title="核心Kernel Bean配置器改进"></a>核心Kernel Bean配置器改进</h3><p>为<code>Bean</code>属性添加别名来使用高级配置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">component/bean-name/property=value</span><br></pre></td></tr></table></figure>
+<p>下面的方法更容易使用:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">component/property=value</span><br></pre></td></tr></table></figure>
+<h3 id="支持XEP-0352"><a href="#支持XEP-0352" class="headerlink" title="支持XEP-0352"></a>支持XEP-0352</h3><p>客户端状态指示可以默认在<code>XMPP SERVER</code>中可以使用，<a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#sessManMobileOpts" target="_blank" rel="noopener">详情</a></p>
+<h3 id="一个证书适用多个虚拟主机"><a href="#一个证书适用多个虚拟主机" class="headerlink" title="一个证书适用多个虚拟主机"></a>一个证书适用多个虚拟主机</h3><p>Tigase现在允许为每一个虚拟主机验证启用通配符的服务器端验证。<a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#sessManMobileOpts" target="_blank" rel="noopener">详情</a></p>
+<h3 id="群聊最大用户数量限制"><a href="#群聊最大用户数量限制" class="headerlink" title="群聊最大用户数量限制"></a>群聊最大用户数量限制</h3><p>管理员可设置群聊的最大限制人数。详情可查看<a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#mucRoomConfig" target="_blank" rel="noopener">MUC Room Configuration</a>.</p>
+<h3 id="Rest-API支持"><a href="#Rest-API支持" class="headerlink" title="Rest API支持"></a>Rest API支持</h3><p>Tigase现在允许为http提供<code>rest api</code>。可查看<a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#tigase_http_api" target="_blank" rel="noopener">文档</a>。</p>
+<h3 id="空的Nicknames"><a href="#空的Nicknames" class="headerlink" title="空的Nicknames"></a>空的Nicknames</h3><p>Tigase可以使用空的昵称，查看<a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#emptyNicks" target="_blank" rel="noopener">this</a> 。</p>
+<h3 id="离线消息限制"><a href="#离线消息限制" class="headerlink" title="离线消息限制"></a>离线消息限制</h3><p>Tigase允许使用AMP来更改离线消息限制。<a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#offlineMessageLimits" target="_blank" rel="noopener">Documentation here</a>.</p>
+<h3 id="离线消息保存"><a href="#离线消息保存" class="headerlink" title="离线消息保存"></a>离线消息保存</h3><p>Tigase实现了一种新的方式去实现离线消息保存。它不会替换原有的标准脱机消息。但可以使用另外一种方式。<a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#offlineMessageSink" target="_blank" rel="noopener">Documentation here</a>.</p>
+<h3 id="白名单设置"><a href="#白名单设置" class="headerlink" title="白名单设置"></a>白名单设置</h3><p>组件可以添加到白名单，它将被共享到集群中所有的主机。<a href="https://projects.tigase.org/issues/3244" target="_blank" rel="noopener">#3244</a></p>
+<h3 id="Tigase邮件拓展"><a href="#Tigase邮件拓展" class="headerlink" title="Tigase邮件拓展"></a>Tigase邮件拓展</h3><p>Tigase邮件拓展现在被内置到<code>xmpp server</code>中，这个拓展允许当监视器被触发时，监视器可以从一个特殊的email地址传递到另外一个email地址。详情<a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#monitorMailer" target="_blank" rel="noopener">monitor mailer section</a>.</p>
+<h3 id="EventBus实现"><a href="#EventBus实现" class="headerlink" title="EventBus实现"></a>EventBus实现</h3><p>Tigase有一个简单的Pubsub组件去调用EventBus来报告任务和触发器。More details are available <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#eventBus" target="_blank" rel="noopener">Here</a>.</p>
+<h3 id="XEP-0191-Blocking-Command支持"><a href="#XEP-0191-Blocking-Command支持" class="headerlink" title="XEP-0191 Blocking Command支持"></a>XEP-0191 Blocking Command支持</h3><p>Tigase已经添加了阻塞命令支持。all functions of <a href="http://xmpp.org/extensnions/xep-0191/html" target="_blank" rel="noopener">XEP-0191</a> should be implemented. See <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#blockingCommand" target="_blank" rel="noopener">Admin Guide</a> for details.</p>
+<h3 id="流管理添加设置超时功能"><a href="#流管理添加设置超时功能" class="headerlink" title="流管理添加设置超时功能"></a>流管理添加设置超时功能</h3><p>最大的流超时时间和默认流超时时间可以在<code>init.properties</code>中设置。Details of these two settings can be found <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#streamResumptiontimeout" target="_blank" rel="noopener">here</a>.</p>
+<h3 id="JVM默认配置更新"><a href="#JVM默认配置更新" class="headerlink" title="JVM默认配置更新"></a>JVM默认配置更新</h3><p>安装<code>Tigase Server</code>后，默认的JVM选项已经被添加到tigase.conf，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PRODUCTION_HEAP_SETTINGS=" -Xms5G -Xmx5G " # heap memory settings must be adjusted on per deployment-base!</span><br><span class="line">JAVA_OPTIONS=<span class="string">"$&#123;GC&#125; $&#123;EX&#125; $&#123;ENC&#125; $&#123;DRV&#125; $&#123;JMX_REMOTE_IP&#125; -server $&#123;PRODUCTION_HEAP_SETTINGS&#125; -XX:MaxDirectMemorySize=128m "</span></span><br></pre></td></tr></table></figure>
+<p>我们推荐为每一个主机调整堆内存设置。see <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#jvm_settings" target="_blank" rel="noopener">our Documentation</a>.</p>
+<h3 id="Java垃圾回收机制已经改进"><a href="#Java垃圾回收机制已经改进" class="headerlink" title="Java垃圾回收机制已经改进"></a>Java垃圾回收机制已经改进</h3><p>在经过详细的调查和重大测试之后，我们调整了java垃圾回收机制，以防止内存使用过高。<a href="https://projects.tigase.org/issues/3248" target="_blank" rel="noopener">#3248</a></p>
+<p>For more information about JVM defaults and changes to settings, see <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#jvm_settings" target="_blank" rel="noopener">our Documentation</a>.</p>
+<h3 id="新的Rest-API-添加了jid登录时间"><a href="#新的Rest-API-添加了jid登录时间" class="headerlink" title="新的Rest API 添加了jid登录时间"></a>新的Rest API 添加了jid登录时间</h3><p>GetUserInfo已经添加了最近的登录和登出时间。See <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#getUserInfoREST" target="_blank" rel="noopener">this section</a> for full details.</p>
+<h3 id="新的init-properties属性"><a href="#新的init-properties属性" class="headerlink" title="新的init.properties属性"></a>新的init.properties属性</h3><p><code>--ws-allow-unmasked-frames=false</code>和<code>not force-close the=true</code>允许通过<code>Websocket</code>来发送未屏蔽的帧。RFC 6455 指出，所有的客户端必须屏蔽通过<code>WebSocket</code>连接来发送到服务端的帧。如果未屏蔽帧被发送，没有经过任何加密处理，服务器端必须关掉这个连接。然而，一些客户端也许不支持屏蔽帧。或者为来开发目的，你想绕过这个安全措施。即可这样使用。</p>
+<p><code>--vhost-disable-dns-check=true</code>设置虚拟主机DNS检查为不检查，当一个虚拟主机被创建，Tigase将自动检查SRV记录和正确的DNS设置以确保用户可以连接。然而，如果这些校验失败，你将不能保存这些改变。这些设置允许你绕过这些检查。</p>
+<h3 id="连接看门狗"><a href="#连接看门狗" class="headerlink" title="连接看门狗"></a>连接看门狗</h3><p>看门狗属性允许检查一些过时的连接，当这些连接出现问题时，及时的切断这些连接。More details <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#watchdog" target="_blank" rel="noopener">here</a>.</p>
+<h3 id="Web设置界面现在具有受限访问"><a href="#Web设置界面现在具有受限访问" class="headerlink" title="Web设置界面现在具有受限访问"></a>Web设置界面现在具有受限访问</h3><p>可以通过访问<a href="http://yourserver.com/8080/setup/" target="_blank" rel="noopener">http://yourserver.com/8080/setup/</a>来查看web安装器设置界面。登录需要admin的jid或者在init配置文件中指定。See the <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#webinstall" target="_blank" rel="noopener">Web Installer</a> section for default settings. See <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#httpCompProp" target="_blank" rel="noopener">Component Properties</a> section for details on the new property.</p>
+<h3 id="可配置离线消息存储"><a href="#可配置离线消息存储" class="headerlink" title="可配置离线消息存储"></a>可配置离线消息存储</h3><p>当管理员想存储离线消息时，可以通过离线消息拦截器和控制器去存储她们想要存储的消息。See <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#offlineMessageReceipts" target="_blank" rel="noopener">more details here</a>.</p>
+<h3 id="账户注册限制"><a href="#账户注册限制" class="headerlink" title="账户注册限制"></a>账户注册限制</h3><p>为了保护Tigase Server不被dos攻击，我们已经实现了每分钟的账号注册限制。See <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#accountRegLimit" target="_blank" rel="noopener">this link</a> for configuration settings.</p>
+<h3 id="对请求不可用资源的的数据包采用静默忽略"><a href="#对请求不可用资源的的数据包采用静默忽略" class="headerlink" title="对请求不可用资源的的数据包采用静默忽略"></a>对请求不可用资源的的数据包采用静默忽略</h3><p>现在你可以将Tigase忽略数据包设置为不可用资源，以避免消耗流量。Learn how <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#silentIgnore" target="_blank" rel="noopener">here</a>.</p>
+<h3 id="集群连接改进"><a href="#集群连接改进" class="headerlink" title="集群连接改进"></a>集群连接改进</h3><p>集群现在使用CLUSTER优先级运行。给予数据包高于HIGH的状态，否则会在大量断开连接时间引起问题。新的配置做了如下改变：</p>
+<ul>
+<li>在<em>init.property</em>中设置CLUSTER数据包的连接数。</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cl-comp/cluster-sys-connections-per-node[I]=2</span><br></pre></td></tr></table></figure>
+<ul>
+<li>一个新的类实现一个新的连接接口，但是使用旧的连接机制。并且，任何连接都可以发送命令。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cl-comp/connection-selector=tigase.cluster.ClusterConnectionSelectorOld</span><br></pre></td></tr></table></figure>
+<p>我是没看懂。</p>
+<h3 id="集群连接测试实现"><a href="#集群连接测试实现" class="headerlink" title="集群连接测试实现"></a>集群连接测试实现</h3><p>看门狗默认被添加到测试集群中，看门狗默认每30秒发送一个ping到集群中，以检查在三分钟内有没有收到一个ping的响应。如果没有，这个集群连接将被销毁。全局的看门狗设置将不会影响集群的功能。</p>
+<h3 id="集群映射实现"><a href="#集群映射实现" class="headerlink" title="集群映射实现"></a>集群映射实现</h3><p>Tigase可以通过一个api来生成集群的映射。See the <a href="http://docs.tigase.org/tigase-server/snapshot/Development_Guide/html/#clusterMapInterface" target="_blank" rel="noopener">development guide</a> for a description of the API.</p>
+<h3 id="新的许可程序"><a href="#新的许可程序" class="headerlink" title="新的许可程序"></a>新的许可程序</h3><p>With the release of Tigase XMPP server v7.1.0, our licensing procedures have changed. For more information about how to obtain, retain, and install your license, please see <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#licenseserver" target="_blank" rel="noopener">this section</a>.</p>
+<h3 id="消息存档支持非消息体元素"><a href="#消息存档支持非消息体元素" class="headerlink" title="消息存档支持非消息体元素"></a>消息存档支持非消息体元素</h3><p>消息存档现在可以存储没有消体的消息。this option is explained in <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#nonBodyStore" target="_blank" rel="noopener">this section</a>.</p>
+<h3 id="直接清除消息存档数据"><a href="#直接清除消息存档数据" class="headerlink" title="直接清除消息存档数据"></a>直接清除消息存档数据</h3><p>可以根据时间和自动过期时间来自动或者手动清理这些统一存档或者消息存档数据。Information on configuring this is available <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#maPurging" target="_blank" rel="noopener">here</a>.</p>
+<h3 id="服务器统计信息"><a href="#服务器统计信息" class="headerlink" title="服务器统计信息"></a>服务器统计信息</h3><p>Tigase XMPP Server统计信息已经被拓展，它可以会话关闭时打印。或者以正常的方式获得。注意，对比以前的版本，统计信息有所改变。有一些不同的格式。See <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#statsticsDescription" target="_blank" rel="noopener">the Statistics Description</a> section of the Administration guide for all current server statistics.</p>
+<h3 id="强制重定向"><a href="#强制重定向" class="headerlink" title="强制重定向"></a>强制重定向</h3><p>可以通过<code>force-redirect-to</code>去从一个端口重定向到另外的端口。<a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#_enforcing_redirection" target="_blank" rel="noopener">Details here</a>.</p>
+<h3 id="改进认证方式"><a href="#改进认证方式" class="headerlink" title="改进认证方式"></a>改进认证方式</h3><p>SASL-SCRAM和 SCRAM-SHA-1 - SCRAM-SHA-1-PLUS被支持。</p>
+<h3 id="双IP安装"><a href="#双IP安装" class="headerlink" title="双IP安装"></a>双IP安装</h3><p>Tigase现在有一个双IP设置，现在可以使用单独的内部和外部IP，并使用DNS解析器进行连接重定向。 Setup instructions are <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#_configuring_hostnames" target="_blank" rel="noopener">Located here</a>.</p>
+<h3 id="错误计数"><a href="#错误计数" class="headerlink" title="错误计数"></a>错误计数</h3><p>可以从服务器统计中获取，错误的信息和错误数量。This feature is explained in more detail <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#errorCounting" target="_blank" rel="noopener">here</a>.</p>
+<h3 id="新的数据库计数器"><a href="#新的数据库计数器" class="headerlink" title="新的数据库计数器"></a>新的数据库计数器</h3><p>三个新的统计信息被添加到basic-conf中，以监视数据库的稳定性。以及xmpp需要重新连接的数据库的频率。The list of new statistics are listed <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#repo-factoryStatistics" target="_blank" rel="noopener">here</a>.</p>
+<h3 id="集群统计"><a href="#集群统计" class="headerlink" title="集群统计"></a>集群统计</h3><p>集群统计信息已经添加到cl-comp中，显示连接的集群的节点数。显示为INFO级别统计。</p>
+<h3 id="新的文档结构"><a href="#新的文档结构" class="headerlink" title="新的文档结构"></a>新的文档结构</h3><p>就是文档改变。</p>
+<h3 id="最后可用状态的xml信息可以完整的保存到数据库"><a href="#最后可用状态的xml信息可以完整的保存到数据库" class="headerlink" title="最后可用状态的xml信息可以完整的保存到数据库"></a>最后可用状态的xml信息可以完整的保存到数据库</h3><p>现在可以把最后的xml信息保存到数据库,以及整个存在节之前的时间戳保存到存储库。More information is available <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#storeFullXMLLastPresence" target="_blank" rel="noopener">here</a>.</p>
+<h3 id="自动订阅设置"><a href="#自动订阅设置" class="headerlink" title="自动订阅设置"></a>自动订阅设置</h3><p>Tigase支持启用自动存在订阅和花名册授权。有关这些设置的详细信息，请选中自动订阅部分。check the <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#autoSub" target="_blank" rel="noopener">Automatic Subscriptions</a> section.</p>
+<h3 id="默认值更改"><a href="#默认值更改" class="headerlink" title="默认值更改"></a>默认值更改</h3><p>为了提高性能，Tigase Server已经改进了默认的配置。包括如下：</p>
+<ul>
+<li>增加与CPU相匹配的数据库连接。</li>
+<li>默认的线程池已经增加，以提升性能。</li>
+<li>增加线程池计数器。</li>
+<li>改进java默认设置。</li>
+<li>改进java垃圾回收机制。</li>
+</ul>
+<h2 id="一些小的更改和动作更改"><a href="#一些小的更改和动作更改" class="headerlink" title="一些小的更改和动作更改"></a>一些小的更改和动作更改</h2><ul>
+<li>旧的监视器组建已经过时和关闭。</li>
+<li>JTDS MS SQL Server驱动已经更新到v1.3.1。</li>
+<li>tigase-utils 和 tigase-xmltools 现在已经包含在tigase-server。</li>
+<li>Tigase Kernal已经被更新和改进。</li>
+<li>tigase.stats.CounterDataFileLogger现在已经包含时间戳。</li>
+<li>Javadoc不再安装时生成，因为已经包含在发行版中。</li>
+<li>管理员节点连接事件已经被改进。</li>
+<li>ServerConnectionManager已经被完全弃用。</li>
+<li>日志中已经包含重连信息。</li>
+<li><a href="https://projects.tigase.org/issues/163" target="_blank" rel="noopener">#163</a> <a href="http://xmpp.org/extensions/xep-0012.html" target="_blank" rel="noopener">XEP-0012</a> User LastActivity implemented</li>
+<li><a href="https://projects.tigase.org/issues/593" target="_blank" rel="noopener">#593</a> <a href="http://xmpp.org/extensions/xep-0202.html" target="_blank" rel="noopener">XEP-0202 Entity Time</a> has been implemented.</li>
+<li><a href="https://projects.tigase.org/issues/788" target="_blank" rel="noopener">#788</a> End User Session from <a href="http://xmpp.org/extensions/xep-0133.html" target="_blank" rel="noopener">XEP-0133 Service Administration</a> implemented.</li>
+<li><em>#811</em> 插件api可包含更多的xml信息。</li>
+<li><a href="https://projects.tigase.org/issues/813" target="_blank" rel="noopener">#813</a> 集群节点默认的连接数设置为5，CLUSTER流量界别设置为2</li>
+<li><a href="https://projects.tigase.org/issues/1436" target="_blank" rel="noopener">#1436</a> ClusterConnectionManager现在每30秒发送ping数据包，以检查活动集群连接的状态。</li>
+<li><a href="https://projects.tigase.org/issues/1449" target="_blank" rel="noopener">#1449</a> 可在OSGI模式下运行监视器。</li>
+<li><a href="https://projects.tigase.org/issues/1601" target="_blank" rel="noopener">#1601</a> XMPPPresenceUpdateProcessorIFC接口被删除，替换为Eventbus专有线程池模式。</li>
+<li><a href="https://projects.tigase.org/issues/1783" target="_blank" rel="noopener">#1783</a> 集群节点的连接于重连已经改进，集群现在接收一个’isclusterready？’连接前查询，避免同步问题。此外，还添加了超时的问题。See <a href="http://docs.tigase.org/tigase-server/snapshot/Properties_Guide/html/#clusterPortDelayListening" target="_blank" rel="noopener">Properties guide</a> for more details。</li>
+</ul>
+<h3 id="实在太多了，不太重要的就直接英语吧。"><a href="#实在太多了，不太重要的就直接英语吧。" class="headerlink" title="实在太多了，不太重要的就直接英语吧。"></a>实在太多了，不太重要的就直接英语吧。</h3><ul>
+<li><a href="https://projects.tigase.org/issues/2426" target="_blank" rel="noopener">#2426</a> Support for <a href="http://xmpp.org/extensions/xep-0334.html" target="_blank" rel="noopener">XEP-0334</a> has been added.</li>
+<li><a href="https://projects.tigase.org/issues/2530" target="_blank" rel="noopener"># 2530</a> RosterFlat implementation now allows for a full element to be injected into presence stanzas instead of just a custom status.</li>
+<li><a href="https://projects.tigase.org/issues/2561" target="_blank" rel="noopener">#2561</a> &amp; <a href="https://projects.tigase.org/issues/85" target="_blank" rel="noopener">#85</a> Offline messages now consider sessions without presence &amp; resources negative priority in delivery logic.</li>
+<li><a href="https://projects.tigase.org/issues/2596" target="_blank" rel="noopener">#2596</a> Delivery errors are no longer run through preprocessors.</li>
+<li><a href="https://projects.tigase.org/issues/2823" target="_blank" rel="noopener">#2823</a> staticStr element method now implemented.</li>
+<li><a href="https://projects.tigase.org/issues/2835" target="_blank" rel="noopener">#2835</a> Allowing of setPermissions on incoming packets before they are processed by plugins.</li>
+<li><a href="https://projects.tigase.org/issues/2903" target="_blank" rel="noopener">#2903</a> see-other-host has new option to make it configurable on a per vhost basis.</li>
+<li><a href="https://projects.tigase.org/issues/3034" target="_blank" rel="noopener">#3034</a> Improved handling of data types and primitives within Tigase.</li>
+<li>#3173 Stanzas with unescaped XML special characters are now ignored instead of sending a force-close of connection to sender.</li>
+<li><a href="https://projects.tigase.org/issues/3180" target="_blank" rel="noopener">#3180</a> Protected access to JDBC repository now enabled.</li>
+<li><a href="https://projects.tigase.org/issues/3230" target="_blank" rel="noopener">#3230</a> Verification added to check against CUSTOM domain rules when submitted.</li>
+<li>#3258 Retrieval of PubSub/PEP based avatars using REST API now supported. <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#avatarRetrievalRequests" target="_blank" rel="noopener">Command URLs here</a>.</li>
+<li>#3282 VCard4 support added along with VCardTemp compatibility and integration.</li>
+<li><a href="https://projects.tigase.org/issues/3285" target="_blank" rel="noopener">#3285</a> Stream Management changed to fully support XEP-0203.</li>
+<li><a href="https://projects.tigase.org/issues/3330" target="_blank" rel="noopener">#3330</a> Error for adding users already in db now returns Error 409 with User exists.</li>
+<li>#3364 Clustering support has been re-factored to remove duplicate nodeConnected and nodeDisconnected methods.</li>
+<li>#3463 offline-roster-last-seen feature as a part of presence probe is now disabled by default.</li>
+<li><a href="https://projects.tigase.org/issues/3496" target="_blank" rel="noopener">#3496</a> TigUserLogout has been improved to use sha1_user_id = sha1(lower(_user_id)) instead of “_user_id”.</li>
+<li><a href="https://projects.tigase.org/issues/3511" target="_blank" rel="noopener">#3511</a> Stream closing mechanism in SessionManager, new STREAM_CLOSED command has been added to organize shutdown of XMPP streams.</li>
+<li>#3569 Fixed error occuring when attempting to remove offline users from roster.</li>
+<li>#3609 Added new configuration option for BOSH to disable hostname attribute. <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#tip_1_bosh_in_cluster_mode_without_load_balancer" target="_blank" rel="noopener">Details here</a>.</li>
+<li><a href="https://projects.tigase.org/issues/3670" target="_blank" rel="noopener">#3670</a> Hardened mode now uses long DH keys (2048) by default.</li>
+<li><a href="https://projects.tigase.org/issues/3849" target="_blank" rel="noopener">#3849</a> New Roster size limit configurable setting. See info <a href="http://docs.tigase.org/tigase-server/snapshot/Administration_Guide/html/#rosterLimit" target="_blank" rel="noopener">Here</a>.</li>
+<li><a href="https://projects.tigase.org/issues/3872" target="_blank" rel="noopener">#3872</a> PostgreSQL driver updated to v9.4.</li>
+<li>#3892 PEP plugin now supports processing of <a href="http://jabber.org/protocol/pubsub#owner" target="_blank" rel="noopener">http://jabber.org/protocol/pubsub#owner</a>.</li>
+<li><a href="https://projects.tigase.org/issues/3908" target="_blank" rel="noopener">#3908</a> Logs now print whether components or plugins are depreciated, and recommend configuration settings changes.</li>
+<li><a href="https://projects.tigase.org/issues/3937" target="_blank" rel="noopener">#3937</a> Windows setup given one-click solution to file initialization.</li>
+<li><a href="https://projects.tigase.org/issues/3945" target="_blank" rel="noopener">#3945</a> SSLContextContainer has been replaced with JDKv8 extension version now known as SNISSLContextContainer adding support for SNI of SSL/TLS.</li>
+<li><a href="https://projects.tigase.org/issues/3948" target="_blank" rel="noopener">#3948</a> Tigase PubSub now responds to disco#info requests in line with <a href="http://xmpp.org/extensions/xep-0060.html#entity-metadata" target="_blank" rel="noopener">XEP-0060 - Discover Node Metadata</a>.</li>
+<li><a href="https://projects.tigase.org/issues/3950" target="_blank" rel="noopener">#3950</a> MongoDB driver updated to v2.14.1.</li>
+<li>#3985 Improved disco#info to return extended results for MUC component as per <a href="http://xmpp.org/extensions/xep-0128.html" target="_blank" rel="noopener">XEP-0128 Service Discovery Extensions</a>.</li>
+<li>#3986 Added new index for tig_nodes collection in MongoDB Databases.</li>
+<li><a href="https://projects.tigase.org/issues/4003" target="_blank" rel="noopener">#4003</a> VisualVM and statistics gathering has been improved and refactored for a lower footprint, and a number of new windows and features for program monitoring.</li>
+<li>#4020 SeeOtherHostSualIP implementation has been fixed to support MongoDB.</li>
+<li><a href="https://projects.tigase.org/issues/4120" target="_blank" rel="noopener">#4120</a> Duplication of messages in offline storage when Message and OfflineMessage processors are used has been resolved.</li>
+<li>#4127 Database reconnection procedure improved, increased <code>SchuduledExecutorService</code> threads to 2, <code>ClusterConnectionManager</code> threads to 4, and added timeout parameter to timeout task.</li>
+<li>#4162 xml:lang attribute is now supported in Tigase MUC component.</li>
+<li>#4248 Changed ErrorCounter from XMPPProcessorIFC to XMPPPacketFilterIfc for more accurate functionality.</li>
+<li><a href="https://projects.tigase.org/issues/4254" target="_blank" rel="noopener">#4254</a> Fixed <code>JabberIqPrivacy</code> to properly compare JID’s instead of strings, improved partial JID matching, and added tests to add non-case sensitive comparison in MA/UA.</li>
+<li><a href="https://projects.tigase.org/issues/4256" target="_blank" rel="noopener">#4256</a> Reduced Statistics memory usage by interning statistics labels and changing data types.</li>
+<li><a href="https://projects.tigase.org/issues/4356" target="_blank" rel="noopener">#4356</a> Message Archive component has been converted to kernel and beans.</li>
+<li><a href="https://projects.tigase.org/issues/4352" target="_blank" rel="noopener">#4352</a> Websocket implementation has been changed to properly parse HTTP headers with omitted spaces for HTTP 1.1 protocol.</li>
+<li><a href="https://projects.tigase.org/issues/4358" target="_blank" rel="noopener">#4358</a> Several methods have been renamed or removed to prepare for v7.2.0 Kernel setup.</li>
+<li>#4385 Minor tweak to web-installer to skip unnecessary showing of blank init.properties file &amp; enabled post-setup editing and saving.</li>
+</ul>
+<h2 id="补丁"><a href="#补丁" class="headerlink" title="补丁"></a>补丁</h2><ul>
+<li><a href="https://projects.tigase.org/issues/8" target="_blank" rel="noopener">#8</a> XML parser no longer passes malformed XML statements to server.</li>
+<li><a href="https://projects.tigase.org/issues/1396" target="_blank" rel="noopener">#1396</a> &amp; <a href="https://projects.tigase.org/issues/663" target="_blank" rel="noopener">#663</a> User roster behaves correctly. Tigase now waits for user authorization before users are added to a Roster.</li>
+<li><a href="https://projects.tigase.org/issues/1488" target="_blank" rel="noopener">#1488</a> NPE in ad-hoc for managing external components fixed.</li>
+<li><a href="https://projects.tigase.org/issues/1602" target="_blank" rel="noopener">#1602</a> Minor optimization in MessageCarbons with new functions added to XMPPResourceConnection.</li>
+<li><a href="https://projects.tigase.org/issues/2003" target="_blank" rel="noopener">#2003</a> Fixed bug with C2S streams where server would not always overwrite from attribute with full JID in subcription-related presence stanzas.</li>
+<li><a href="https://projects.tigase.org/issues/2118" target="_blank" rel="noopener">#2118</a> Username modification bugfix. Tigase now returns “” for blank usernames instead of string after a username has been made blank.</li>
+<li><a href="https://projects.tigase.org/issues/2859" target="_blank" rel="noopener">#2859</a> &amp; <a href="https://projects.tigase.org/issues/2997" target="_blank" rel="noopener">#2997</a> STARTTLS stream error on SSL sockets fixed.</li>
+<li><a href="https://projects.tigase.org/issues/2860" target="_blank" rel="noopener">#2860</a> Fixed issue with SSL socket client certificate not working.</li>
+<li><a href="https://projects.tigase.org/issues/2877" target="_blank" rel="noopener">#2877</a> Fixed issue in Message Carbons if message contains AMP payload.</li>
+<li><a href="https://projects.tigase.org/issues/3034" target="_blank" rel="noopener">#3034</a> Streamlined primitive and Object array handling.</li>
+<li><a href="https://projects.tigase.org/issues/3067" target="_blank" rel="noopener">#3067</a> Fixed Bug where if duplicate commands were sent to MS SQLServer a race condition would occur.</li>
+<li><a href="https://projects.tigase.org/issues/3075" target="_blank" rel="noopener">#3075</a> Fixed error when compiling Tigase in Red Hat Enterprise Linux v6.</li>
+<li><a href="https://projects.tigase.org/issues/3080" target="_blank" rel="noopener">#3080</a> –net-buff-high-throughput now parses integers properly. Setting no longer reverts to default when new values are set.</li>
+<li><a href="https://projects.tigase.org/issues/3126" target="_blank" rel="noopener">#3126</a> Calculation of percentage of heap memory used in Statistics now selects proper heap.</li>
+<li><a href="https://projects.tigase.org/issues/3131" target="_blank" rel="noopener">#3131</a> Fixed messages with AMP payload bound for plugins getting redirected to AMP for processing.</li>
+<li><a href="https://projects.tigase.org/issues/3150" target="_blank" rel="noopener">#3150</a> Default Log level changed for certain records. All log entries with skipping admin script now have log level FINEST instead of CONFIG</li>
+<li><a href="https://projects.tigase.org/issues/3158" target="_blank" rel="noopener">#3158</a> Fixed issue with OSGi not reporting proper version, and PubSub errors in OSGi mode.</li>
+<li><a href="https://projects.tigase.org/issues/3159" target="_blank" rel="noopener">#3159</a> User Privacy lists now activate properly and does not wait for presence stanza to filter packets.</li>
+<li><a href="https://projects.tigase.org/issues/3164" target="_blank" rel="noopener">#3164</a> Fixed NPE in StreamManagementIOProcessor when <a> is processed after connection is closed.</a></li>
+<li><a href="https://projects.tigase.org/issues/3166" target="_blank" rel="noopener">#3166</a> NPE in SessionManager checking SSL null connections fixed.</li>
+<li><a href="https://projects.tigase.org/issues/3181" target="_blank" rel="noopener">#3181</a> S2S connection multiplexing now has consistent behavior.</li>
+<li><a href="https://projects.tigase.org/issues/3194" target="_blank" rel="noopener">#3194</a> Fixed issue with single long lasting HTTP connection blocking other HTTP requests. Default timeout set to 4 threads after 60 seconds.</li>
+<li><a href="https://projects.tigase.org/issues/3200" target="_blank" rel="noopener">#3200</a> Implemented a faster way to close stale connections using MS SQL server, reducing calm down time after large user disconnects.</li>
+<li>#3203 Correct presence status shows for contacts if authorization was accepted while user was offline.</li>
+<li><a href="https://projects.tigase.org/issues/3223" target="_blank" rel="noopener">#3223</a> GetUserInfo ad-hoc command no longer omits information about local sessions when a remote session is active.</li>
+<li>#3226 Fixed NPE &amp; argument type mismatch in Pubsub.</li>
+<li><a href="https://projects.tigase.org/issues/3245" target="_blank" rel="noopener">#3245</a> Fixed ClassCastException when Websocket is configured to use SSL.</li>
+<li><a href="https://projects.tigase.org/issues/3249" target="_blank" rel="noopener">#3249</a> JabberIQVersion plugin now returns proper client information when requested from self.</li>
+<li><a href="https://projects.tigase.org/issues/3259" target="_blank" rel="noopener">#3259</a> Websocket no longer loops when receiving stanzas between 32767 and 65535 bytes in size.</li>
+<li><a href="https://projects.tigase.org/issues/3261" target="_blank" rel="noopener">#3261</a> Fixed issue with duplicate disco#info responses.</li>
+<li><a href="https://projects.tigase.org/issues/3274" target="_blank" rel="noopener">#3274</a> NPE when removing roster nickname fixed.</li>
+<li><a href="https://projects.tigase.org/issues/3307" target="_blank" rel="noopener">#3307</a> Rosters are no longer re-saved when a user logs in and roster is read resulting in a performance boost.</li>
+<li><a href="https://projects.tigase.org/issues/3328" target="_blank" rel="noopener">#3328</a> Presence processing by PEP plugin optimized.</li>
+<li><a href="https://projects.tigase.org/issues/3336" target="_blank" rel="noopener">#3336</a> Fixed issues with reloading vhosts in trusted after configuration change.</li>
+<li><a href="https://projects.tigase.org/issues/3337" target="_blank" rel="noopener">#3337</a> tls-jdk-nss-bug-workaround-active is now disabled by default. This fix is disabled by default which may impact older OpenSSL versions that may no longer be supported. You may enable this using an init.properties setting.</li>
+<li>#3341 IQ Packet processing changed for packets sent to bare JID in Cluster mode.</li>
+<li><a href="https://projects.tigase.org/issues/3372" target="_blank" rel="noopener">#3372</a> Fixed NPE when presence was re-broadcasted to users who did not exit server gracefully.</li>
+<li><a href="https://projects.tigase.org/issues/3374" target="_blank" rel="noopener">#3374</a> PubSub Schema changed to be more compatible with MS SQL.</li>
+<li><a href="https://projects.tigase.org/issues/3375" target="_blank" rel="noopener">#3375</a> Users removed VIA REST commands are now disconnected immediately.</li>
+<li><a href="https://projects.tigase.org/issues/3386" target="_blank" rel="noopener">#3386</a> Fixed AMP logic to avoid querying for (default) Privacy list if user does not exist.</li>
+<li>#3389 Fixed issue of sending packets to connections that were closed, but connection write lock had not been acquired.</li>
+<li><a href="https://projects.tigase.org/issues/3401" target="_blank" rel="noopener">#3401</a> Multiple issues fixed with Tigase.IM web client.</li>
+<li><a href="https://projects.tigase.org/issues/3422" target="_blank" rel="noopener">#3422</a> UTC Timestamps now enforced inside cluster_nodes table.</li>
+<li>#3440 Fixed WebSocket error 12030 showing unexpectedly.</li>
+<li><a href="https://projects.tigase.org/issues/3446" target="_blank" rel="noopener">#3446</a> Fixed Installer configuring MUC incorrectly.</li>
+<li>#3449 Wrapper.conf updated with current library folder for windows Service wrapper.</li>
+<li><a href="https://projects.tigase.org/issues/3453" target="_blank" rel="noopener">#3453</a> Fixed NPE when using comparator when sorting messages.</li>
+<li>#3485 Fixed JDBCMsgRepository inserting duplicate user JID into table while using AMP.</li>
+<li><a href="https://projects.tigase.org/issues/3489" target="_blank" rel="noopener">#3489</a> Various fixes to Tigase test suite. Fixed race condition from XMPPSession conflicts when new sessions and closing session events happen at the same time.</li>
+<li><a href="https://projects.tigase.org/issues/3495" target="_blank" rel="noopener">#3495</a> Fixed messages being duplicated by message carbons.</li>
+<li>#3499 Various fixes to AMP component.</li>
+<li>#3530 Fixed null cert chain error when connecting to other servers using S2S connection with StartTLS.</li>
+<li>#3550 Fixed NPE in sess-man when trying to delete all user information using Pidgin or Psi.</li>
+<li><a href="https://projects.tigase.org/issues/3556" target="_blank" rel="noopener">#3556</a> JavaDoc updated to include documentation for xmltools, tigase-extras, and tigase-util packages.</li>
+<li><a href="https://projects.tigase.org/issues/3559" target="_blank" rel="noopener">#3559</a> Fixed Web admin UI not updating Cluster node when it id disconnected.</li>
+<li><a href="http://projects.tigase.org/issues/3579" target="_blank" rel="noopener">#3579</a> Fixed NPE in SimpleParser.</li>
+<li><a href="http://projects.tigase.org/issues/3580" target="_blank" rel="noopener">#3580</a> Replaced misleading feature not implemented error when SM attempts to put a packet to processor and queue is full.</li>
+<li>#3598 Fixed error in removing users from blocked list.</li>
+<li>#3599 Fixed FlexibleOfflineMessages not being delivered to connection due to lack of explicit connection addressing.</li>
+<li>#3612 Fixed issue when processing packets sent to full JID in cluster mode when user is connected to more than one cluster node at once.</li>
+<li>#3619 Fixed issue with non-presistent contacts being unable to be added to roster.</li>
+<li>#3649 Changed privacy list processing to always allow communication between XMPP connections with the same BareJID.</li>
+<li><a href="https://projects.tigase.org/issues/3655" target="_blank" rel="noopener">#3655</a> Increased max loop in infinity loop detection logic to 100000 in order to aid larger transfers.</li>
+<li>#3656 Add option to BOSH output command without a timer task to avoid generation of packets to closed connections.</li>
+<li>#3686 XHTML-IM parser has been fixed, restoring <a href="http://xmpp.org/extensions/xep-0071.html" target="_blank" rel="noopener">XEP-0071</a> functionality.</li>
+<li><a href="https://projects.tigase.org/issues/3688" target="_blank" rel="noopener">#3688</a> Issues with Eventbus in cluster mode fixed.</li>
+<li><a href="https://projects.tigase.org/issues/3689" target="_blank" rel="noopener">#3689</a> Avoid using sender address when packets are returned from Cluster Manager using stream management.</li>
+<li>#3717 Support added to store messages without <body> element if storage method other than <body> is used. Support also added for JAXMPP to retrieve whole element from Message Archiving instead of only <body>.</body></body></body></li>
+<li>#3718 Removed DISCONNECTING! debug stanza from AbstractWebSocketConnector.java that was causing NPE when user fails authentication in WebSocket.</li>
+<li><a href="https://projects.tigase.org/issues/3753" target="_blank" rel="noopener">#3753</a> Fixed NPE when using Blocking command.</li>
+<li><a href="https://projects.tigase.org/issues/3775" target="_blank" rel="noopener">#3775</a> Fixed ThreadExceptionHandler error in Tigase mailer.</li>
+<li><a href="https://projects.tigase.org/issues/3781" target="_blank" rel="noopener">#3781</a> Fixed issue with sending C2S message “The user connection is no longer active”.</li>
+<li><a href="https://projects.tigase.org/issues/3800" target="_blank" rel="noopener">#3800</a> Changed Jenkins to always pull latest binaries from repositories. Windows wrapper changed to use wildcards to load /jars folder.</li>
+<li>#3848 Changes made to JDBCMessageArchiveRepository to fix potential MySQL deadlocks when adding entries to repository.</li>
+<li>#3902 Fixed issue where wss:// connections were closed after 3 minutes of inactivity.</li>
+<li>#3910 Fixed NPE in SessionManager when session was closed during execution of everyMinute method.</li>
+<li>#3911 Fixed load distribution error between threads that could cause high CPU usage.</li>
+<li>#3931 Fixed error caused by AMP running in clustered installations.</li>
+<li>#3966 Changed type of msg &amp; body columns in muc_history table for SQLServer to prevent loss of special characters.</li>
+<li>#3973 Adjusted throttling settings for S2S and cluster connections.</li>
+<li>#3977 Fixed MUC History to reflect messages from JID of room and not JID of original sender.</li>
+<li>#3984 Fixed distinct usage on large data which causes errors on lookup of PubSub nodes in MongoDB.</li>
+<li><a href="https://projects.tigase.org/issues/3970" target="_blank" rel="noopener">#3970</a> Fixed duplication of messages with AMP payload in cluster mode.</li>
+<li><a href="https://projects.tigase.org/issues/4044" target="_blank" rel="noopener">#4044</a> Fixed various web installer issues.</li>
+<li>#4051 Fixed NPE in java when processing message with no body.</li>
+<li><a href="https://projects.tigase.org/issues/4052" target="_blank" rel="noopener">#4052</a> Fixed issue with ClusterRepoItem not properly resulting in tigase.db.comp.RepositoryChangeListenerIfc.itemUpdated(Item) being executed.</li>
+<li><a href="https://projects.tigase.org/issues/4056" target="_blank" rel="noopener">#4056</a> Items removed from cluster repository are not removed from memory correctly.</li>
+<li><a href="https://projects.tigase.org/issues/4071" target="_blank" rel="noopener">#4071</a> Updated groovy script to properly add owner to node creation VIA ad-hoc command.</li>
+<li><a href="https://projects.tigase.org/issues/4142" target="_blank" rel="noopener">#4142</a> Updated wrapper.conf file to match tigase.conf default settings.</li>
+<li><a href="https://projects.tigase.org/issues/4183" target="_blank" rel="noopener">#4183</a> Fixed issue where objects monitored by Ghostbuster.java in MUC could not be removed by it.</li>
+<li><a href="https://projects.tigase.org/issues/4185" target="_blank" rel="noopener">#4185</a> Fixed issue with PacketCounter that caused duplicate messages to be sent on stream resumption.</li>
+<li><a href="https://projects.tigase.org/issues/4188" target="_blank" rel="noopener">#4188</a> Standardized timestamp between AbstractMessageArchiveRepository and TimestampHelper.</li>
+<li><a href="https://projects.tigase.org/issues/4262" target="_blank" rel="noopener">#4262</a> Fixed messages getting lost when StreamResumption is used when a disconnected user reconnects to the server. This issue is also fixed on servers using ACS component.</li>
+<li><a href="https://projects.tigase.org/issues/4298" target="_blank" rel="noopener">#4298</a> ACS - Fixed messages getting dropped when sent to users offline or on unstable connections.</li>
+<li><a href="https://projects.tigase.org/issues/4365" target="_blank" rel="noopener">#4365</a> Fixed direct presence not working with non-roster elements using barejid.</li>
+<li>#4672 Fixed <code>UnsupportedOperationException</code> error occuring during configuration change of <code>WebSocketClientConnectionClustered</code>.</li>
+<li>Patch added to fix ConcurrentModificationException in BlockingCommand plugin.</li>
+<li>Fixed negation in SASL mechanism selector.</li>
+<li>Fixed checking for user session without localpart in to address.</li>
+<li>Fixed resourceDefPrefix from accumulating resource names when components are added or removed in web console.</li>
+<li>Distributed EventBus improved to allow POJO based events to be fired locally.</li>
+<li>Added missing classes to IzPack installer.</li>
+<li>Tigase.xml removed from documentation and default tigase.conf file.</li>
+<li>Logs function added to eventbus publisher operations.</li>
+<li>Fixed responding to same hostname as sender as “to” in stream-error stanza.</li>
+<li>Fixed issue where attempts to delete empty MUC room would create and then destroy room.</li>
+<li>Added startup information to log to indicate when server is ready.</li>
+<li>Fixed a divide by zero error in Java Garbage Collection.</li>
+<li>Fixed -see-other-host causing ‘Foreign key constraint is incorrectly formed’ error while using SeeOtherHostDB.</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/翻译/" rel="tag"># 翻译</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/08/React-Native资料与性能分析/" rel="next" title="React-Native资料与性能分析">
+                <i class="fa fa-chevron-left"></i> React-Native资料与性能分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/21/Tigase快速开始指南/" rel="prev" title="Tigase快速开始指南">
+                Tigase快速开始指南 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Labradors</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">113</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#重大改变"><span class="nav-number">1.</span> <span class="nav-text">重大改变</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP组件重命名"><span class="nav-number">1.1.</span> <span class="nav-text">HTTP组件重命名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#需要jdk8"><span class="nav-number">1.2.</span> <span class="nav-text">需要jdk8</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库模式改变"><span class="nav-number">1.3.</span> <span class="nav-text">数据库模式改变</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Presence插件拆分"><span class="nav-number">1.4.</span> <span class="nav-text">Presence插件拆分</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新特性与组建"><span class="nav-number">2.</span> <span class="nav-text">新特性与组建</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#新的-HTTP-API"><span class="nav-number">2.1.</span> <span class="nav-text">新的 HTTP API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新的管理员接口"><span class="nav-number">2.2.</span> <span class="nav-text">新的管理员接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加XEP-0334支持"><span class="nav-number">2.3.</span> <span class="nav-text">添加XEP-0334支持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#核心Kernel-Bean配置器改进"><span class="nav-number">2.4.</span> <span class="nav-text">核心Kernel Bean配置器改进</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#支持XEP-0352"><span class="nav-number">2.5.</span> <span class="nav-text">支持XEP-0352</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一个证书适用多个虚拟主机"><span class="nav-number">2.6.</span> <span class="nav-text">一个证书适用多个虚拟主机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#群聊最大用户数量限制"><span class="nav-number">2.7.</span> <span class="nav-text">群聊最大用户数量限制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rest-API支持"><span class="nav-number">2.8.</span> <span class="nav-text">Rest API支持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#空的Nicknames"><span class="nav-number">2.9.</span> <span class="nav-text">空的Nicknames</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#离线消息限制"><span class="nav-number">2.10.</span> <span class="nav-text">离线消息限制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#离线消息保存"><span class="nav-number">2.11.</span> <span class="nav-text">离线消息保存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#白名单设置"><span class="nav-number">2.12.</span> <span class="nav-text">白名单设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tigase邮件拓展"><span class="nav-number">2.13.</span> <span class="nav-text">Tigase邮件拓展</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#EventBus实现"><span class="nav-number">2.14.</span> <span class="nav-text">EventBus实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#XEP-0191-Blocking-Command支持"><span class="nav-number">2.15.</span> <span class="nav-text">XEP-0191 Blocking Command支持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#流管理添加设置超时功能"><span class="nav-number">2.16.</span> <span class="nav-text">流管理添加设置超时功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JVM默认配置更新"><span class="nav-number">2.17.</span> <span class="nav-text">JVM默认配置更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java垃圾回收机制已经改进"><span class="nav-number">2.18.</span> <span class="nav-text">Java垃圾回收机制已经改进</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新的Rest-API-添加了jid登录时间"><span class="nav-number">2.19.</span> <span class="nav-text">新的Rest API 添加了jid登录时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新的init-properties属性"><span class="nav-number">2.20.</span> <span class="nav-text">新的init.properties属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接看门狗"><span class="nav-number">2.21.</span> <span class="nav-text">连接看门狗</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web设置界面现在具有受限访问"><span class="nav-number">2.22.</span> <span class="nav-text">Web设置界面现在具有受限访问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#可配置离线消息存储"><span class="nav-number">2.23.</span> <span class="nav-text">可配置离线消息存储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#账户注册限制"><span class="nav-number">2.24.</span> <span class="nav-text">账户注册限制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对请求不可用资源的的数据包采用静默忽略"><span class="nav-number">2.25.</span> <span class="nav-text">对请求不可用资源的的数据包采用静默忽略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集群连接改进"><span class="nav-number">2.26.</span> <span class="nav-text">集群连接改进</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集群连接测试实现"><span class="nav-number">2.27.</span> <span class="nav-text">集群连接测试实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集群映射实现"><span class="nav-number">2.28.</span> <span class="nav-text">集群映射实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新的许可程序"><span class="nav-number">2.29.</span> <span class="nav-text">新的许可程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息存档支持非消息体元素"><span class="nav-number">2.30.</span> <span class="nav-text">消息存档支持非消息体元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#直接清除消息存档数据"><span class="nav-number">2.31.</span> <span class="nav-text">直接清除消息存档数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务器统计信息"><span class="nav-number">2.32.</span> <span class="nav-text">服务器统计信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#强制重定向"><span class="nav-number">2.33.</span> <span class="nav-text">强制重定向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改进认证方式"><span class="nav-number">2.34.</span> <span class="nav-text">改进认证方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#双IP安装"><span class="nav-number">2.35.</span> <span class="nav-text">双IP安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#错误计数"><span class="nav-number">2.36.</span> <span class="nav-text">错误计数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新的数据库计数器"><span class="nav-number">2.37.</span> <span class="nav-text">新的数据库计数器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集群统计"><span class="nav-number">2.38.</span> <span class="nav-text">集群统计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新的文档结构"><span class="nav-number">2.39.</span> <span class="nav-text">新的文档结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后可用状态的xml信息可以完整的保存到数据库"><span class="nav-number">2.40.</span> <span class="nav-text">最后可用状态的xml信息可以完整的保存到数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动订阅设置"><span class="nav-number">2.41.</span> <span class="nav-text">自动订阅设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#默认值更改"><span class="nav-number">2.42.</span> <span class="nav-text">默认值更改</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些小的更改和动作更改"><span class="nav-number">3.</span> <span class="nav-text">一些小的更改和动作更改</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实在太多了，不太重要的就直接英语吧。"><span class="nav-number">3.1.</span> <span class="nav-text">实在太多了，不太重要的就直接英语吧。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补丁"><span class="nav-number">4.</span> <span class="nav-text">补丁</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Labradors</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
