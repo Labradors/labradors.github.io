@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="量化交易,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="安装  1pip install ccxt  导入使用  12import ccxtprint(ccxt.exchanges) # print a list of all available exchange classes 用户手册概要cctx库收集了各种各样的交易所，没有交易所都有其对应的公开的和私有的API,cctx对交易所进行了封装，所有交易所都继承自基础交易所。并且分享了一些公共的方法">
+<meta name="keywords" content="量化交易">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cctx Python使用">
+<meta property="og:url" content="http://yoursite.com/2018/10/16/cctx Python使用/index.html">
+<meta property="og:site_name" content="Labradors">
+<meta property="og:description" content="安装  1pip install ccxt  导入使用  12import ccxtprint(ccxt.exchanges) # print a list of all available exchange classes 用户手册概要cctx库收集了各种各样的交易所，没有交易所都有其对应的公开的和私有的API,cctx对交易所进行了封装，所有交易所都继承自基础交易所。并且分享了一些公共的方法">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-11-13T12:36:38.796Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cctx Python使用">
+<meta name="twitter:description" content="安装  1pip install ccxt  导入使用  12import ccxtprint(ccxt.exchanges) # print a list of all available exchange classes 用户手册概要cctx库收集了各种各样的交易所，没有交易所都有其对应的公开的和私有的API,cctx对交易所进行了封装，所有交易所都继承自基础交易所。并且分享了一些公共的方法">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/10/16/cctx Python使用/">
+
+
+
+
+
+  <title>cctx Python使用 | Labradors</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Labradors</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Follow your heart</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/16/cctx Python使用/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">cctx Python使用</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-16T10:32:45+08:00">
+                2018-10-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/后端/" itemprop="url" rel="index">
+                    <span itemprop="name">后端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ul>
+<li>安装</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install ccxt</span><br></pre></td></tr></table></figure>
+<ul>
+<li>导入使用</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ccxt</span><br><span class="line">print(ccxt.exchanges) <span class="comment"># print a list of all available exchange classes</span></span><br></pre></td></tr></table></figure>
+<h2 id="用户手册"><a href="#用户手册" class="headerlink" title="用户手册"></a>用户手册</h2><h3 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h3><p>cctx库收集了各种各样的交易所，没有交易所都有其对应的公开的和私有的API,cctx对交易所进行了封装，所有交易所都继承自基础交易所。并且分享了一些公共的方法。为了访问各种各种的交易所，当你使用一个交易所的时候，需要实例化相对应的交易所。支持的交易所经常更新，并定期添加新的交易所。 </p>
+<p>项目结构基本如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">                             User</span><br><span class="line">+-------------------------------------------------------------+</span><br><span class="line">|                            CCXT                             |</span><br><span class="line">+------------------------------+------------------------------+</span><br><span class="line">|            Public            |           Private            |</span><br><span class="line">+=============================================================+</span><br><span class="line">│                              .                              |</span><br><span class="line">│                    The Unified CCXT API                     |</span><br><span class="line">│                              .                              |</span><br><span class="line">|       loadMarkets            .           fetchBalance       |</span><br><span class="line">|       fetchMarkets           .            createOrder       |</span><br><span class="line">|       fetchCurrencies        .            cancelOrder       |</span><br><span class="line">|       fetchTicker            .             fetchOrder       |</span><br><span class="line">|       fetchTickers           .            fetchOrders       |</span><br><span class="line">|       fetchOrderBook         .        fetchOpenOrders       |</span><br><span class="line">|       fetchOHLCV             .      fetchClosedOrders       |</span><br><span class="line">|       fetchTrades            .          fetchMyTrades       |</span><br><span class="line">|                              .                deposit       |</span><br><span class="line">|                              .               withdraw       |</span><br><span class="line">│                              .                              |</span><br><span class="line">+=============================================================+</span><br><span class="line">│                              .                              |</span><br><span class="line">|                     Custom Exchange API                     |</span><br><span class="line">|                      (Derived Classes)                      |</span><br><span class="line">│                              .                              |</span><br><span class="line">|       publicGet...           .          privateGet...       |</span><br><span class="line">|       publicPost...          .         privatePost...       |</span><br><span class="line">|                              .          privatePut...       |</span><br><span class="line">|                              .       privateDelete...       |</span><br><span class="line">|                              .                   sign       |</span><br><span class="line">│                              .                              |</span><br><span class="line">+=============================================================+</span><br><span class="line">│                              .                              |</span><br><span class="line">|                      Base Exchange Class                    |</span><br><span class="line">│                              .                              |</span><br><span class="line">+=============================================================+</span><br></pre></td></tr></table></figure>
+<p>当前版本中所有的公开的，私有的api均以http方式能提供，WebSocket和FIX正在开发中…,我们已经支持116个交易所</p>
+<p>除了一些基本的交易所和交易数据之外，一些交易所提供保证金交易（杠杆），各种衍生品（如期货合约和期权），还有暗池，柜台交易（OTC），商户API等等。</p>
+<h3 id="初始化交易所"><a href="#初始化交易所" class="headerlink" title="初始化交易所"></a>初始化交易所</h3> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Python</span></span><br><span class="line"><span class="keyword">import</span> ccxt</span><br><span class="line">exchange = ccxt.okcoinusd () <span class="comment"># default id</span></span><br><span class="line">okcoin1 = ccxt.okcoinusd (&#123; <span class="string">'id'</span>: <span class="string">'okcoin1'</span> &#125;)</span><br><span class="line">okcoin2 = ccxt.okcoinusd (&#123; <span class="string">'id'</span>: <span class="string">'okcoin2'</span> &#125;)</span><br><span class="line">id = <span class="string">'btcchina'</span></span><br><span class="line">btcchina = eval (<span class="string">'ccxt.%s ()'</span> % id)</span><br><span class="line">gdax = getattr (ccxt, <span class="string">'gdax'</span>) ()</span><br></pre></td></tr></table></figure>
+<h3 id="交易所结构"><a href="#交易所结构" class="headerlink" title="交易所结构"></a>交易所结构</h3><p>所有的交易所都有一套基本的属性和方法，大多数情况你可以通过重写构造方法来实现，当然，你也可以通过子类重写。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    'id':   'exchange'                  // lowercase string exchange id</span><br><span class="line">    'name': 'Exchange'                  // human-readable string</span><br><span class="line">    'countries': [ 'US', 'CN', 'EU' ],  // string or array of ISO country codes</span><br><span class="line">    'urls': &#123;</span><br><span class="line">        'api': 'https://api.example.com/data',  // string or dictionary of base API URLs</span><br><span class="line">        'www': 'https://www.example.com'        // string website URL</span><br><span class="line">        'doc': 'https://docs.example.com/api',  // string URL or array of URLs</span><br><span class="line">    &#125;,</span><br><span class="line">    'version':         'v1',            // string ending with digits</span><br><span class="line">    'api':             &#123; ... &#125;,         // dictionary of api endpoints</span><br><span class="line">    'has': &#123;                            // exchange capabilities</span><br><span class="line">        'CORS': false,</span><br><span class="line">        'publicAPI': true,</span><br><span class="line">        'privateAPI': true,</span><br><span class="line">        'cancelOrder': true,</span><br><span class="line">        'createDepositAddress': false,</span><br><span class="line">        'createOrder': true,</span><br><span class="line">        'deposit': false,</span><br><span class="line">        'fetchBalance': true,</span><br><span class="line">        'fetchClosedOrders': false,</span><br><span class="line">        'fetchCurrencies': false,</span><br><span class="line">        'fetchDepositAddress': false,</span><br><span class="line">        'fetchMarkets': true,</span><br><span class="line">        'fetchMyTrades': false,</span><br><span class="line">        'fetchOHLCV': false,</span><br><span class="line">        'fetchOpenOrders': false,</span><br><span class="line">        'fetchOrder': false,</span><br><span class="line">        'fetchOrderBook': true,</span><br><span class="line">        'fetchOrders': false,</span><br><span class="line">        'fetchTicker': true,</span><br><span class="line">        'fetchTickers': false,</span><br><span class="line">        'fetchBidsAsks': false,</span><br><span class="line">        'fetchTrades': true,</span><br><span class="line">        'withdraw': false,</span><br><span class="line">    &#125;,</span><br><span class="line">    'timeframes': &#123;                     // empty if the exchange !has.fetchOHLCV</span><br><span class="line">        '1m': '1minute',</span><br><span class="line">        '1h': '1hour',</span><br><span class="line">        '1d': '1day',</span><br><span class="line">        '1M': '1month',</span><br><span class="line">        '1y': '1year',</span><br><span class="line">    &#125;,</span><br><span class="line">    'timeout':          10000,          // number in milliseconds</span><br><span class="line">    'rateLimit':        2000,           // number in milliseconds</span><br><span class="line">    'userAgent':       'ccxt/1.1.1 ...' // string, HTTP User-Agent header</span><br><span class="line">    'verbose':          false,          // boolean, output error details</span><br><span class="line">    'markets':         &#123; ... &#125;          // dictionary of markets/pairs by symbol</span><br><span class="line">    'symbols':         [ ... ]          // sorted list of string symbols (traded pairs)</span><br><span class="line">    'currencies':      &#123; ... &#125;          // dictionary of currencies by currency code</span><br><span class="line">    'markets_by_id':   &#123; ... &#125;,         // dictionary of dictionaries (markets) by id</span><br><span class="line">    'proxy': 'https://crossorigin.me/', // string URL</span><br><span class="line">    'apiKey':   '92560ffae9b8a0421...', // string public apiKey (ASCII, hex, Base64, ...)</span><br><span class="line">    'secret':   '9aHjPmW+EtRRKN/Oi...'  // string private secret key</span><br><span class="line">    'password': '6kszf4aci8r',          // string password</span><br><span class="line">    'uid':      '123456',               // string user id</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="交易所属性"><a href="#交易所属性" class="headerlink" title="交易所属性"></a>交易所属性</h3><p>下面描述的所有属性为基础交易所属性:</p>
+<ul>
+<li>id：区分交易所平台。</li>
+<li>name: 交易所名字。</li>
+<li>countries：交易所所在国家。</li>
+<li>urls[‘api’]：交易所API数组。</li>
+<li>urls[‘www’]:交易所主页。</li>
+<li>urls[‘doc’]：API文档链接。</li>
+<li>version: 版本。</li>
+<li>api: </li>
+<li>has：拥有的交换功能。</li>
+<li>timeframes: 时间框架</li>
+<li>timeout: 超时时间(默认为10s)、</li>
+<li>rateLimit: 调用时间差。</li>
+<li>enableRateLimit: 是否启用调用限制。</li>
+<li>userAgent </li>
+<li>verbose:是否启用日志。</li>
+<li>markets: </li>
+<li>symbols: 支持币种</li>
+<li>currencies: 货币</li>
+<li>markets_by_id </li>
+<li>proxy </li>
+<li>apiKey </li>
+<li>secret </li>
+<li>password </li>
+<li>uid </li>
+</ul>
+<h2 id="关于访问限制"><a href="#关于访问限制" class="headerlink" title="关于访问限制"></a>关于访问限制</h2><ul>
+<li>保持在交易所限制范围内。</li>
+<li>如果交易所使用了ddos保护，使用<a href="https://github.com/ccxt/ccxt/blob/master/examples/py/bypass-cloudflare.py" target="_blank" rel="noopener">绕过限制</a></li>
+<li>使用代理</li>
+<li>与交易所交流，开启你的IP白名单。</li>
+<li>做爬虫集群</li>
+<li>使用多个IP</li>
+<li>……</li>
+</ul>
+<p>如果你被唧唧了，cctx会抛出异常:</p>
+<ul>
+<li>DDoSProtectionError</li>
+<li>ExchangeNotAvailable</li>
+<li>ExchangeError</li>
+</ul>
+<h2 id="加载市场"><a href="#加载市场" class="headerlink" title="加载市场"></a>加载市场</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Python</span></span><br><span class="line">okcoin = ccxt.okcoinusd ()</span><br><span class="line">markets = okcoin.load_markets ()</span><br><span class="line"><span class="keyword">print</span> (okcoin.id, markets)</span><br></pre></td></tr></table></figure>
+<h3 id="币标志和id"><a href="#币标志和id" class="headerlink" title="币标志和id"></a>币标志和id</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Python</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (exchange.load_markets ())</span><br><span class="line"></span><br><span class="line">etheur1 = exchange.markets[<span class="string">'ETH/EUR'</span>]      <span class="comment"># get market structure by symbol</span></span><br><span class="line">etheur2 = exchange.market (<span class="string">'ETH/EUR'</span>)      <span class="comment"># same result in a slightly different way</span></span><br><span class="line"></span><br><span class="line">etheurId = exchange.market_id (<span class="string">'BTC/USD'</span>)  <span class="comment"># get market id by symbol</span></span><br><span class="line"></span><br><span class="line">symbols = exchange.symbols                 <span class="comment"># get a list of symbols</span></span><br><span class="line">symbols2 = list (exchange.markets.keys ()) <span class="comment"># same as previous line</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> (exchange.id, symbols)               <span class="comment"># print all symbols</span></span><br><span class="line"></span><br><span class="line">currencies = exchange.currencies           <span class="comment"># a list of currencies</span></span><br><span class="line"></span><br><span class="line">kraken = ccxt.kraken ()</span><br><span class="line">kraken.load_markets ()</span><br><span class="line"></span><br><span class="line">kraken.markets[<span class="string">'BTC/USD'</span>]                  <span class="comment"># symbol → market (get market by symbol)</span></span><br><span class="line">kraken.markets_by_id[<span class="string">'XXRPZUSD'</span>]           <span class="comment"># id → market (get market by id)</span></span><br><span class="line"></span><br><span class="line">kraken.markets[<span class="string">'BTC/USD'</span>][<span class="string">'id'</span>]            <span class="comment"># symbol → id (get id by symbol)</span></span><br><span class="line">kraken.markets_by_id[<span class="string">'XXRPZUSD'</span>][<span class="string">'symbol'</span>] <span class="comment"># id → symbol (get symbol by id)</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/量化交易/" rel="tag"># 量化交易</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/16/CoinMarketCap接口分析/" rel="next" title="coinmarketcap接口分析">
+                <i class="fa fa-chevron-left"></i> coinmarketcap接口分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/22/关于OrangePI 串口通讯解决方案/" rel="prev" title="关于OrangePI 串口通讯解决方案">
+                关于OrangePI 串口通讯解决方案 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Labradors</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#用户手册"><span class="nav-number">1.</span> <span class="nav-text">用户手册</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概要"><span class="nav-number">1.1.</span> <span class="nav-text">概要</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化交易所"><span class="nav-number">1.2.</span> <span class="nav-text">初始化交易所</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#交易所结构"><span class="nav-number">1.3.</span> <span class="nav-text">交易所结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#交易所属性"><span class="nav-number">1.4.</span> <span class="nav-text">交易所属性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于访问限制"><span class="nav-number">2.</span> <span class="nav-text">关于访问限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加载市场"><span class="nav-number">3.</span> <span class="nav-text">加载市场</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#币标志和id"><span class="nav-number">3.1.</span> <span class="nav-text">币标志和id</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Labradors</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

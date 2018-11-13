@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Labradors">
 <meta property="og:description" content="版权声明：本文为博主原创文章，未经博主允许不得转载。  从十一月开始到现在，已经马上两个月了。刚来就开始折腾React-Native,Cordova。前前后后折腾了20天。项目任务确定下后，又开始折腾Tigase,Smack。现在项目可以相互之间发送图片，文字了。但是还是不太了解Tigase后端实现。正好前几天把Java EE基础学完。慢慢看看源码。对Tigase源码整理一下。用最原生的做法太耗">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-13T12:01:18.525Z">
+<meta property="og:updated_time" content="2018-11-13T12:20:30.536Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tigase服务与源码分析一">
 <meta name="twitter:description" content="版权声明：本文为博主原创文章，未经博主允许不得转载。  从十一月开始到现在，已经马上两个月了。刚来就开始折腾React-Native,Cordova。前前后后折腾了20天。项目任务确定下后，又开始折腾Tigase,Smack。现在项目可以相互之间发送图片，文字了。但是还是不太了解Tigase后端实现。正好前几天把Java EE基础学完。慢慢看看源码。对Tigase源码整理一下。用最原生的做法太耗">
@@ -365,13 +365,6 @@
 <p>通过配置上面的代码来加载http组建。</p>
 <p>默认的配置组建将尝试 在8080端口上启动独立的Jetty HTTP Server。并且添加默认启动模块，包括RestModule,RestModule将从<code>/rest</code>目录下添加REST API到上下文中。默认情况下，RestModule将会加载位于<code>scripts/rest/xxx</code>的所有groovy脚本。绑定对应的<code>/rest/api</code>。</p>
 <p>注意事项：位于<code>src/scripts/groovy/tigase/rest</code>的HTTP脚本都可用。</p>
-<h3 id="属性配置"><a href="#属性配置" class="headerlink" title="属性配置"></a>属性配置</h3><p>下面有一些支持从<code>init.properties</code>中添加的属性：</p>
-<ul>
-<li>http/ports[i] -</li>
-<li>http/xxx/socket=ssl - </li>
-<li>http/xxx/domain - </li>
-<li>http/server-class - </li>
-</ul>
 
       
     </div>
@@ -491,7 +484,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">112</span>
+                  <span class="site-state-item-count">88</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -502,7 +495,7 @@
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
@@ -513,7 +506,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">48</span>
+                  <span class="site-state-item-count">52</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
@@ -546,7 +539,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Components"><span class="nav-number">1.1.</span> <span class="nav-text">Components</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插件"><span class="nav-number">1.2.</span> <span class="nav-text">插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Connector"><span class="nav-number">1.3.</span> <span class="nav-text">Connector</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tigase运行流程"><span class="nav-number">2.</span> <span class="nav-text">Tigase运行流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tigase-Http-Api配置和开发"><span class="nav-number">3.</span> <span class="nav-text">Tigase Http Api配置和开发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本配置"><span class="nav-number">3.1.</span> <span class="nav-text">基本配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#属性配置"><span class="nav-number">3.2.</span> <span class="nav-text">属性配置</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Components"><span class="nav-number">1.1.</span> <span class="nav-text">Components</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插件"><span class="nav-number">1.2.</span> <span class="nav-text">插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Connector"><span class="nav-number">1.3.</span> <span class="nav-text">Connector</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tigase运行流程"><span class="nav-number">2.</span> <span class="nav-text">Tigase运行流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tigase-Http-Api配置和开发"><span class="nav-number">3.</span> <span class="nav-text">Tigase Http Api配置和开发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本配置"><span class="nav-number">3.1.</span> <span class="nav-text">基本配置</span></a></li></ol></li></ol></div>
             
 
           </div>
