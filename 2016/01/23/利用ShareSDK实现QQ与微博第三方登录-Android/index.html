@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="第三方服务商,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;前言: 因为项目需要第三方登录，分享等功能，之前自己是使用各大平台开放的接口实现QQ与微博的第三方登录，麻烦，有些麻烦，ShareSDK对第三方登录，分享的接口进行封装，简化了很多操作。并且可以一次配置，实现第三方登录，分享两种功能。">
+<meta name="keywords" content="第三方服务商">
+<meta property="og:type" content="article">
+<meta property="og:title" content="利用ShareSDK实现QQ与微博第三方登录-Android">
+<meta property="og:url" content="http://blog.labradors.work/2016/01/23/利用ShareSDK实现QQ与微博第三方登录-Android/index.html">
+<meta property="og:site_name" content="Labradors">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;前言: 因为项目需要第三方登录，分享等功能，之前自己是使用各大平台开放的接口实现QQ与微博的第三方登录，麻烦，有些麻烦，ShareSDK对第三方登录，分享的接口进行封装，简化了很多操作。并且可以一次配置，实现第三方登录，分享两种功能。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BEsharesdk%E7%99%BB%E5%BD%95.png">
+<meta property="og:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BEshareSDK.png">
+<meta property="og:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BEQQ%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF.png">
+<meta property="og:updated_time" content="2016-01-23T07:06:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="利用ShareSDK实现QQ与微博第三方登录-Android">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;前言: 因为项目需要第三方登录，分享等功能，之前自己是使用各大平台开放的接口实现QQ与微博的第三方登录，麻烦，有些麻烦，ShareSDK对第三方登录，分享的接口进行封装，简化了很多操作。并且可以一次配置，实现第三方登录，分享两种功能。">
+<meta name="twitter:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BEsharesdk%E7%99%BB%E5%BD%95.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.labradors.work/2016/01/23/利用ShareSDK实现QQ与微博第三方登录-Android/">
+
+
+
+
+
+  <title>利用ShareSDK实现QQ与微博第三方登录-Android | Labradors</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Labradors</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Follow your heart</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2016/01/23/利用ShareSDK实现QQ与微博第三方登录-Android/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">利用ShareSDK实现QQ与微博第三方登录-Android</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-23T15:06:52+08:00">
+                2016-01-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/移动端/" itemprop="url" rel="index">
+                    <span itemprop="name">移动端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BEsharesdk%E7%99%BB%E5%BD%95.png" alt=""><br>&nbsp;&nbsp;&nbsp;&nbsp;前言: 因为项目需要第三方登录，分享等功能，之前自己是使用各大平台开放的接口实现QQ与微博的第三方登录，麻烦，有些麻烦，ShareSDK对第三方登录，分享的接口进行封装，简化了很多操作。并且可以一次配置，实现第三方登录，分享两种功能。<br><a id="more"></a></p>
+<h2 id="导入Sdk到项目"><a href="#导入Sdk到项目" class="headerlink" title="导入Sdk到项目"></a>导入Sdk到项目</h2><p><em>注:</em> 开发平台使用Android studio<br>&nbsp;&nbsp;&nbsp;&nbsp;导入Sdk到项目方式:</p>
+<ol>
+<li>导入jar包(优点:方便，快捷。 缺点:修改源码麻烦)</li>
+<li>引入第三方模块(优点: 修改源码方便。缺点:麻烦)</li>
+</ol>
+<p>在这里我们使用第二种方式，因为在需求下我们需要修改部分的源码，在Android Studio中引入module的方式可以查看<a href="http://www.cnblogs.com/smyhvae/p/4585340.html" target="_blank" rel="noopener">在Android Studio中使用shareSDK进行社会化分享（图文教程）
+</a>,引入模块之后，我们就可以修改一些配置。</p>
+<p><em>注:</em> OneKeyShare这个module是依赖于ShareSDK这个module；而app这个module是依赖于OneKeyShare这个module</p>
+<h2 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;导入模块成功后,分为三个步骤，如下:</p>
+<ol>
+<li>我们在项目中新建一个assets第三方资产目录。将下载下来的SDK中Res目录下ShareSDK.xml复制到assets目录下，然后填写以后信息，将各大平台的APP ID和APP KEY修改到配置文件中。如下:<br><img src="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BEshareSDK.png" alt=""></li>
+<li>在app module下AndroidManifest.xml文件中添加权限</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;uses-permission android:name=<span class="string">"android.permission.GET_TASKS"</span>/&gt;</span><br><span class="line">    &lt;uses-permission android:name=<span class="string">"android.permission.INTERNET"</span>/&gt;</span><br><span class="line">    &lt;uses-permission android:name=<span class="string">"android.permission.ACCESS_WIFI_STATE"</span>/&gt;</span><br><span class="line">    &lt;uses-permission android:name=<span class="string">"android.permission.ACCESS_NETWORK_STATE"</span>/&gt;</span><br><span class="line">    &lt;uses-permission android:name=<span class="string">"android.permission.CHANGE_WIFI_STATE"</span>/&gt;</span><br><span class="line">    &lt;uses-permission android:name=<span class="string">"android.permission.WRITE_EXTERNAL_STORAGE"</span>/&gt;</span><br><span class="line">    &lt;uses-permission android:name=<span class="string">"android.permission.READ_PHONE_STATE"</span>/&gt;</span><br><span class="line">    &lt;uses-permission android:name=<span class="string">"android.permission.MANAGE_ACCOUNTS"</span>/&gt;</span><br><span class="line">    &lt;uses-permission android:name=<span class="string">"android.permission.GET_ACCOUNTS"</span>/&gt;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>修改app module下AndroidManifest.xml文件，添加授权时的页面，如下:</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;activity</span><br><span class="line">            android:name=<span class="string">"com.mob.tools.MobUIShell"</span></span><br><span class="line">            android:theme=<span class="string">"@android:style/Theme.Translucent.NoTitleBar"</span></span><br><span class="line">            android:configChanges=<span class="string">"keyboardHidden|orientation|screenSize"</span></span><br><span class="line">            android:screenOrientation=<span class="string">"portrait"</span></span><br><span class="line">            android:windowSoftInputMode=<span class="string">"stateHidden|adjustResize"</span> &gt;</span><br><span class="line">            &lt;intent-filter&gt;</span><br><span class="line">                &lt;data android:scheme=<span class="string">"tencent这里填写腾讯你得到的app id"</span> /&gt;</span><br><span class="line">                &lt;action android:name=<span class="string">"android.intent.action.VIEW"</span> /&gt;</span><br><span class="line">                &lt;category android:name=<span class="string">"android.intent.category.BROWSABLE"</span> /&gt;</span><br><span class="line">                &lt;category android:name=<span class="string">"android.intent.category.DEFAULT"</span> /&gt;</span><br><span class="line">            &lt;/intent-filter&gt;</span><br><span class="line">            &lt;intent-filter&gt;</span><br><span class="line">                &lt;action android:name=<span class="string">"com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY"</span> /&gt;</span><br><span class="line">                &lt;category android:name=<span class="string">"android.intent.category.DEFAULT"</span> /&gt;</span><br><span class="line">            &lt;/intent-filter&gt;</span><br><span class="line">        &lt;/activity&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="注册ShareSDK到项目"><a href="#注册ShareSDK到项目" class="headerlink" title="注册ShareSDK到项目"></a>注册ShareSDK到项目</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;在项目中初始化ShareSDK只有一步<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ShareSDK.initSDK(<span class="keyword">this</span>);</span><br></pre></td></tr></table></figure></p>
+<h2 id="从QQ和微博中获得授权"><a href="#从QQ和微博中获得授权" class="headerlink" title="从QQ和微博中获得授权"></a>从QQ和微博中获得授权</h2><ol>
+<li>微博授权</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">openWeiboAuthorize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		Platform weibo = ShareSDK.getPlatform(SinaWeibo.NAME);</span><br><span class="line">        weibo.setPlatformActionListener(actionListener);</span><br><span class="line">        weibo.authorize();</span><br><span class="line">        <span class="comment">//移除授权</span></span><br><span class="line">        <span class="comment">//weibo.removeAccount(true);</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>QQ授权</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">openQQAuthorize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  		Platform qq = ShareSDK.getPlatform(QQ.NAME);</span><br><span class="line">        Platform qq = ShareSDK.getPlatform(QQ.NAME);</span><br><span class="line">        qq.setPlatformActionListener(actionListener);</span><br><span class="line">        qq.authorize();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="获取用户数据"><a href="#获取用户数据" class="headerlink" title="获取用户数据"></a>获取用户数据</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;获得用户的数据是在actionListener回调中获得的，如下，我们获取到QQ中用户名和头像地址:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">initializationActionListener</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="keyword">private</span> PlatformActionListener actionListener;</span><br><span class="line">        actionListener = <span class="keyword">new</span> PlatformActionListener() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onComplete</span><span class="params">(Platform platform, <span class="keyword">int</span> i, HashMap&lt;String, Object&gt; hashMap)</span> </span>&#123;</span><br><span class="line">                Log.d(TAG, qq.getDb().getToken());</span><br><span class="line">                Log.d(TAG, weibo.getDb().getToken());</span><br><span class="line">                Log.d(TAG, qq.getDb().exportData());</span><br><span class="line">                Log.d(TAG, qq.getDb().getPlatformNname());</span><br><span class="line">                Log.d(TAG, qq.getDb().getTokenSecret());</span><br><span class="line">                Log.d(TAG, qq.getDb().getUserGender());</span><br><span class="line">                Log.d(TAG, qq.getDb().getUserIcon());</span><br><span class="line">                Log.d(TAG, qq.getDb().getUserId());</span><br><span class="line">                Log.d(TAG, qq.getDb().getUserName());</span><br><span class="line">                Log.d(TAG, qq.getDb().getExpiresIn() + <span class="string">""</span>);</span><br><span class="line">                Log.d(TAG, qq.getDb().getExpiresTime() + <span class="string">""</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onError</span><span class="params">(Platform platform, <span class="keyword">int</span> i, Throwable throwable)</span> </span>&#123;</span><br><span class="line">                Log.d(TAG, <span class="string">"错误页面"</span>);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCancel</span><span class="params">(Platform platform, <span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">                Log.d(TAG, <span class="string">"取消授权"</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;获得的数据如下:<br><img src="http://7xk0q3.com1.z0.glb.clouddn.com/QQ%E6%88%AA%E5%9B%BEQQ%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF.png" alt=""></p>
+<h2 id="Bug"><a href="#Bug" class="headerlink" title="Bug"></a>Bug</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;在使用新浪微博授权登录的过程中，出现<em>21338 sso package or sign error</em>异常。<br>&nbsp;&nbsp;&nbsp;&nbsp;解决办法:新浪微博新版必须签名才能使用授权登录，授权方法工具在:<br><a href="https://github.com/sinaweibosdk/weibo_android_sdk/blob/master/app_signatures.apk" target="_blank" rel="noopener">app_signatures.apk</a>,签名之后就可以成功获取用户数据。</p>
+<h2 id="引用和推荐"><a href="#引用和推荐" class="headerlink" title="引用和推荐"></a>引用和推荐</h2><blockquote>
+<ol>
+<li><a href="http://www.cnblogs.com/smyhvae/p/4585340.html" target="_blank" rel="noopener">在Android Studio中使用shareSDK进行社会化分享（图文教程）
+</a></li>
+<li><a href="https://github.com/mobileresearch/weibo_android_sdk" target="_blank" rel="noopener">weibo_android_sdk</a></li>
+<li><a href="https://github.com/sinaweibosdk/weibo_ios_sdk/blob/master/FAQ.md" target="_blank" rel="noopener">Weibo FAQ 授权出错</a></li>
+<li><a href="http://wiki.mob.com/android_%E5%BF%AB%E9%80%9F%E9%9B%86%E6%88%90%E6%8C%87%E5%8D%97/" target="_blank" rel="noopener">ShareSDK for Android</a></li>
+<li><a href="http://wiki.mob.com/sharesdk-android-%E6%8E%88%E6%9D%83%E4%B8%8E%E5%8F%96%E6%B6%88%E6%8E%88%E6%9D%83/" target="_blank" rel="noopener">第三方登录</a></li>
+</ol>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/第三方服务商/" rel="tag"># 第三方服务商</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/01/14/七牛云存储-存储图片和视频/" rel="next" title="七牛云存储-存储图片和视频">
+                <i class="fa fa-chevron-left"></i> 七牛云存储-存储图片和视频
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/01/23/利用SMS实现短信验证码验证-Android/" rel="prev" title="利用SMS实现短信验证码验证-Android">
+                利用SMS实现短信验证码验证-Android <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Labradors">
+            
+              <p class="site-author-name" itemprop="name">Labradors</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#导入Sdk到项目"><span class="nav-number">1.</span> <span class="nav-text">导入Sdk到项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改配置"><span class="nav-number">2.</span> <span class="nav-text">修改配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注册ShareSDK到项目"><span class="nav-number">3.</span> <span class="nav-text">注册ShareSDK到项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从QQ和微博中获得授权"><span class="nav-number">4.</span> <span class="nav-text">从QQ和微博中获得授权</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取用户数据"><span class="nav-number">5.</span> <span class="nav-text">获取用户数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bug"><span class="nav-number">6.</span> <span class="nav-text">Bug</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引用和推荐"><span class="nav-number">7.</span> <span class="nav-text">引用和推荐</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Labradors</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

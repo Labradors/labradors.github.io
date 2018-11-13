@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="移动端,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="转眼今年就要过完了，今年所记录的Android笔记就只有这些，没有层次关系，心情好记一记，心情不好，就不管了。Android停留在初中级一直走不上去。明年研究NDK。多记录一些东西。可不能再像今年这么随心所欲了。">
+<meta name="keywords" content="移动端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android杂记">
+<meta property="og:url" content="http://blog.labradors.work/2016/12/17/Android杂记/index.html">
+<meta property="og:site_name" content="Labradors">
+<meta property="og:description" content="转眼今年就要过完了，今年所记录的Android笔记就只有这些，没有层次关系，心情好记一记，心情不好，就不管了。Android停留在初中级一直走不上去。明年研究NDK。多记录一些东西。可不能再像今年这么随心所欲了。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-11-13T12:01:18.468Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android杂记">
+<meta name="twitter:description" content="转眼今年就要过完了，今年所记录的Android笔记就只有这些，没有层次关系，心情好记一记，心情不好，就不管了。Android停留在初中级一直走不上去。明年研究NDK。多记录一些东西。可不能再像今年这么随心所欲了。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.labradors.work/2016/12/17/Android杂记/">
+
+
+
+
+
+  <title>Android杂记 | Labradors</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Labradors</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Follow your heart</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2016/12/17/Android杂记/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android杂记</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-17T10:32:45+08:00">
+                2016-12-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/移动端/" itemprop="url" rel="index">
+                    <span itemprop="name">移动端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>转眼今年就要过完了，今年所记录的Android笔记就只有这些，没有层次关系，心情好记一记，心情不好，就不管了。Android停留在初中级一直走不上去。明年研究NDK。多记录一些东西。可不能再像今年这么随心所欲了。<a id="more"></a></p>
+<h2 id="动画"><a href="#动画" class="headerlink" title="动画"></a>动画</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">  <span class="comment">// ShareElemt</span></span><br><span class="line">Intent intent = <span class="keyword">new</span> Intent(<span class="keyword">this</span>, SecondShareElemActivity.class);</span><br><span class="line">        Pair first = <span class="keyword">new</span> Pair&lt;&gt;(firstSharedView, ViewCompat.getTransitionName(firstSharedView));</span><br><span class="line">        Pair second = <span class="keyword">new</span> Pair&lt;&gt;(secondSharedView, ViewCompat.getTransitionName(secondSharedView));</span><br><span class="line"></span><br><span class="line">        ActivityOptionsCompat transitionActivityOptions =</span><br><span class="line">                ActivityOptionsCompat.makeSceneTransitionAnimation(</span><br><span class="line">                        <span class="keyword">this</span>, first, second);</span><br><span class="line"></span><br><span class="line">        ActivityCompat.startActivity(<span class="keyword">this</span>,</span><br><span class="line">            intent, transitionActivityOptions.toBundle());</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Circular</span></span><br><span class="line">secondView.setVisibility(View.VISIBLE);</span><br><span class="line">        <span class="keyword">int</span> centerX = (v.getLeft() + v.getRight()) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">int</span> centerY = (v.getTop() + v.getBottom()) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">float</span> finalRadius = (<span class="keyword">float</span>) Math.hypot((<span class="keyword">double</span>) centerX, (<span class="keyword">double</span>) centerY);</span><br><span class="line">        Animator mCircularReveal = ViewAnimationUtils.createCircularReveal(</span><br><span class="line">                secondView, centerX, centerY, <span class="number">0</span>, finalRadius);</span><br><span class="line"></span><br><span class="line">        mCircularReveal.setDuration(<span class="number">400</span>).start();</span><br></pre></td></tr></table></figure>
+<h2 id="自定义View约束"><a href="#自定义View约束" class="headerlink" title="自定义View约束"></a>自定义View约束</h2><p>①  <code>UNSPECIFIED</code>：父View没有对子View施加任何约束。它可以是任何它想要的大小。<br>②  <code>EXACTLY</code>：父View已经确定了子View的确切尺寸。子View将被限制在给定的界限内，而忽略其本身的大小。<br>③  <code>AT_MOST</code>：子View的大小不能超过指定的大小</p>
+<ul>
+<li><code>MeasureSpec.UNSPECIFIED</code>:  The parent has not imposed any constraint on the child. It can be whatever size it wants. 这种情况比较少，一般用不到。标示父控件没有给子View任何显示- - - -对应的二进制表示: 00</li>
+<li><code>MeasureSpec.EXACTLY</code>:  The parent has determined an exact size for the child. The child is going to be given those bounds regardless of how big it wants to be. 理解成MATCH_PARENT或者在布局中指定了宽高值，如layout:width=’50dp’. - - - - 对应的二进制表示:01</li>
+<li><code>MeasureSpec.AT_MOST</code>:  The child can be as large as it wants up to the specified size.理解成WRAP_CONTENT,这是的值是父View可以允许的最大的值，只要不超过这个值都可以。- - - - 对应的二进制表示:10</li>
+</ul>
+<h2 id="Android获取权限"><a href="#Android获取权限" class="headerlink" title="Android获取权限"></a>Android获取权限</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@TargetApi</span>(Build.VERSION_CODES.JELLY_BEAN) <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">requestPermission</span><span class="params">(<span class="keyword">boolean</span> isRestart)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//判断当前Activity是否已经获得了该权限</span></span><br><span class="line">    String[] permissions =</span><br><span class="line">        &#123; Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE &#125;;</span><br><span class="line">    <span class="keyword">if</span> (Build.VERSION.SDK_INT &gt;= Build.VERSION_CODES.M) &#123;</span><br><span class="line">      <span class="keyword">if</span> (getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)</span><br><span class="line">          != PackageManager.PERMISSION_GRANTED) &#123;</span><br><span class="line">    </span><br><span class="line">        <span class="comment">//如果App的权限申请曾经被用户拒绝过，就需要在这里跟用户做出解释</span></span><br><span class="line">        <span class="keyword">if</span> (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),</span><br><span class="line">            Manifest.permission.CAMERA)) &#123;</span><br><span class="line">          SnackBarUtil.showText(getActivity(), <span class="string">"选择照片需要权限哦，请同意"</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="comment">//进行权限请求</span></span><br><span class="line">          requestPermissions(permissions, REQUEST_CODE);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        requestPhotos(isRestart);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      requestPhotos(isRestart);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onRequestPermissionsResult</span><span class="params">(<span class="keyword">int</span> requestCode, @NonNull String[] permissions,</span></span></span><br><span class="line"><span class="function"><span class="params">      @NonNull <span class="keyword">int</span>[] grantResults)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 如果请求被拒绝，那么通常grantResults数组为空</span></span><br><span class="line">    <span class="keyword">if</span> (grantResults.length &gt; <span class="number">0</span> &amp;&amp; grantResults[<span class="number">0</span>] == PackageManager.PERMISSION_GRANTED) &#123;</span><br><span class="line">      requestPhotos(<span class="keyword">false</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      SnackBarUtil.showText(getActivity(), <span class="string">"你没有权限哦"</span>);</span><br><span class="line">      getActivity().finish();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (mMediaSelectedList.size() &lt; mMediaOptions.getImageSize()) &#123;</span><br><span class="line">        mMediaAdapter.updateMediaSelected(mediaItem, pickerImageView);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        mMediaAdapter.setMediaNotSelected(mediaItem, pickerImageView);</span><br><span class="line">        <span class="keyword">if</span> (mMediaSelectedList.size() &gt;= mMediaOptions.getImageSize()) &#123;</span><br><span class="line">          SnackBarUtil.showText(getActivity(),</span><br><span class="line">              <span class="string">"一次只能最多只能上传"</span> + mMediaOptions.getImageSize() + <span class="string">"张照片哦"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="关于点9图的注意事项"><a href="#关于点9图的注意事项" class="headerlink" title="关于点9图的注意事项"></a>关于点9图的注意事项</h2><ul>
+<li>点9图不能放在mipmap目录下，而需要放在drawable目录下！</li>
+<li>AS中的.9图，必须要有黑线，不然编译都不会通过。</li>
+<li>具体内容可查看<br><a href="http://www.runoob.com/w3cnote/android-tutorial-drawable1.html" target="_blank" rel="noopener">Android中的13种Drawable小结 Part 1</a></li>
+</ul>
+<h2 id="Fragment获取回传的资源"><a href="#Fragment获取回传的资源" class="headerlink" title="Fragment获取回传的资源"></a>Fragment获取回传的资源</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onActivityResult</span><span class="params">(<span class="keyword">int</span> requestCode, <span class="keyword">int</span> resultCode, Intent data)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onActivityResult(requestCode, resultCode, data);</span><br><span class="line">    <span class="keyword">if</span> (data != <span class="keyword">null</span>) &#123;</span><br><span class="line">      List&lt;Fragment&gt; fragments = getChildFragmentManager().getFragments();</span><br><span class="line">      <span class="keyword">if</span> (fragments != <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">for</span> (Fragment fragment : fragments) &#123;</span><br><span class="line">          fragment.onActivityResult(requestCode, resultCode, data);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (requestCode == REQUEST_CODE) &#123;</span><br><span class="line">        String city = data.getStringExtra(<span class="string">"city"</span>);</span><br><span class="line">        <span class="keyword">if</span> (city != <span class="keyword">null</span>) &#123;</span><br><span class="line">          mHeadTextView.setText(city);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Fragment与Activity，Fragment相互通信</p>
+</blockquote>
+<ul>
+<li>接口回调</li>
+<li>使用Bundle让Activity传递值给fragment</li>
+<li>Fragment中重写一下方法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SuppressWarnings</span>(<span class="string">"deprecation"</span>) <span class="meta">@Override</span> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAttach</span><span class="params">(Activity activity)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">super</span>.onAttach(activity);</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    mNoticeFragmentChange = (NoticeFragmentChange) activity;</span><br><span class="line">  &#125; <span class="keyword">catch</span> (ClassCastException e) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> ClassCastException(activity.toString() + <span class="string">" must implement NoticeFragmentChange"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="iOS与Android状态栏对比"><a href="#iOS与Android状态栏对比" class="headerlink" title="iOS与Android状态栏对比"></a>iOS与Android状态栏对比</h2><ul>
+<li>Android状态栏 25 56 72</li>
+<li>iOS： 20 44 49 </li>
+</ul>
+<h2 id="设计模式与例子"><a href="#设计模式与例子" class="headerlink" title="设计模式与例子"></a>设计模式与例子</h2><h3 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h3><ul>
+<li>原型模式是什么</li>
+</ul>
+<p>在通过new的方式来构建对象比较耗时时，并且通过原型模式比通过new的方式更加高效的时候使用.</p>
+<ul>
+<li>必知必会</li>
+</ul>
+<p>通过原型模式构建对象时，并不会执行构造函数，比如，你在构造函数需要做一些初始化操作时，原型模式并不适用。</p>
+<ul>
+<li><p>浅克隆的原型模式<br>表示对这个对象的一个引用，即用指针指向的是相同的地址，更改clone的对象就会修改缘由对象，更多时候，这种方式并不适用。</p>
+</li>
+<li><p>深克隆的原型模式</p>
+</li>
+</ul>
+<p>在拷贝对象时，对于引用型的变量也进行拷贝，这样就不会被修改了。</p>
+<ul>
+<li><p>Android源码中的原型模式</p>
+<p>Intent案例</p>
+</li>
+<li><p>SharePreference线程安全吗?<br>安全,但是进程不安全。google推荐，绝对不要用SharePreference作为进程共享.</p>
+</li>
+<li><p>如何保障SharePreference线程安全,锁住存取操作，如下:</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">SharedPreferencesImpl</span> <span class="keyword">implements</span> <span class="title">SharedPreferences</span> </span>&#123;</span><br><span class="line">...</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getString</span><span class="params">(String key, String defValue)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">            String v = (String)mMap.get(key);</span><br><span class="line">            <span class="keyword">return</span> v != <span class="keyword">null</span> ? v : defValue;</span><br><span class="line">        &#125;</span><br><span class="line">   &#125;</span><br><span class="line">...</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">EditorImpl</span> <span class="keyword">implements</span> <span class="title">Editor</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> Editor <span class="title">putString</span><span class="params">(String key, String value)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">                mModified.put(key, value);</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h3><ul>
+<li>静态工厂模式</li>
+<li>利用范型和反射实现工厂模式</li>
+<li>一个Android程序的真正入口是ActivityThread.</li>
+<li>事件驱动模型</li>
+<li>使用范型和反射的工厂模式。</li>
+<li>简单工厂模式。</li>
+<li>工厂模式很好,但是每次添加新产品时,都需要添加产品类,也许还要更改抽象层。这样会导致类的结构复杂。</li>
+<li><a href="http://blog.csdn.net/yan8024/article/details/42527229" target="_blank" rel="noopener">Java引用方式与区别</a>(ArrayList)</li>
+</ul>
+<h3 id="责任链模式"><a href="#责任链模式" class="headerlink" title="责任链模式"></a>责任链模式</h3><ul>
+<li><p>责任链的定义：<br><em>使多个对象都有机会处理请求，从而避免请求的发送者和接收者的耦合关系，将这些对象连成一条链，并沿着这条链接传递请求，直到有对象处理为止。</em></p>
+</li>
+<li><p>责任链的使用场景：<br><em>1. 多个对象可以处理同一个请求，但具体由哪个对象处理则在运行时动态决定。2. 在请求处理者不明确的情况下，向多个对象中的一个提交一个请求。3. 需要动态指定一组对象处理请求。</em></p>
+</li>
+<li><p>Android源码中的责任链模式<br><em>广播和ViewGroup事件分发</em></p>
+</li>
+</ul>
+<p><a href="https://github.com/simple-android-framework-exchange/android_design_patterns_analysis/tree/master/chain-of-responsibility/AigeStudio" target="_blank" rel="noopener">官方链接</a></p>
+<h2 id="视图优化与检查"><a href="#视图优化与检查" class="headerlink" title="视图优化与检查"></a>视图优化与检查</h2><ul>
+<li>尽量使用RelativeLayout,而不是LinearLayout</li>
+<li>使用ViewStub懒加载视图</li>
+<li>使用merge</li>
+<li>性能分析工具dumpsys的使用</li>
+</ul>
+<h2 id="RXJava关键字"><a href="#RXJava关键字" class="headerlink" title="RXJava关键字"></a>RXJava关键字</h2><ul>
+<li>创建操作 Create, Defer, Empty/Never/Throw, From, Interval, Just, Range, Repeat, Start, Timer</li>
+<li>变换操作 Buffer, FlatMap, GroupBy, Map, Scan和Window</li>
+<li>过滤操作 Debounce, Distinct, ElementAt, Filter, First, IgnoreElements, Last, Sample, Skip, SkipLast, Take, TakeLast</li>
+<li>组合操作 And/Then/When, CombineLatest, Join, Merge, StartWith, Switch, Zip</li>
+<li>错误处理 Catch和Retry</li>
+<li>辅助操作 Delay, Do, Materialize/Dematerialize, ObserveOn, Serialize, Subscribe, SubscribeOn, TimeInterval, Timeout, Timestamp, Using</li>
+<li>条件和布尔操作 All, Amb, Contains, DefaultIfEmpty, SequenceEqual, SkipUntil, SkipWhile, TakeUntil, TakeWhile</li>
+<li>算术和集合操作 Average, Concat, Count, Max, Min, Reduce, Sum</li>
+<li>转换操作 To</li>
+<li>连接操作 Connect, Publish, RefCount, Replay</li>
+<li>反压操作，用于增加特殊的流程控制策略的操作符</li>
+<li>调度器</li>
+</ul>
+<p><a href="https://mcxiaoke.gitbooks.io/rxdocs/content/Scheduler.html" target="_blank" rel="noopener">默认调度器以及自定义调度器</a></p>
+<ul>
+<li>操作符分类</li>
+</ul>
+<p><a href="https://mcxiaoke.gitbooks.io/rxdocs/content/Operators.html" target="_blank" rel="noopener">所有的操作服</a></p>
+<h2 id="一些简单的命令"><a href="#一些简单的命令" class="headerlink" title="一些简单的命令"></a>一些简单的命令</h2><ul>
+<li><code>adb shell monkey -p tech.honc.android.apps.soldier -v 50000</code></li>
+<li>命令行打包: ·<code>keytool -genkey -v -keystore release.keystore -alias stone -keyalg RSA -keysize 2048 -validity 36500</code></li>
+<li>命令行获取打包的信息:<code>keytool -list -v -keystore xxx.keystore</code></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/移动端/" rel="tag"># 移动端</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/11/21/About-Tigase-XMPP-Server/" rel="next" title="About Tigase XMPP Server">
+                <i class="fa fa-chevron-left"></i> About Tigase XMPP Server
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/23/Tigase服务与源码分析一/" rel="prev" title="Tigase服务与源码分析一">
+                Tigase服务与源码分析一 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Labradors">
+            
+              <p class="site-author-name" itemprop="name">Labradors</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#动画"><span class="nav-number">1.</span> <span class="nav-text">动画</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义View约束"><span class="nav-number">2.</span> <span class="nav-text">自定义View约束</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Android获取权限"><span class="nav-number">3.</span> <span class="nav-text">Android获取权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于点9图的注意事项"><span class="nav-number">4.</span> <span class="nav-text">关于点9图的注意事项</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fragment获取回传的资源"><span class="nav-number">5.</span> <span class="nav-text">Fragment获取回传的资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS与Android状态栏对比"><span class="nav-number">6.</span> <span class="nav-text">iOS与Android状态栏对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设计模式与例子"><span class="nav-number">7.</span> <span class="nav-text">设计模式与例子</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原型模式"><span class="nav-number">7.1.</span> <span class="nav-text">原型模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工厂模式"><span class="nav-number">7.2.</span> <span class="nav-text">工厂模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#责任链模式"><span class="nav-number">7.3.</span> <span class="nav-text">责任链模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#视图优化与检查"><span class="nav-number">8.</span> <span class="nav-text">视图优化与检查</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RXJava关键字"><span class="nav-number">9.</span> <span class="nav-text">RXJava关键字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些简单的命令"><span class="nav-number">10.</span> <span class="nav-text">一些简单的命令</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Labradors</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

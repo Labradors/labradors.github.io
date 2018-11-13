@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android源码,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;本教程是基于Ubuntu下Android6.0.1源码以及内核的下载和编译，记录一下，以后也就不用自己去找资料，一遍一遍的尝试了。可以翻墙的,英语好的,直接去AndroidSource.  系统环境:Ubuntu14.04LTS Android版本:6.0.1 重要网址 清华大学镜像 AndroidSource">
+<meta name="keywords" content="Android源码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu下Android源码以及内核下载与编译">
+<meta property="og:url" content="http://blog.labradors.work/2016/07/24/Ubuntu下Android源码以及内核下载与编译/index.html">
+<meta property="og:site_name" content="Labradors">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;本教程是基于Ubuntu下Android6.0.1源码以及内核的下载和编译，记录一下，以后也就不用自己去找资料，一遍一遍的尝试了。可以翻墙的,英语好的,直接去AndroidSource.  系统环境:Ubuntu14.04LTS Android版本:6.0.1 重要网址 清华大学镜像 AndroidSource">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/android.png">
+<meta property="og:updated_time" content="2018-11-13T12:01:18.526Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ubuntu下Android源码以及内核下载与编译">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;本教程是基于Ubuntu下Android6.0.1源码以及内核的下载和编译，记录一下，以后也就不用自己去找资料，一遍一遍的尝试了。可以翻墙的,英语好的,直接去AndroidSource.  系统环境:Ubuntu14.04LTS Android版本:6.0.1 重要网址 清华大学镜像 AndroidSource">
+<meta name="twitter:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/android.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.labradors.work/2016/07/24/Ubuntu下Android源码以及内核下载与编译/">
+
+
+
+
+
+  <title>Ubuntu下Android源码以及内核下载与编译 | Labradors</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Labradors</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Follow your heart</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2016/07/24/Ubuntu下Android源码以及内核下载与编译/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Ubuntu下Android源码以及内核下载与编译</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-24T01:21:04+08:00">
+                2016-07-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/移动端/" itemprop="url" rel="index">
+                    <span itemprop="name">移动端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;本教程是基于Ubuntu下Android6.0.1源码以及内核的下载和编译，记录一下，以后也就不用自己去找资料，一遍一遍的尝试了。可以翻墙的,英语好的,直接去<a href="https://source.android.com/source/initializing.html" target="_blank" rel="noopener">AndroidSource</a>.</p>
+<ul>
+<li>系统环境:Ubuntu14.04LTS</li>
+<li>Android版本:6.0.1</li>
+<li>重要网址<br> <a href="https://mirrors.tuna.tsinghua.edu.cn/help/AOSP/" target="_blank" rel="noopener">清华大学镜像</a><br> <a href="https://source.android.com/source/initializing.html" target="_blank" rel="noopener">AndroidSource</a> <a id="more"></a>
+</li>
+</ul>
+<h2 id="下载前的准备"><a href="#下载前的准备" class="headerlink" title="下载前的准备"></a>下载前的准备</h2><ul>
+<li><p>安装OpenJdk</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository ppa:openjdk-r/ppa</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install openjdk-8-jdk</span><br><span class="line">sudo update-alternatives --config java</span><br><span class="line">java -version</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装git</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install git-core</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装额外的组建</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install gnupg flex bison gperf build-essential \</span><br><span class="line">  zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 \</span><br><span class="line">  lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev ccache \</span><br><span class="line">  libgl1-mesa-dev libxml2-utils xsltproc unzip</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>组建</th>
+<th>功能</th>
+<th>介绍网址</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>gnupg</td>
+<td>加密工具</td>
+<td><a href="http://www.ruanyifeng.com/blog/2013/07/gpg.html" target="_blank" rel="noopener">GPG入门教程</a></td>
+</tr>
+<tr>
+<td>flex</td>
+<td>The Fast Lexical Analyzer</td>
+<td><a href="http://flex.sourceforge.net/" target="_blank" rel="noopener">快速的语法分析工具</a></td>
+</tr>
+<tr>
+<td>bison</td>
+<td>用于自动生成语法分析器程序</td>
+<td><a href="https://zh.wikipedia.org/wiki/GNU_bison" target="_blank" rel="noopener">自动生成语法分析器程序</a></td>
+</tr>
+<tr>
+<td>gperf</td>
+<td>完美的散列函数生成器</td>
+<td><a href="http://www.ibm.com/developerworks/cn/linux/l-gperf.html" target="_blank" rel="noopener">使用 gperf 实现高效的 C/C++ 命令行处理</a></td>
+</tr>
+<tr>
+<td>build-essential</td>
+<td>编译内核中make menuconfig进图形编译</td>
+<td><a href="https://github.com/chef-cookbooks/build-essential" target="_blank" rel="noopener">build-essential</a></td>
+</tr>
+<tr>
+<td>zip</td>
+<td>Linux 下zip包的压缩与解压</td>
+<td><a href="http://www.cnblogs.com/chinareny2k/archive/2010/01/05/1639468.html" target="_blank" rel="noopener">Linux 下zip包的压缩与解压</a></td>
+</tr>
+<tr>
+<td>curl</td>
+<td>网络请求和提取工具</td>
+<td><a href="http://www.ruanyifeng.com/blog/2011/09/curl.html" target="_blank" rel="noopener">curl网站开发指南</a></td>
+</tr>
+<tr>
+<td>zlib1g-dev</td>
+<td>用于发现gzip和PKZIP的工具</td>
+<td><a href="https://launchpad.net/ubuntu/trusty/+package/zlib1g-dev" target="_blank" rel="noopener">Binary package “zlib1g-dev” in ubuntu trusty</a></td>
+</tr>
+<tr>
+<td>gcc-multilib</td>
+<td>允许在64位机器中运行32位应用</td>
+<td><a href="https://wiki.archlinux.org/index.php/multilib" target="_blank" rel="noopener">multilib</a></td>
+</tr>
+<tr>
+<td>g++-multilib</td>
+<td>同上(g++编译工具)</td>
+<td><a href="https://packages.debian.org/wheezy/g++-multilib" target="_blank" rel="noopener">多平台支持</a></td>
+</tr>
+<tr>
+<td>libc6-dev-i386</td>
+<td>Embedded GNU C Library: 32-bit development libraries for AMD64</td>
+<td><a href="http://packages.ubuntu.com/precise/libc6-dev-i386" target="_blank" rel="noopener">libc6-dev-i386</a></td>
+</tr>
+<tr>
+<td>lib32ncurses5-dev</td>
+<td>待完善</td>
+<td><a href="">待完善</a></td>
+</tr>
+<tr>
+<td>x11proto-core-dev</td>
+<td>待完善</td>
+<td><a href="">待完善</a></td>
+</tr>
+<tr>
+<td>libx11-dev</td>
+<td>待完善</td>
+<td><a href="">待完善</a></td>
+</tr>
+<tr>
+<td>lib32z-dev</td>
+<td>待完善</td>
+<td><a href="">待完善</a></td>
+</tr>
+<tr>
+<td>ccache</td>
+<td>待完善</td>
+<td><a href="">待完善</a></td>
+</tr>
+<tr>
+<td>libgl1-mesa-dev</td>
+<td>待完善</td>
+<td><a href="">待完善</a></td>
+</tr>
+<tr>
+<td>libxml2-utils</td>
+<td>待完善</td>
+<td><a href="">待完善</a></td>
+</tr>
+<tr>
+<td>xsltproc</td>
+<td>待完善</td>
+<td><a href="">待完善</a></td>
+</tr>
+<tr>
+<td>unzip</td>
+<td>待完善</td>
+<td><a href="">待完善</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;因为网络以及墙的原因，我们使用清华大学镜像，步骤如下:</p>
+<ul>
+<li><p>下载repo工具</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/bin</span><br><span class="line">PATH=~/bin:$PATH</span><br><span class="line">curl https://storage.googleapis.com/git-repo-downloads/repo &gt; ~/bin/repo</span><br><span class="line">chmod a+x ~/bin/repo</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>下载源码</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">wget https://mirrors.tuna.tsinghua.edu.cn/aosp-monthly/aosp-latest.tar # 下载初始化包</span><br><span class="line">tar xf aosp-latest.tar</span><br><span class="line">cd AOSP   # 解压得到的 AOSP 工程目录</span><br><span class="line"><span class="meta">#</span><span class="bash"> 这时 ls 的话什么也看不到，因为只有一个隐藏的 .repo 目录</span></span><br><span class="line">repo sync # 正常同步一遍即可得到完整目录</span><br><span class="line"><span class="meta">#</span><span class="bash"> 或 repo sync -l 仅checkout代码</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>ps:总共<em>25G</em>,慢慢下吧!</p>
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;进入AOSP根目录<br></p>
+<ul>
+<li><p>初始化编译环境</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">. build/envsetup.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>选择编译目标，选择1，所有选项的意思，后面更新</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lunch</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开始编译，这里使用了4个并发数：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make -j4</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用打包工具mmm,完成命令后会在根目录下生成android.irp,用android studio打开一个现有项目，打开android.irp即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mmm development/tools/idegen/</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="运行当前版本的模拟器"><a href="#运行当前版本的模拟器" class="headerlink" title="运行当前版本的模拟器"></a>运行当前版本的模拟器</h2><ul>
+<li>将emulator源码目录加入PATH中</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=&amp;PATH:~/bin/AOSP/out/host/linux-x86/bin</span><br></pre></td></tr></table></figure>
+<ul>
+<li>设置源码编译输出目录</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export ANDROID_PRODUCT_OUT=~/bin/AOSP/out/target/product/generic</span><br></pre></td></tr></table></figure>
+<ul>
+<li>运行emulator</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">emulator</span><br></pre></td></tr></table></figure>
+<h2 id="下载Android内核源代码"><a href="#下载Android内核源代码" class="headerlink" title="下载Android内核源代码"></a>下载Android内核源代码</h2><ul>
+<li><p>进入kernel目录，下载内核</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://aosp.tuna.tsinghua.edu.cn/android/kernel/goldfish.git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入goldfish目录,选择分支</p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd goldfish</span><br><span class="line">git branch -a</span><br><span class="line">git checkout remotes/origin/android-goldfish-2.6.29</span><br></pre></td></tr></table></figure>
+<h2 id="编译Android内核源代码"><a href="#编译Android内核源代码" class="headerlink" title="编译Android内核源代码"></a>编译Android内核源代码</h2><ul>
+<li><p>将交叉编译工具目录添加到PATH环境变量中</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH=$PATH:~/bin/AOSP/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>打开goldfish下Makefile修改配置文件,找到ARCH,CROSS_COMPILE,将其修改如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ARCH      ?=arm</span><br><span class="line">CROSS_COMPILE  ?=/home/user/bin/AOSP/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/</span><br><span class="line">arm-linux-androidkernel-</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>note:一定要设为绝对路径。</p>
+<ul>
+<li>生成配置文件以及编译<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make goldfish_defconfig</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="运行当前内核版本的模拟器"><a href="#运行当前内核版本的模拟器" class="headerlink" title="运行当前内核版本的模拟器"></a>运行当前内核版本的模拟器</h2><ul>
+<li><p>运行当前模拟器</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">emulator -kernel ./kernel/goldfish/arch/arm/boot/zImage</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看内核版本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">adb shell</span><br><span class="line">cd proc</span><br><span class="line">cat version</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="BUG"><a href="#BUG" class="headerlink" title="BUG"></a>BUG</h2><ul>
+<li>JDK内存溢出<br></li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">FAILED: /bin/bash out/target/common/obj/JAVA_LIBRARIES/framework_intermediates/dex-dir/classes.dex.rsp</span><br><span class="line">Out of memory error (version 1.2-rc4 'Carnac' (298900 f95d7bdecfceb327f9d201a1348397ed8a843843 by android-jack-team@google.com)).</span><br><span class="line">GC overhead limit exceeded.</span><br><span class="line">Try increasing heap size with java option '-Xmx&lt;size&gt;'.</span><br><span class="line">Warning: This may have produced partial or corrupted output.</span><br><span class="line">ninja: build stopped: subcommand failed.</span><br><span class="line">make: *** [ninja_wrapper] 错误 1</span><br></pre></td></tr></table></figure>
+<p>A:<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export JACK_SERVER_VM_ARGUMENTS="-Dfile.encoding=UTF-8 -XX:+TieredCompilation -Xmx4g"</span><br><span class="line">./prebuilts/sdk/tools/jack-admin kill-server</span><br><span class="line">./prebuilts/sdk/tools/jack-admin start-server</span><br></pre></td></tr></table></figure></p>
+<p>ps：作为一个天朝的程序员<br><img src="http://7xk0q3.com1.z0.glb.clouddn.com/android.png" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android源码/" rel="tag"># Android源码</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/19/Debian8升级内核到4-6-4/" rel="next" title="Debian8升级内核到4.6.4">
+                <i class="fa fa-chevron-left"></i> Debian8升级内核到4.6.4
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/08/29/Android启动模式/" rel="prev" title="Android启动模式">
+                Android启动模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Labradors">
+            
+              <p class="site-author-name" itemprop="name">Labradors</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载前的准备"><span class="nav-number">1.</span> <span class="nav-text">下载前的准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载"><span class="nav-number">2.</span> <span class="nav-text">下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译"><span class="nav-number">3.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行当前版本的模拟器"><span class="nav-number">4.</span> <span class="nav-text">运行当前版本的模拟器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载Android内核源代码"><span class="nav-number">5.</span> <span class="nav-text">下载Android内核源代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译Android内核源代码"><span class="nav-number">6.</span> <span class="nav-text">编译Android内核源代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行当前内核版本的模拟器"><span class="nav-number">7.</span> <span class="nav-text">运行当前内核版本的模拟器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BUG"><span class="nav-number">8.</span> <span class="nav-text">BUG</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Labradors</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

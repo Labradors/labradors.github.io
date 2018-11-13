@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JavaScript,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="文章开始之前，先对Emmet赞美下，没有这东西，一个个字符的敲，早晚得疯之前做了一个页面，感觉手都敲废了，暂时认识到，前端花在布局，即CSS上面的时间实在太多，html不难，javascript不难，CSS最难。不扯淡了。Emmet是一个快速写html的插件。具体可以看看文档。  这篇文章算是对学习javascript的类选择器封装和dom节点的创建，插入，删除，克隆的记录，没有特别的应用场景。">
+<meta name="keywords" content="JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript的Class封装和Dom操作">
+<meta property="og:url" content="http://blog.labradors.work/2017/03/13/JavaScript的Class封装和Dom操作/index.html">
+<meta property="og:site_name" content="Labradors">
+<meta property="og:description" content="文章开始之前，先对Emmet赞美下，没有这东西，一个个字符的敲，早晚得疯之前做了一个页面，感觉手都敲废了，暂时认识到，前端花在布局，即CSS上面的时间实在太多，html不难，javascript不难，CSS最难。不扯淡了。Emmet是一个快速写html的插件。具体可以看看文档。  这篇文章算是对学习javascript的类选择器封装和dom节点的创建，插入，删除，克隆的记录，没有特别的应用场景。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/20170312606632017-03-13.jpg">
+<meta property="og:updated_time" content="2018-11-13T12:01:18.491Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript的Class封装和Dom操作">
+<meta name="twitter:description" content="文章开始之前，先对Emmet赞美下，没有这东西，一个个字符的敲，早晚得疯之前做了一个页面，感觉手都敲废了，暂时认识到，前端花在布局，即CSS上面的时间实在太多，html不难，javascript不难，CSS最难。不扯淡了。Emmet是一个快速写html的插件。具体可以看看文档。  这篇文章算是对学习javascript的类选择器封装和dom节点的创建，插入，删除，克隆的记录，没有特别的应用场景。">
+<meta name="twitter:image" content="http://7xk0q3.com1.z0.glb.clouddn.com/20170312606632017-03-13.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.labradors.work/2017/03/13/JavaScript的Class封装和Dom操作/">
+
+
+
+
+
+  <title>JavaScript的Class封装和Dom操作 | Labradors</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Labradors</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Follow your heart</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2017/03/13/JavaScript的Class封装和Dom操作/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JavaScript的Class封装和Dom操作</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-13T04:32:45+08:00">
+                2017-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/前端/" itemprop="url" rel="index">
+                    <span itemprop="name">前端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><img src="http://7xk0q3.com1.z0.glb.clouddn.com/20170312606632017-03-13.jpg" alt="20170312606632017-03-13.jpg"></p>
+<p>文章开始之前，先对<a href="http://docs.emmet.io/" target="_blank" rel="noopener">Emmet</a>赞美下，没有这东西，一个个字符的敲，早晚得疯之前做了一个页面，感觉手都敲废了，暂时认识到，前端花在布局，即<code>CSS</code>上面的时间实在太多，<code>html</code>不难，<code>javascript</code>不难，<code>CSS</code>最难。不扯淡了。<em>Emmet</em>是一个快速写html的插件。具体可以看看文档。  这篇文章算是对学习<code>javascript</code>的类选择器封装和dom节点的创建，插入，删除，克隆的记录，没有特别的应用场景。纯粹学习。这篇文章的知识整理自javascript学习教程。一步步来封装一个完整的Class。平时写CSS的时候，类选择器是用的最多的。假如我们需要对具有相同的<code>className</code>的标签更改某些属性，那么就需要用到<code>document.getElementsByClassName(&quot;****&quot;)</code>。</p>
+<a id="more"></a>
+<h2 id="Class类封装"><a href="#Class类封装" class="headerlink" title="Class类封装"></a>Class类封装</h2><p><code>首先，IE 6,7,8并不支持</code>document.getElementsByClassName(“<em>**</em>“)<code>,IE垃圾，mdzz。不管怎样，IE8还是要考虑的。如何兼容该平台呢，我们可以通过循环遍历标签，然后对其</code>className`进行对比，将相同的结果放到数组中，然后返回。</p>
+<h3 id="版本一"><a href="#版本一" class="headerlink" title="版本一"></a>版本一</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">        <span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="function"><span class="keyword">function</span> <span class="title">getClass</span>(<span class="params">className</span>) </span>&#123;</span><br><span class="line">              <span class="comment">// 非IE8&lt;&lt;</span></span><br><span class="line">                <span class="keyword">if</span> (<span class="built_in">document</span>.getElementsByClassName)&#123;</span><br><span class="line">                    <span class="keyword">var</span> dom = <span class="built_in">document</span>.getElementsByClassName(className);</span><br><span class="line">                    <span class="built_in">console</span>.log(dom.length);</span><br><span class="line">                    <span class="keyword">return</span> dom;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">var</span> arr = [];</span><br><span class="line">                <span class="keyword">var</span> allDom = <span class="built_in">document</span>.getElementsByTagName(<span class="string">"*"</span>);</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>;i&lt;allDom.length;i++)&#123;</span><br><span class="line">                    <span class="keyword">if</span> (allDom[i].className == className)&#123;</span><br><span class="line">                        arr.push(allDom[i]);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="built_in">console</span>.log(arr.length);</span><br><span class="line">                <span class="keyword">return</span> arr;</span><br><span class="line">            &#125;</span><br><span class="line">            getClass(<span class="string">"demo"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">  &lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="版本二"><a href="#版本二" class="headerlink" title="版本二"></a>版本二</h3><p>以上封装只适合一个元素对应一个类名，但是一个元素经常有多个类名，如何解决这个一个元素，多个类名呢。</p>
+<p>我们可以使用数组来存储一个元素中所有的类名，然后进行一一对比，如下:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">        <span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="function"><span class="keyword">function</span> <span class="title">getClass</span>(<span class="params">className</span>) </span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (<span class="built_in">document</span>.getElementsByClassName)&#123;</span><br><span class="line">                    <span class="keyword">var</span> dom = <span class="built_in">document</span>.getElementsByClassName(className);</span><br><span class="line">                    <span class="built_in">console</span>.log(dom.length);</span><br><span class="line">                    <span class="keyword">return</span> dom;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">var</span> arr = [];</span><br><span class="line">                <span class="keyword">var</span> allDom = <span class="built_in">document</span>.getElementsByTagName(<span class="string">"*"</span>);</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>;i&lt;allDom.length;i++)&#123;</span><br><span class="line">                  <span class="comment">// 获取元素中所有的类名</span></span><br><span class="line">                    <span class="keyword">var</span> valArr = allDom[i].className.split(<span class="string">" "</span>);</span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>;j&lt;valArr;j++)&#123;</span><br><span class="line">                        <span class="keyword">if</span>(valArr[j] == className)&#123;</span><br><span class="line">                            arr.push(allDom[i]);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="built_in">console</span>.log(arr.length);</span><br><span class="line">                <span class="keyword">return</span> arr;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">var</span>  arr = getClass(<span class="string">"demo test"</span>);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>;i&lt;arr.length;i++)&#123;</span><br><span class="line">                arr[i].style.backgroundColor=<span class="string">"blue"</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="版本三"><a href="#版本三" class="headerlink" title="版本三"></a>版本三</h3><p>上面的版本解决了多个类名的问题，但是，有时候我们只希望获取某个模块下包含什么类名的元素。那么我们可以使用继承id的方式。如下:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">        <span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="function"><span class="keyword">function</span> <span class="title">getClass</span>(<span class="params">className, id</span>) </span>&#123;</span><br><span class="line">                <span class="comment">// 支持classname</span></span><br><span class="line">                <span class="keyword">if</span> (<span class="built_in">document</span>.getElementsByClassName)</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="keyword">if</span> (id)&#123;</span><br><span class="line">                        <span class="keyword">var</span> element = <span class="built_in">document</span>.getElementById(id);</span><br><span class="line">                        <span class="keyword">var</span> dom = element.getElementsByClassName(className);</span><br><span class="line">                        <span class="built_in">console</span>.log(dom.length);</span><br><span class="line">                        <span class="keyword">return</span> dom;</span><br><span class="line">                    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                        <span class="keyword">var</span> dom = <span class="built_in">document</span>.getElementsByClassName(className);</span><br><span class="line">                        <span class="built_in">console</span>.log(dom.length);</span><br><span class="line">                        <span class="keyword">return</span> dom;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">var</span> arr = [];</span><br><span class="line">                    <span class="keyword">if</span>(id)&#123;</span><br><span class="line">                        <span class="keyword">var</span> notIdEelment = <span class="built_in">document</span>.getElementById(id);</span><br><span class="line">                        <span class="keyword">var</span> allDom = notIdEelment.getElementsByTagName(<span class="string">"*"</span>);</span><br><span class="line">                        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; allDom.length; i++) &#123;</span><br><span class="line">                            <span class="keyword">var</span> valArr = allDom[i].className.split(<span class="string">" "</span>);</span><br><span class="line">                            <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; valArr; j++) &#123;</span><br><span class="line">                                <span class="keyword">if</span> (valArr[j] == className) &#123;</span><br><span class="line">                                    arr.push(allDom[i]);</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                        <span class="keyword">var</span> allDom = <span class="built_in">document</span>.getElementsByTagName(<span class="string">"*"</span>);</span><br><span class="line">                        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; allDom.length; i++) &#123;</span><br><span class="line">                            <span class="keyword">var</span> valArr = allDom[i].className.split(<span class="string">" "</span>);</span><br><span class="line">                            <span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="number">0</span>; j &lt; valArr; j++) &#123;</span><br><span class="line">                                <span class="keyword">if</span> (valArr[j] == className) &#123;</span><br><span class="line">                                    arr.push(allDom[i]);</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="built_in">console</span>.log(arr.length);</span><br><span class="line">                <span class="keyword">return</span> arr;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> arr = getClass(<span class="string">"demo"</span>,<span class="string">"content"</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; arr.length; i++) &#123;</span><br><span class="line">            arr[i].style.backgroundColor = <span class="string">"blue"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="DOM访问关系"><a href="#DOM访问关系" class="headerlink" title="DOM访问关系"></a>DOM访问关系</h2><h3 id="DOM节点的访问"><a href="#DOM节点的访问" class="headerlink" title="DOM节点的访问"></a>DOM节点的访问</h3><p>dom节点包括以下几个:</p>
+<table>
+<thead>
+<tr>
+<th>父节点</th>
+<th>兄弟节点</th>
+<th>子节点</th>
+<th>所有子节点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>parentNode</td>
+<td>nextSibling(IE认识)</td>
+<td>firstChild(IE认识)</td>
+<td>childNodes(不要怀疑，这个就是扯淡，需要结合nodeType一起使用)</td>
+</tr>
+<tr>
+<td>都认识</td>
+<td>nextElementSibling(别的浏览器认识)</td>
+<td>firstElementChild(别的浏览器认识)</td>
+<td>children(一般都用这个，IE6,7,8中注释也算是节点。取消注释)</td>
+</tr>
+<tr>
+<td></td>
+<td>previousSibling(IE认识)</td>
+<td>lastChild(IE认识)</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>previousElementSibling(别的浏览器认识)</td>
+<td>lastElementChild(别的浏览器认识)</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>`var lv = $id(“demo”).nextElementSibling</td>
+<td></td>
+<td>$id(“demo”).nextSibling;`</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="DOM节点的新建"><a href="#DOM节点的新建" class="headerlink" title="DOM节点的新建"></a>DOM节点的新建</h3><p>添加在子元素的最后位置</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">$id</span>(<span class="params">id</span>) </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">document</span>.getElementById(id);</span><br><span class="line">            &#125;</span><br><span class="line"><span class="keyword">var</span> newDiv = <span class="built_in">document</span>.createElement(<span class="string">"div"</span>);</span><br><span class="line">$id(<span class="string">"container"</span>).appendChild(newDiv);</span><br></pre></td></tr></table></figure>
+<h3 id="DOM节点的插入"><a href="#DOM节点的插入" class="headerlink" title="DOM节点的插入"></a>DOM节点的插入</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$id(<span class="string">"list"</span>).insertBefore(newDiv,ulParent[<span class="number">1</span>]);</span><br></pre></td></tr></table></figure>
+<p><code>ulParent[1]</code>表示相对哪个节点。如果为<code>null</code>，则插入子节点的最后位置，如上面的一样</p>
+<h3 id="DOM节点的删除"><a href="#DOM节点的删除" class="headerlink" title="DOM节点的删除"></a>DOM节点的删除</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$id(<span class="string">"list"</span>).removeChild(newDiv);</span><br></pre></td></tr></table></figure>
+<h3 id="DOM节点的克隆"><a href="#DOM节点的克隆" class="headerlink" title="DOM节点的克隆"></a>DOM节点的克隆</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ulClone = $id(<span class="string">"list"</span>).clone(<span class="literal">true</span>);</span><br><span class="line">$id(<span class="string">"container"</span>).appendChild(ulClone);</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/12/链表相加算法/" rel="next" title="链表相加算法">
+                <i class="fa fa-chevron-left"></i> 链表相加算法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/14/Date和前端Banner实现/" rel="prev" title="Date和前端Banner实现">
+                Date和前端Banner实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Labradors">
+            
+              <p class="site-author-name" itemprop="name">Labradors</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Class类封装"><span class="nav-number">1.</span> <span class="nav-text">Class类封装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#版本一"><span class="nav-number">1.1.</span> <span class="nav-text">版本一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#版本二"><span class="nav-number">1.2.</span> <span class="nav-text">版本二</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#版本三"><span class="nav-number">1.3.</span> <span class="nav-text">版本三</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DOM访问关系"><span class="nav-number">2.</span> <span class="nav-text">DOM访问关系</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DOM节点的访问"><span class="nav-number">2.1.</span> <span class="nav-text">DOM节点的访问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DOM节点的新建"><span class="nav-number">2.2.</span> <span class="nav-text">DOM节点的新建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DOM节点的插入"><span class="nav-number">2.3.</span> <span class="nav-text">DOM节点的插入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DOM节点的删除"><span class="nav-number">2.4.</span> <span class="nav-text">DOM节点的删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DOM节点的克隆"><span class="nav-number">2.5.</span> <span class="nav-text">DOM节点的克隆</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Labradors</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

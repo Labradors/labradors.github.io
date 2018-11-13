@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java EE,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="版权声明：本文为博主原创文章，未经博主允许不得转载。  从十一月开始到现在，已经马上两个月了。刚来就开始折腾React-Native,Cordova。前前后后折腾了20天。项目任务确定下后，又开始折腾Tigase,Smack。现在项目可以相互之间发送图片，文字了。但是还是不太了解Tigase后端实现。正好前几天把Java EE基础学完。慢慢看看源码。对Tigase源码整理一下。用最原生的做法太耗">
+<meta name="keywords" content="Java EE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tigase服务与源码分析一">
+<meta property="og:url" content="http://blog.labradors.work/2016/12/23/Tigase服务与源码分析一/index.html">
+<meta property="og:site_name" content="Labradors">
+<meta property="og:description" content="版权声明：本文为博主原创文章，未经博主允许不得转载。  从十一月开始到现在，已经马上两个月了。刚来就开始折腾React-Native,Cordova。前前后后折腾了20天。项目任务确定下后，又开始折腾Tigase,Smack。现在项目可以相互之间发送图片，文字了。但是还是不太了解Tigase后端实现。正好前几天把Java EE基础学完。慢慢看看源码。对Tigase源码整理一下。用最原生的做法太耗">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-11-13T12:20:30.536Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tigase服务与源码分析一">
+<meta name="twitter:description" content="版权声明：本文为博主原创文章，未经博主允许不得转载。  从十一月开始到现在，已经马上两个月了。刚来就开始折腾React-Native,Cordova。前前后后折腾了20天。项目任务确定下后，又开始折腾Tigase,Smack。现在项目可以相互之间发送图片，文字了。但是还是不太了解Tigase后端实现。正好前几天把Java EE基础学完。慢慢看看源码。对Tigase源码整理一下。用最原生的做法太耗">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.labradors.work/2016/12/23/Tigase服务与源码分析一/">
+
+
+
+
+
+  <title>Tigase服务与源码分析一 | Labradors</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Labradors</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Follow your heart</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2016/12/23/Tigase服务与源码分析一/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Tigase服务与源码分析一</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-23T22:56:00+08:00">
+                2016-12-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/后端/" itemprop="url" rel="index">
+                    <span itemprop="name">后端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>版权声明：本文为博主原创文章，未经博主允许不得转载。</p>
+</blockquote>
+<p>从十一月开始到现在，已经马上两个月了。刚来就开始折腾<code>React-Native</code>,<code>Cordova</code>。前前后后折腾了20天。项目任务确定下后，又开始折腾<code>Tigase</code>,<code>Smack</code>。现在项目可以相互之间发送图片，文字了。但是还是不太了解<code>Tigase</code>后端实现。正好前几天把Java EE基础学完。慢慢看看源码。对<code>Tigase</code>源码整理一下。用最原生的做法太耗性能。不逼逼了，上菜。<a id="more"></a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在提及代码前，对Tigase的一些重要概念做一些讲解。逻辑上，所有的tigase代码分为三个部分:</p>
+<ul>
+<li><code>Components</code>,tigase中最重要的东西。拥有独立的地址，可以发送和接收节。可配置，并且可响应各种各样的事件。tigase中主要的组件包括，c2s连接管理器，s2s连接管理器，会话管理器，<em>XEP-0114</em>拓展组件连接组件管理器，MUC等等。</li>
+<li><code>plugin</code>,插件,用于响应处理的xmpp节。没有独立的地址，插件被组件加载，比如<em>VCard</em>,<em>jabber:iq:register</em>,认证等等。</li>
+<li><code>Connectors</code>,连接器用于访问数据信息，比如数据库，LDAP，用于存储和保存用户数据。有两种类型的连接器，包括认证连接器，用户数据连接器。</li>
+</ul>
+<h3 id="Components"><a href="#Components" class="headerlink" title="Components"></a>Components</h3><ul>
+<li><p><code>tigase.server.ServerComponent</code>,这是一个最基本的组件和接口。所有的组件都必须实现它。</p>
+</li>
+<li><p><code>tigase.server.MessageReceiver</code>,实现这个接口可以实现类似c2s管理器和会话管理器接受数据包的功能。</p>
+</li>
+<li><p><code>tigase.conf.Configurable</code>,组件实现这个接口之后可以实现运行时可配置化。</p>
+</li>
+<li><p><code>tigase.disco.XMPPService</code>,对象可以用这个接口来响应<code>ServiceDiscovery</code>请求。</p>
+</li>
+<li><p><code>tigase.stats.StatisticsContainer</code>,对象可以使用这个接口来实现运行时统计的功能。</p>
+</li>
+<li><p><code>tigase.server.AbstractMessageReceiver</code>,实现了一下四个接口。<code>ServerComponent</code>, <code>MessageReceiver</code>, <code>Configurable</code> and <code>StatisticsContainer</code>。它拥有内部队列管理和防死锁的功能。而且必须实现以下两个方法:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">processPacket</span><span class="params">(Packet packet)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">addOutPacket</span><span class="params">(Packet packet)</span></span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>tigase.server.ConnectionManager</code>,它继承自<code>AbstractMessageReceiver</code>,这个类实现网络连接管理工作，如果你的功能需要实现数据包的接受和发送，你应该实现基类。有关一下两个方法:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">processPacket</span><span class="params">(Packet packet)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">abstract</span> Queue <span class="title">processSocketData</span><span class="params">(XMPPIOService serv)</span></span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h3><p>所有的插件的定义和实现被放在<em>tigase.xmpp</em>下，其中包括三种类型的插件:</p>
+<ul>
+<li><code>XMPPProcessorIfc</code>,他是最重要，也是最基本的插件。接收到数据包，处理后返回。</li>
+<li><code>XMPPPreprocessorIfc</code>,对数据包进行预处理。</li>
+<li><code>XMPPPostprocessorIfc</code>,当数据包发送成功后，在进行一些别的操作。</li>
+</ul>
+<h3 id="Connector"><a href="#Connector" class="headerlink" title="Connector"></a>Connector</h3><p>从网络,IO下接受到二进制数据,经过<code>tigase.io</code>–&gt;<code>tigase.net</code>–&gt;<code>tigase.xml</code></p>
+<p>重点内容提到这儿就差不多了。</p>
+<h2 id="Tigase运行流程"><a href="#Tigase运行流程" class="headerlink" title="Tigase运行流程"></a>Tigase运行流程</h2><blockquote>
+<p>忙着呢。这部分先不管。</p>
+</blockquote>
+<h2 id="Tigase-Http-Api配置和开发"><a href="#Tigase-Http-Api配置和开发" class="headerlink" title="Tigase Http Api配置和开发"></a>Tigase Http Api配置和开发</h2><h3 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--comp-name-<span class="number">1</span>=http</span><br><span class="line">--comp-<span class="class"><span class="keyword">class</span>-3</span>=tigase.http.HttpMessageReceiver</span><br></pre></td></tr></table></figure>
+<p>通过配置上面的代码来加载http组建。</p>
+<p>默认的配置组建将尝试 在8080端口上启动独立的Jetty HTTP Server。并且添加默认启动模块，包括RestModule,RestModule将从<code>/rest</code>目录下添加REST API到上下文中。默认情况下，RestModule将会加载位于<code>scripts/rest/xxx</code>的所有groovy脚本。绑定对应的<code>/rest/api</code>。</p>
+<p>注意事项：位于<code>src/scripts/groovy/tigase/rest</code>的HTTP脚本都可用。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java-EE/" rel="tag"># Java EE</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/17/Android杂记/" rel="next" title="Android杂记">
+                <i class="fa fa-chevron-left"></i> Android杂记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/12/24/Android语音录制与播放/" rel="prev" title="Android语音录制与播放">
+                Android语音录制与播放 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="Labradors">
+            
+              <p class="site-author-name" itemprop="name">Labradors</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Components"><span class="nav-number">1.1.</span> <span class="nav-text">Components</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插件"><span class="nav-number">1.2.</span> <span class="nav-text">插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Connector"><span class="nav-number">1.3.</span> <span class="nav-text">Connector</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tigase运行流程"><span class="nav-number">2.</span> <span class="nav-text">Tigase运行流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tigase-Http-Api配置和开发"><span class="nav-number">3.</span> <span class="nav-text">Tigase Http Api配置和开发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本配置"><span class="nav-number">3.1.</span> <span class="nav-text">基本配置</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Labradors</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
