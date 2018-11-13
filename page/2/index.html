@@ -229,7 +229,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/07/MySQL 主从复制+读写分离/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/07/Flask数据库迁移/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Labradors">
@@ -248,7 +248,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/07/MySQL 主从复制+读写分离/" itemprop="url">MySQL主从复制+读写分离</a></h1>
+                <a class="post-title-link" href="/2018/11/07/Flask数据库迁移/" itemprop="url">Flask数据库迁移</a></h1>
         
 
         <div class="post-meta">
@@ -322,69 +322,26 @@
       
         
           
-            <p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fvcgmird90g20hs03kaa8.gif" alt=""></p>
-<p>今天记录一点链上线的数据库方面的骚操作。主要包括MySQL的安装，主从复制，读写分离等等，其余的找时间再写。</p>
-<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fvlk670hlwj20gt0gt74y.jpg" alt=""></p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>系统ubuntu16.04,安装并设置自启动。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install mysql-server</span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl enable mysql-server</span><br></pre></td></tr></table></figure>
-<h2 id="修改主节点master"><a href="#修改主节点master" class="headerlink" title="修改主节点master"></a><strong>修改主节点master</strong></h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/my.cnf</span><br><span class="line">[mysqld]</span><br><span class="line">log-bin=mysql-bin   //[必须]启用二进制日志</span><br><span class="line">server-id=222      //[必须]服务器唯一ID，默认是1，一般取IP最后一段</span><br></pre></td></tr></table></figure>
-<h2 id="修改从节点slave"><a href="#修改从节点slave" class="headerlink" title="修改从节点slave"></a><strong>修改从节点slave</strong></h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/my.cnf</span><br><span class="line">[mysqld]</span><br><span class="line">log-bin=mysql-bin   //[必须]启用二进制日志</span><br><span class="line">server-id=223      //[必须]服务器唯一ID，默认是1，一般取IP最后一段</span><br></pre></td></tr></table></figure>
-<h2 id="授权主节点远程访问"><a href="#授权主节点远程访问" class="headerlink" title="授权主节点远程访问"></a>授权主节点远程访问</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p</span><br><span class="line">GRANT REPLICATION SLAVE ON *.* to 'root'@'%' identified by 'q123456'; </span><br><span class="line">flush privileges;</span><br><span class="line">show master status;</span><br></pre></td></tr></table></figure>
-<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fvlki9rbfrj20nm05bgm2.jpg" alt=""></p>
-<p>记住postion，file。不要骚操作。</p>
-<h2 id="配置从节点供主节点访问"><a href="#配置从节点供主节点访问" class="headerlink" title="配置从节点供主节点访问"></a>配置从节点供主节点访问</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">change master to master_host='192.168.145.222',master_user='root',master_password='q123456',</span><br><span class="line">         master_log_file='mysql-bin.000011',master_log_pos=11045767; </span><br><span class="line">flush privileges;</span><br><span class="line">start slave; </span><br><span class="line">show slave status\G</span><br></pre></td></tr></table></figure>
-<p>看下slave状态</p>
-<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fvlkqf4utfj20r20wan2b.jpg" alt=""></p>
-<p>注：Slave_IO及Slave_SQL进程必须正常运行，即YES状态，否则都是错误的状态(如：其中一个NO均属错误)。以上操作过程，主从服务器配置完成。剩下的就是自己测试下是否ok，这些自己都可以搞了。</p>
-<h2 id="MyCat安装"><a href="#MyCat安装" class="headerlink" title="MyCat安装"></a>MyCat安装</h2><p>MyCat主要作为数据库集群的前端，实现读写分离，分表分库等。一下软件也可以做</p>
-<ul>
-<li>MySQL router</li>
-<li>vitess</li>
-<li>Maxscale</li>
-<li>Atlas</li>
-<li>kingshard</li>
-<li>OneProxy</li>
-<li>Mango</li>
-<li>Sharding-JDBC</li>
+            <p>本文记录<em>Flask</em>数据库升级过程。使用<em>Java Hibernate</em>在模型中加入字段自动就更新了。但是在<em>Flask</em>中就唧唧了，那么<em>Flask</em>中如何更新字段呢。需要用到<em>Flask-Migrate</em>和<em>Flask-Script</em>两个库。如何使用？继续往下看。</p>
+<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fveu2g5kkaj20pp0e9ac1.jpg" alt=""></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Flask-Migrate==<span class="number">2.2</span><span class="number">.1</span></span><br><span class="line">Flask-Script==<span class="number">2.0</span><span class="number">.6</span></span><br></pre></td></tr></table></figure>
+<p>安装两个库，然后注册到Flask app中。</p>
+<h2 id="注册"><a href="#注册" class="headerlink" title="注册"></a>注册</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> app.models.base <span class="keyword">import</span> db</span><br><span class="line"></span><br><span class="line">__author__ = <span class="string">'Labrador'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> flask_migrate <span class="keyword">import</span> Migrate, MigrateCommand  <span class="comment"># 载入migrate扩展</span></span><br><span class="line"><span class="keyword">from</span> flask_script <span class="keyword">import</span> Manager</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> app.app <span class="keyword">import</span> create_app</span><br><span class="line"></span><br><span class="line">app = create_app()</span><br><span class="line">manager = Manager(app)</span><br><span class="line">migrate = Migrate(app, db)  <span class="comment"># 注册migrate到flask</span></span><br><span class="line"></span><br><span class="line">manager.add_command(<span class="string">'db'</span>, MigrateCommand)  <span class="comment"># 在终端环境下添加一个db命令</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    manager.run()</span><br></pre></td></tr></table></figure>
+<p> 添加完成后，更改数据库表结构。执行迁移。</p>
+<h2 id="迁移"><a href="#迁移" class="headerlink" title="迁移"></a>迁移</h2><ul>
+<li>初始化</li>
 </ul>
-<p>不一一的分析，可以自己去探索。下面内容包括 MyCat的安装，配置读写分离。</p>
-<h2 id="JDK安装"><a href="#JDK安装" class="headerlink" title="JDK安装"></a>JDK安装</h2><p><a href="https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="noopener">下载地址</a>在这儿，找到自己系统的版本，下载即可。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://download.oracle.com/otn-pub/java/jdk/8u181-b13/96a7b8442fe848ef90c96a2fad6ed6d1/jdk-8u181-linux-x64.tar.gz?AuthParam=1537842928_c32f510683c93346590cf97f05137fa3</span><br><span class="line"></span><br><span class="line">mv wget jdk* jdk-8u181-linux-x64.tar.gz</span><br><span class="line">mkdir /usr/lib/jvm</span><br><span class="line">tar -zxvf jdk-8u181-linux-x64.tar.gz -C /usr/lib/jvm</span><br></pre></td></tr></table></figure>
-<h2 id="JDK配置"><a href="#JDK配置" class="headerlink" title="JDK配置"></a>JDK配置</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile</span><br><span class="line">export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_181</span><br><span class="line">export JRE_HOME=$&#123;JAVA_HOME&#125;/jre</span><br><span class="line">export CLASSPATH=.:$&#123;JAVA_HOME&#125;/lib:$&#123;JRE_HOME&#125;/lib</span><br></pre></td></tr></table></figure>
-<h2 id="MyCat下载配置"><a href="#MyCat下载配置" class="headerlink" title="MyCat下载配置"></a>MyCat下载配置</h2><p><a href="http://dl.mycat.io/1.6.6/" target="_blank" rel="noopener">下载地址</a>， 选择需要的版本下载即可。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget http://dl.mycat.io/1.6.6/Mycat-server-1.6.6.1-test-20180729105217-linux.tar.gz</span><br><span class="line">tar -zxvf Mycat* -C /usr/local</span><br></pre></td></tr></table></figure>
-<p>配置环境变量</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile</span><br><span class="line">export MYCAT_HOME=/usr/local/mycat</span><br><span class="line">export PATH=$&#123;JAVA_HOME&#125;/bin:$&#123;MYCAT_HOME&#125;/bin:$&#123;PATH&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="读写分离配置"><a href="#读写分离配置" class="headerlink" title="读写分离配置"></a>读写分离配置</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/local/mycat/conf</span><br><span class="line">vim server.xml</span><br><span class="line">&lt;user name="用户名/root" defaultAccount="true"&gt;</span><br><span class="line">                &lt;property name="password"&gt;密码/q123456&lt;/property&gt;</span><br><span class="line">                &lt;property name="schemas"&gt;数据库名/obc&lt;/property&gt;</span><br><span class="line">&lt;/user&gt;</span><br></pre></td></tr></table></figure>
-<p> 添加上面的用户配置。</p>
-<p>然后添加具体的DataNode配置</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">vim sc.xml</span><br><span class="line">&lt;dataNode name="dn5" dataHost="data1" database="obc" /&gt;</span><br><span class="line">&lt;dataHost name="data1" maxCon="1000" minCon="10" balance="1" writeType="0"</span><br><span class="line">                         dbType="mysql" dbDriver="native" switchType="-1"  slaveThreshold="100"&gt;</span><br><span class="line">                &lt;heartbeat&gt;show slave status&lt;/heartbeat&gt;</span><br><span class="line">                &lt;!-- can have multi write hosts --&gt;</span><br><span class="line">                &lt;writeHost host="hostM1" url="ip:3306" user="数据库用户名/root"</span><br><span class="line">                                   password="密码/q12345"&gt;</span><br><span class="line">                        &lt;!-- can have multi read hosts --&gt;</span><br><span class="line">                        &lt;readHost host="hostS2" url="ip:3306" user="root"</span><br><span class="line">                                password="密码/q12345" /&gt;</span><br><span class="line">                &lt;/writeHost&gt;</span><br><span class="line">        &lt;/dataHost&gt;</span><br></pre></td></tr></table></figure>
-<p>这里面，有两个参数需要注意，balance和 switchType。</p>
-<p>其中，balance指的负载均衡类型，目前的取值有4种：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py db init</span><br></pre></td></tr></table></figure>
 <ul>
-<li>balance=”0”, 不开启读写分离机制，所有读操作都发送到当前可用的writeHost上。</li>
-<li>balance=”1”，全部的readHost与stand by writeHost参与select语句的负载均衡，简单的说，当双主双从模式(M1-&gt;S1，M2-&gt;S2，并且M1与 M2互为主备)，正常情况下，M2,S1,S2都参与select语句的负载均衡</li>
-<li>balance=”2”，所有读操作都随机的在writeHost、readhost上分发。</li>
-<li>balance=”3”，所有读请求随机的分发到wiriterHost对应的readhost执行，writerHost不负担读压力</li>
+<li>迁移</li>
 </ul>
-<p>switchType指的是切换的模式，目前的取值也有4种：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py db migrate -m “migrate db”</span><br></pre></td></tr></table></figure>
 <ul>
-<li><p>switchType=’-1’ 表示不自动切换</p>
-</li>
-<li><p>switchType=’1’ 默认值，表示自动切换</p>
-</li>
-<li><p>switchType=’2’ 基于MySQL主从同步的状态决定是否切换,心跳语句为 show slave status</p>
-</li>
-<li><p>switchType=’3’基于MySQL galary cluster的切换机制（适合集群）（1.4.1），心跳语句为 show status like ‘wsrep%’。</p>
-<p>因此，该配置文件中的balance=”1”意味着作为stand by writeHost的hostS1和hostS2将参与select语句的负载均衡，这就实现了主从的读写分离，switchType=’-1’意味着当主挂掉的时候，不进行自动切换，即hostS1和hostS2并不会被提升为主，仍只提供读的功能。这就避免了将数据写进slave的可能性，毕竟，单纯的MySQL主从集群并不允许将数据读进slave中，除非配置的是双master。</p>
-</li>
+<li>更新表结构</li>
 </ul>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>文档大概记录了MySQL的主从复制与读写分离。后面有时间再谢谢MySQL优化之类的。不是专门做后端的，写的不好不要找我。近期写了一个区块链相关的Android app.有玩币的大佬可以下载玩玩，包含一千多种币行情，金色财经，巴比特，币世界，交易所新闻公众。玩客云矿工也可以进来玩玩，可以查看玩客云行情，统计，及大量玩客云机器管理。下载地址：<a href="https://www.pgyer.com/RHNg" target="_blank" rel="noopener">https://www.pgyer.com/RHNg</a> 。好了，就这样。</p>
-<hr>
-<blockquote>
-<p>欢迎<strong>长按下图 -&gt; 识别图中二维码</strong>或者微信<strong>扫一扫</strong>关注我的公众号<br><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fpzuv3q8ayj20w60ea11n.jpg" alt=""></p>
-</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py db upgrade</span><br></pre></td></tr></table></figure>
+<p> 第一步执行一次即可，每次更新执行第二步及第三部即可。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文记录的方式不属于最新版本的Flask，如需使用最新版本Flask数据库迁移的，请前往<a href="https://flask-migrate.readthedocs.io/en/latest/" target="_blank" rel="noopener">Flask-Migrate</a>.</p>
 
           
         
@@ -1139,6 +1096,155 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/16/三角套利项目搭建之Flask全局异常处理/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/16/三角套利项目搭建之Flask全局异常处理/" itemprop="url">三角套利项目搭建之Flask全局异常处理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-16T10:32:45+08:00">
+                2018-10-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Flask/" itemprop="url" rel="index">
+                    <span itemprop="name">Flask</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>在 Flask 上实现 RESTful API 很普通。开发人员遇到最头疼的一件事是意识到内建 的异常对 API 没有足够的表达能力，并且它们触发的 <em>text/html</em> 的内 容类型对于 API 消费者来说如同鸡肋。</p>
+<p>对于非法使用 API 来说，比仅仅对信号错误使用 <code>abort</code> 更好的是，实现你自己 的异常类型并为之安装一个错误处理器，这样更符合用户的预期。</p>
+<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu6ykq8d7ij217y0qygpl.jpg" alt=""></p>
+<h2 id="定义异常基类"><a href="#定义异常基类" class="headerlink" title="定义异常基类"></a>定义异常基类</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 　_*_coding:utf-8_*_</span></span><br><span class="line"><span class="comment"># author: labradors</span></span><br><span class="line"><span class="comment"># time: 18-8-10 上午9:09</span></span><br><span class="line"><span class="comment"># file: exception.py</span></span><br><span class="line"><span class="comment"># ide: PyCharm</span></span><br><span class="line"><span class="comment"># desc:</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> request, json</span><br><span class="line"><span class="keyword">from</span> werkzeug.exceptions <span class="keyword">import</span> HTTPException</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">APIException</span><span class="params">(HTTPException)</span>:</span></span><br><span class="line">    code = <span class="number">500</span></span><br><span class="line">    msg = <span class="string">"发生异常..."</span></span><br><span class="line">    error_code = <span class="number">999</span></span><br><span class="line">    obj = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, code=None, msg=None, error_code=None, obj=None)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> code:</span><br><span class="line">            self.code = code</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> msg:</span><br><span class="line">            self.msg = msg</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> error_code:</span><br><span class="line">            self.error_code = error_code</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> obj:</span><br><span class="line">            self.obj = obj</span><br><span class="line"></span><br><span class="line">        super(APIException, self).__init__(msg, <span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_body</span><span class="params">(self, environ=None)</span>:</span></span><br><span class="line">        body = dict(</span><br><span class="line">            msg=self.msg,</span><br><span class="line">            error_code=self.error_code,</span><br><span class="line">            request=request.method + <span class="string">' '</span> + self.get_url_no_param(),</span><br><span class="line">            obj=json.dumps(self.obj)</span><br><span class="line">        )</span><br><span class="line">        text = json.dumps(body)</span><br><span class="line">        <span class="keyword">return</span> text</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_headers</span><span class="params">(self, environ=None)</span>:</span></span><br><span class="line">        <span class="string">"""Get a list of headers."""</span></span><br><span class="line">        <span class="keyword">return</span> [(<span class="string">'Content-Type'</span>, <span class="string">'application/json'</span>)]</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_url_no_param</span><span class="params">()</span>:</span></span><br><span class="line">        full_path = str(request.full_path)</span><br><span class="line">        main_path = full_path.split(<span class="string">'?'</span>)</span><br><span class="line">        <span class="keyword">return</span> main_path[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="定义不同的异常"><a href="#定义不同的异常" class="headerlink" title="定义不同的异常"></a>定义不同的异常</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 　_*_coding:utf-8_*_</span></span><br><span class="line"><span class="comment"># author: labradors</span></span><br><span class="line"><span class="comment"># time: 18-8-10 上午9:19</span></span><br><span class="line"><span class="comment"># file: exception_code.py</span></span><br><span class="line"><span class="comment"># ide: PyCharm</span></span><br><span class="line"><span class="comment"># desc:</span></span><br><span class="line"><span class="keyword">from</span> app.lib.exception <span class="keyword">import</span> APIException</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Success</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">201</span></span><br><span class="line">    msg = <span class="string">'ok'</span></span><br><span class="line">    error_code = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DeleteSuccess</span><span class="params">(Success)</span>:</span></span><br><span class="line">    code = <span class="number">202</span></span><br><span class="line">    error_code = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ServerError</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">500</span></span><br><span class="line">    msg = <span class="string">'服务器发生异常 (*￣︶￣)!'</span></span><br><span class="line">    error_code = <span class="number">999</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ParameterError</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">400</span></span><br><span class="line">    msg = <span class="string">'参数类型错误(*￣︶￣)!'</span></span><br><span class="line">    error_code = <span class="number">1006</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ParameterException</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">400</span></span><br><span class="line">    msg = <span class="string">'参数不正确(*￣︶￣)!'</span></span><br><span class="line">    error_code = <span class="number">1000</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NotFound</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">404</span></span><br><span class="line">    msg = <span class="string">'没有找到该资源 O__O...'</span></span><br><span class="line">    error_code = <span class="number">1001</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AuthFailed</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">401</span></span><br><span class="line">    error_code = <span class="number">1005</span></span><br><span class="line">    msg = <span class="string">'认证失败(*￣︶￣)!'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Forbidden</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">403</span></span><br><span class="line">    error_code = <span class="number">1004</span></span><br><span class="line">    msg = <span class="string">'禁止访问(*￣︶￣)!'</span></span><br></pre></td></tr></table></figure>
+<p>异常处理类定义完成后我们要定义一个异常处理器，告诉flask，如下:</p>
+<h2 id="异常处理器"><a href="#异常处理器" class="headerlink" title="异常处理器"></a>异常处理器</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.errorhandler(Exception)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">handle_invalid_usage</span><span class="params">(error)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(error, APIException):</span><br><span class="line">        <span class="keyword">return</span> error.get_body()</span><br><span class="line">    <span class="keyword">elif</span> isinstance(error, HTTPException):</span><br><span class="line">        code = error.code</span><br><span class="line">        msg = error.description</span><br><span class="line">        error_code = <span class="number">1007</span></span><br><span class="line">        <span class="keyword">return</span> APIException(msg, code, error_code).get_body()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># if not app.config['DEBUG']:</span></span><br><span class="line">        <span class="comment">#     return ServerError()</span></span><br><span class="line">        <span class="comment"># else:</span></span><br><span class="line">        <span class="keyword">raise</span> error</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>文章代码比较多，没有深入的异常处理核心代码。算是工作笔记吧。以后flask源码分析的时候再写。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/16/CoinMarketCap接口分析/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1406,155 +1512,6 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;work.labradors.ui.view.TipButton</span><br><span class="line">    android:id=<span class="string">"@+id/home_user_rb"</span></span><br><span class="line">    style=<span class="string">"@style/TabMenuText"</span></span><br><span class="line">    android:drawableTop=<span class="string">"@drawable/tab_user_btn"</span></span><br><span class="line">    android:text=<span class="string">"@string/home_mine_text"</span></span><br><span class="line">             /&gt;</span><br></pre></td></tr></table></figure>
 <p>里面的具体样式，根据你的需求来实现就行。  里面我们还实现了一个是否显示小红点的方法</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTipOn</span><span class="params">(<span class="keyword">boolean</span> tip)</span> </span>&#123;</span><br><span class="line">     <span class="keyword">this</span>.mTipOn = tip;</span><br><span class="line">    	invalidate();</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/10/16/三角套利项目搭建之Flask全局异常处理/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Labradors">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Labradors">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/16/三角套利项目搭建之Flask全局异常处理/" itemprop="url">三角套利项目搭建之Flask全局异常处理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-16T10:32:45+08:00">
-                2018-10-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flask/" itemprop="url" rel="index">
-                    <span itemprop="name">Flask</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在 Flask 上实现 RESTful API 很普通。开发人员遇到最头疼的一件事是意识到内建 的异常对 API 没有足够的表达能力，并且它们触发的 <em>text/html</em> 的内 容类型对于 API 消费者来说如同鸡肋。</p>
-<p>对于非法使用 API 来说，比仅仅对信号错误使用 <code>abort</code> 更好的是，实现你自己 的异常类型并为之安装一个错误处理器，这样更符合用户的预期。</p>
-<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu6ykq8d7ij217y0qygpl.jpg" alt=""></p>
-<h2 id="定义异常基类"><a href="#定义异常基类" class="headerlink" title="定义异常基类"></a>定义异常基类</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 　_*_coding:utf-8_*_</span></span><br><span class="line"><span class="comment"># author: labradors</span></span><br><span class="line"><span class="comment"># time: 18-8-10 上午9:09</span></span><br><span class="line"><span class="comment"># file: exception.py</span></span><br><span class="line"><span class="comment"># ide: PyCharm</span></span><br><span class="line"><span class="comment"># desc:</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> request, json</span><br><span class="line"><span class="keyword">from</span> werkzeug.exceptions <span class="keyword">import</span> HTTPException</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">APIException</span><span class="params">(HTTPException)</span>:</span></span><br><span class="line">    code = <span class="number">500</span></span><br><span class="line">    msg = <span class="string">"发生异常..."</span></span><br><span class="line">    error_code = <span class="number">999</span></span><br><span class="line">    obj = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, code=None, msg=None, error_code=None, obj=None)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> code:</span><br><span class="line">            self.code = code</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> msg:</span><br><span class="line">            self.msg = msg</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> error_code:</span><br><span class="line">            self.error_code = error_code</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> obj:</span><br><span class="line">            self.obj = obj</span><br><span class="line"></span><br><span class="line">        super(APIException, self).__init__(msg, <span class="keyword">None</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_body</span><span class="params">(self, environ=None)</span>:</span></span><br><span class="line">        body = dict(</span><br><span class="line">            msg=self.msg,</span><br><span class="line">            error_code=self.error_code,</span><br><span class="line">            request=request.method + <span class="string">' '</span> + self.get_url_no_param(),</span><br><span class="line">            obj=json.dumps(self.obj)</span><br><span class="line">        )</span><br><span class="line">        text = json.dumps(body)</span><br><span class="line">        <span class="keyword">return</span> text</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_headers</span><span class="params">(self, environ=None)</span>:</span></span><br><span class="line">        <span class="string">"""Get a list of headers."""</span></span><br><span class="line">        <span class="keyword">return</span> [(<span class="string">'Content-Type'</span>, <span class="string">'application/json'</span>)]</span><br><span class="line"></span><br><span class="line"><span class="meta">    @staticmethod</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_url_no_param</span><span class="params">()</span>:</span></span><br><span class="line">        full_path = str(request.full_path)</span><br><span class="line">        main_path = full_path.split(<span class="string">'?'</span>)</span><br><span class="line">        <span class="keyword">return</span> main_path[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
-<h2 id="定义不同的异常"><a href="#定义不同的异常" class="headerlink" title="定义不同的异常"></a>定义不同的异常</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 　_*_coding:utf-8_*_</span></span><br><span class="line"><span class="comment"># author: labradors</span></span><br><span class="line"><span class="comment"># time: 18-8-10 上午9:19</span></span><br><span class="line"><span class="comment"># file: exception_code.py</span></span><br><span class="line"><span class="comment"># ide: PyCharm</span></span><br><span class="line"><span class="comment"># desc:</span></span><br><span class="line"><span class="keyword">from</span> app.lib.exception <span class="keyword">import</span> APIException</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Success</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">201</span></span><br><span class="line">    msg = <span class="string">'ok'</span></span><br><span class="line">    error_code = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DeleteSuccess</span><span class="params">(Success)</span>:</span></span><br><span class="line">    code = <span class="number">202</span></span><br><span class="line">    error_code = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ServerError</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">500</span></span><br><span class="line">    msg = <span class="string">'服务器发生异常 (*￣︶￣)!'</span></span><br><span class="line">    error_code = <span class="number">999</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ParameterError</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">400</span></span><br><span class="line">    msg = <span class="string">'参数类型错误(*￣︶￣)!'</span></span><br><span class="line">    error_code = <span class="number">1006</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ParameterException</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">400</span></span><br><span class="line">    msg = <span class="string">'参数不正确(*￣︶￣)!'</span></span><br><span class="line">    error_code = <span class="number">1000</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NotFound</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">404</span></span><br><span class="line">    msg = <span class="string">'没有找到该资源 O__O...'</span></span><br><span class="line">    error_code = <span class="number">1001</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AuthFailed</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">401</span></span><br><span class="line">    error_code = <span class="number">1005</span></span><br><span class="line">    msg = <span class="string">'认证失败(*￣︶￣)!'</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Forbidden</span><span class="params">(APIException)</span>:</span></span><br><span class="line">    code = <span class="number">403</span></span><br><span class="line">    error_code = <span class="number">1004</span></span><br><span class="line">    msg = <span class="string">'禁止访问(*￣︶￣)!'</span></span><br></pre></td></tr></table></figure>
-<p>异常处理类定义完成后我们要定义一个异常处理器，告诉flask，如下:</p>
-<h2 id="异常处理器"><a href="#异常处理器" class="headerlink" title="异常处理器"></a>异常处理器</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.errorhandler(Exception)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">handle_invalid_usage</span><span class="params">(error)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(error, APIException):</span><br><span class="line">        <span class="keyword">return</span> error.get_body()</span><br><span class="line">    <span class="keyword">elif</span> isinstance(error, HTTPException):</span><br><span class="line">        code = error.code</span><br><span class="line">        msg = error.description</span><br><span class="line">        error_code = <span class="number">1007</span></span><br><span class="line">        <span class="keyword">return</span> APIException(msg, code, error_code).get_body()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># if not app.config['DEBUG']:</span></span><br><span class="line">        <span class="comment">#     return ServerError()</span></span><br><span class="line">        <span class="comment"># else:</span></span><br><span class="line">        <span class="keyword">raise</span> error</span><br></pre></td></tr></table></figure>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>文章代码比较多，没有深入的异常处理核心代码。算是工作笔记吧。以后flask源码分析的时候再写。</p>
 
           
         
@@ -1952,7 +1909,7 @@
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
@@ -1963,7 +1920,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
