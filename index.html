@@ -259,6 +259,152 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2018/11/17/2018-11-15-Android设计模式/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/17/2018-11-15-Android设计模式/" itemprop="url">Android设计模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-17T10:32:45+08:00">
+                2018-11-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>本篇文章重温一下Android面向对象六大原则，Android设计模式，Android架构模式，多线程，Android性能分析工具。当然，不需要这些东西也可以写出代码，不过使用了面向对象原则，设计模式，架构模式能使程序更健壮、更稳定、容易扩展、更规范等等优点。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/11/17/2018-11-15-Android设计模式/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2018/11/16/EMQ百万级MQTT MySql鉴权/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -351,30 +497,15 @@
 
       
         
-          
-            <p>EMQ基于高并发的Erlang/OTP语言平台设计，支持百万级连接和分布式集群，发布订阅模式的开源MQTT消息服务器，完整支持MQTT V3.1/V3.1.1协议规范，扩展支持WebSocket、Stomp、CoAP、MQTT-SN或私有TCP协议。</p>
+          <p>EMQ基于高并发的Erlang/OTP语言平台设计，支持百万级连接和分布式集群，发布订阅模式的开源MQTT消息服务器，完整支持MQTT V3.1/V3.1.1协议规范，扩展支持WebSocket、Stomp、CoAP、MQTT-SN或私有TCP协议。</p>
 <p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu2ad6natuj20mi0b6wgh.jpg" alt=""></p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><em>EMQ</em> 2.0 Docker 镜像下载: <a href="http://emqtt.com/downloads/latest/docker" target="_blank" rel="noopener">http://emqtt.com/downloads/latest/docker</a></p>
-<p>解压 emqttd-docker 镜像包:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unzip emqttd-docker-v2.0.zip</span><br></pre></td></tr></table></figure>
-<p>加载镜像:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker load &lt; emqttd-docker-v2.0</span><br></pre></td></tr></table></figure>
-<p>启动容器:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -tid --name emq20 -p 1883:1883 -p 8083:8083 -p 8883:8883 -p 8084:8084 -p 18083:18083 emqttd-docker-v2.0</span><br></pre></td></tr></table></figure>
-<p>停止容器:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop emq20</span><br></pre></td></tr></table></figure>
-<p>开启容器:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker start emq20</span><br></pre></td></tr></table></figure>
-<p>进入 Docker 控制台:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it emq20 /bin/sh</span><br></pre></td></tr></table></figure>
-<h2 id="MySQL认证"><a href="#MySQL认证" class="headerlink" title="MySQL认证"></a>MySQL认证</h2><p>通过命令进入emq，关闭匿名认证</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim etc/emq.conf </span><br><span class="line">mqtt.allow_anonymous = false</span><br></pre></td></tr></table></figure>
-<h3 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `mqtt_user` (</span><br><span class="line">  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `username` varchar(100) DEFAULT NULL,</span><br><span class="line">  `password` varchar(100) DEFAULT NULL,</span><br><span class="line">  `salt` varchar(20) DEFAULT NULL,</span><br><span class="line">  `is_superuser` tinyint(1) DEFAULT 0,</span><br><span class="line">  `created` datetime DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`),</span><br><span class="line">  UNIQUE KEY `mqtt_username` (`username`)</span><br><span class="line">) ENGINE=MyISAM DEFAULT CHARSET=utf8;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">CREATE TABLE `mqtt_acl` (</span><br><span class="line">  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `allow` int(1) DEFAULT NULL COMMENT &apos;0: deny, 1: allow&apos;,</span><br><span class="line">  `ipaddr` varchar(60) DEFAULT NULL COMMENT &apos;IpAddress&apos;,</span><br><span class="line">  `username` varchar(100) DEFAULT NULL COMMENT &apos;Username&apos;,</span><br><span class="line">  `clientid` varchar(100) DEFAULT NULL COMMENT &apos;ClientId&apos;,</span><br><span class="line">  `access` int(2) NOT NULL COMMENT &apos;1: subscribe, 2: publish, 3: pubsub&apos;,</span><br><span class="line">  `topic` varchar(100) NOT NULL DEFAULT &apos;&apos; COMMENT &apos;Topic Filter&apos;,</span><br><span class="line">  PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-- 建立ACL默认访问控制</span><br><span class="line">INSERT INTO `mqtt_acl` (`id`, `allow`, `ipaddr`, `username`, `clientid`, `access`, `topic`)</span><br><span class="line">VALUES</span><br><span class="line">    (1,1,NULL,&apos;$all&apos;,NULL,2,&apos;#&apos;),</span><br><span class="line">    (2,0,NULL,&apos;$all&apos;,NULL,1,&apos;$SYS/#&apos;),</span><br><span class="line">    (3,0,NULL,&apos;$all&apos;,NULL,1,&apos;eq #&apos;),</span><br><span class="line">    (5,1,&apos;127.0.0.1&apos;,NULL,NULL,2,&apos;$SYS/#&apos;),</span><br><span class="line">    (6,1,&apos;127.0.0.1&apos;,NULL,NULL,2,&apos;#&apos;),</span><br><span class="line">    (7,1,NULL,&apos;dashboard&apos;,NULL,1,&apos;$SYS/#&apos;);</span><br></pre></td></tr></table></figure>
-<h3 id="修改mysql配置文件"><a href="#修改mysql配置文件" class="headerlink" title="修改mysql配置文件"></a>修改mysql配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd etc/plugins/emq_auth_mysql.conf</span><br><span class="line"></span><br><span class="line">auth.mysql.server = xxxxxxxxx:3306</span><br><span class="line">auth.mysql.username = root</span><br><span class="line">auth.mysql.password = xxxxxxxx</span><br><span class="line">auth.mysql.database = emq</span><br></pre></td></tr></table></figure>
-<p>最后重启emq</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker restart emq20</span><br></pre></td></tr></table></figure>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/11/16/EMQ百万级MQTT MySql鉴权/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -513,37 +644,17 @@
 
       
         
-          
-            <p>学了几天Django，会用，但还是很懵比，还是准备使用Flask ,Flask在模块中导入app,但是在模块内部直接导入app会导致app的循环调用问题．那么在这里会使用蓝图．那么蓝图是什么呢?<br><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu4c89fopij20zk0k0jui.jpg" alt=""></p>
+          <p>学了几天Django，会用，但还是很懵比，还是准备使用Flask ,Flask在模块中导入app,但是在模块内部直接导入app会导致app的循环调用问题．那么在这里会使用蓝图．那么蓝图是什么呢?<br><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu4c89fopij20zk0k0jui.jpg" alt=""></p>
 <blockquote>
 <p>Flask 用 <em>蓝图（blueprints）</em> 的概念来在一个应用中或跨应用制作应用组件和支持通用的模式。蓝图很好地简化了大型应用工作的方式，并提供给 Flask 扩展在应用上注册操作的核心方法。一个 <code>Blueprint</code> 对象与 <code>Flask</code> 应用对象的工作方式很像，但它确实不是一个应用，而是一个描述如何构建或扩展应用的 <em>蓝图</em> 。</p>
 </blockquote>
-<h2 id="为什么使用蓝图"><a href="#为什么使用蓝图" class="headerlink" title="为什么使用蓝图"></a>为什么使用蓝图</h2><p>Flask 中的蓝图为这些情况设计:</p>
-<ul>
-<li>把一个应用分解为一个蓝图的集合。这对大型应用是理想的。一个项目可以实例化一个应用对象，初始化几个扩展，并注册一集合的蓝图。</li>
-<li>以 URL 前缀和/或子域名，在应用上注册一个蓝图。 URL 前缀/子域名中的参数即成为这个蓝图下的所有视图函数的共同的视图参数（默认情况下）。</li>
-<li>在一个应用中用不同的 URL 规则多次注册一个蓝图。</li>
-<li>通过蓝图提供模板过滤器、静态文件、模板和其它功能。一个蓝图不一定要实现应用或者视图函数。</li>
-<li>初始化一个 Flask 扩展时，在这些情况中注册一个蓝图。</li>
-</ul>
-<p>##　蓝图创建和注册</p>
-<h3 id="蓝图创建"><a href="#蓝图创建" class="headerlink" title="蓝图创建"></a>蓝图创建</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">api = Blueprint(<span class="string">'user'</span>, __name__)</span><br></pre></td></tr></table></figure>
-<h3 id="蓝图注册"><a href="#蓝图注册" class="headerlink" title="蓝图注册"></a>蓝图注册</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_app</span><span class="params">()</span>:</span></span><br><span class="line">    app = Flask(__name__)</span><br><span class="line">    app.register_blueprint(api)</span><br><span class="line">    <span class="keyword">return</span> app</span><br></pre></td></tr></table></figure>
-<p>这样就可以在项目中以模块化的方式来进行架构，并且不会造成循环导入的问题.但是如果我注册一个问题细化，在views中编写一个接口如下:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@api.route('/v1/user/get', methods=['GET'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_user</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"I am get"</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@api.route('/v1/user/set', methods=['POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_user</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"I am set"</span></span><br></pre></td></tr></table></figure>
-<p>如上我们所有的接口使用了重复的前缀，那如何解决这个问题呢，我们可以使用自定义的红图.</p>
-<h2 id="红图"><a href="#红图" class="headerlink" title="红图"></a>红图</h2><p>先看红图的代码</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RedPrint</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.mound = []</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">route</span><span class="params">(self, rule, **options)</span>:</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">decorator</span><span class="params">(f)</span>:</span></span><br><span class="line">            self.mound.append((f, rule, options))</span><br><span class="line">            <span class="keyword">return</span> f</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> decorator</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">register</span><span class="params">(self, bp, url_prefix=None)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> url_prefix <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            url_prefix = <span class="string">'/'</span> + self.name</span><br><span class="line">        <span class="keyword">for</span> f, rule, options <span class="keyword">in</span> self.mound:</span><br><span class="line">            endpoint = self.name + <span class="string">'+'</span> + \</span><br><span class="line">                       options.pop(<span class="string">"endpoint"</span>, f.__name__)</span><br><span class="line">            bp.add_url_rule(url_prefix + rule, endpoint, f, **options)</span><br></pre></td></tr></table></figure>
-<p>下面在views中直接使用红图的装饰器．</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">api = RedPrint(<span class="string">'user'</span>)</span><br><span class="line"><span class="meta">@api.route('/get', methods=['GET'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_user</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">"I am labradors"</span></span><br></pre></td></tr></table></figure>
-<p>然后将红图注入到蓝图，并且创建蓝图</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_blueprint_v1</span><span class="params">()</span>:</span></span><br><span class="line">    bp_v1 = Blueprint(<span class="string">'v1'</span>, __name__)</span><br><span class="line">    user.api.register(bp_v1)</span><br><span class="line">    <span class="keyword">return</span> bp_v1</span><br></pre></td></tr></table></figure>
-<p>最后将蓝图注入到app中</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_app</span><span class="params">()</span>:</span></span><br><span class="line">    app = Flask(__name__)</span><br><span class="line">    app.register_blueprint(create_blueprint_v1(), url_prefix=<span class="string">'/v1'</span>)</span><br><span class="line">    <span class="keyword">return</span> app</span><br></pre></td></tr></table></figure>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本篇文章记录蓝图在Flask项目中的使用，并且对蓝图进行了细化，创建了红图．架构更加完善．</p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/11/16/三角套利项目搭建之蓝图/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -682,16 +793,15 @@
 
       
         
-          
-            <p>项目中需要使用登陆，注册等，很多字段需要进行验证，其实我们自己编写代码进行实现，不过不太清真，而且也麻烦，所以使用WTForms库。文章记录在Flask下表单框架WTForms的使用。</p>
+          <p>项目中需要使用登陆，注册等，很多字段需要进行验证，其实我们自己编写代码进行实现，不过不太清真，而且也麻烦，所以使用WTForms库。文章记录在Flask下表单框架WTForms的使用。</p>
 <p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu6yl6mbtwj212g0dsgon.jpg" alt=""></p>
-<h2 id="表单"><a href="#表单" class="headerlink" title="表单"></a>表单</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RegForm</span><span class="params">(Form)</span>:</span></span><br><span class="line">    account = StringField(validators=[DataRequired(message=<span class="string">'不允许为空'</span>),</span><br><span class="line">                                      length(min=<span class="number">5</span>, max=<span class="number">32</span>)])</span><br><span class="line">    secret = StringField(validators=[</span><br><span class="line">        DataRequired(),</span><br><span class="line">        Regexp(<span class="string">r'^[A-Za-z0-9_*&amp;$#@]&#123;6,22&#125;$'</span>)</span><br><span class="line">    ])</span><br><span class="line">    nickname = StringField(validators=[DataRequired(),</span><br><span class="line">                                       length(min=<span class="number">2</span>, max=<span class="number">22</span>)])</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate_account</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        user = User.query.filter_by(email=value.data).first()</span><br><span class="line">        <span class="keyword">if</span> user:</span><br><span class="line">            <span class="keyword">raise</span> ParameterError(msg=<span class="string">"邮箱已使用..."</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate_nickname</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        user = User.query.filter_by(nickname=value.data).first()</span><br><span class="line">        <span class="keyword">if</span> user:</span><br><span class="line">            <span class="keyword">raise</span> ParameterError(msg=<span class="string">"用户名已使用..."</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginForm</span><span class="params">(Form)</span>:</span></span><br><span class="line">    account = StringField(validators=[DataRequired(message=<span class="string">'不允许为空'</span>),</span><br><span class="line">                                      length(min=<span class="number">5</span>, max=<span class="number">32</span>)])</span><br><span class="line">    secret = StringField(validators=[</span><br><span class="line">        DataRequired(),</span><br><span class="line">        Regexp(<span class="string">r'^[A-Za-z0-9_*&amp;$#@]&#123;6,22&#125;$'</span>)</span><br><span class="line">    ])</span><br></pre></td></tr></table></figure>
-<p>上面一部分是注册表单，一部分是登陆表单。</p>
-<h2 id="views中使用"><a href="#views中使用" class="headerlink" title="views中使用"></a>views中使用</h2><p>写完表单代码后，我们需要在views中实现，具体代码如下:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@api.route('/create', methods=['POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_user</span><span class="params">()</span>:</span></span><br><span class="line">    form = RegForm().validate_for_api()</span><br><span class="line">    user = User.register_by_email(form.nickname.data,</span><br><span class="line">                                  form.account.data,</span><br><span class="line">                                  form.secret.data)</span><br><span class="line">    <span class="keyword">return</span> Success(obj=user)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@api.route('/login', methods=['POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">login_user</span><span class="params">()</span>:</span></span><br><span class="line">    form = LoginForm().validate_for_api()</span><br><span class="line">    user = Auth().authenticate(form.account.data, form.secret.data)</span><br><span class="line">    <span class="keyword">return</span> Success(obj=user)</span><br></pre></td></tr></table></figure>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>文章记录flask表单的使用，后续会涉及表单文件上传等内容。。</p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/11/16/三角套利项目搭建之Flask WTForms表单处理/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -830,157 +940,11 @@
 
       
         
-          
-            <p>jwt就不过多介绍了，记得之前有写过一篇文章。这篇文章仅仅记录在Flask下jwt的使用。整个流程分为三步,1. 认证生成token。2. token认证。3. 在flask下进行注册。</p>
+          <p>jwt就不过多介绍了，记得之前有写过一篇文章。这篇文章仅仅记录在Flask下jwt的使用。整个流程分为三步,1. 认证生成token。2. token认证。3. 在flask下进行注册。</p>
 <p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu6yljf8eej20ac03ra9y.jpg" alt=""></p>
-<h2 id="生成Token"><a href="#生成Token" class="headerlink" title="生成Token"></a>生成Token</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">encode_auth_token</span><span class="params">(self, user_id, login_time)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        生成认证Token</span></span><br><span class="line"><span class="string">        :param user_id: int</span></span><br><span class="line"><span class="string">        :param login_time: int(timestamp)</span></span><br><span class="line"><span class="string">        :return: string</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            payload = &#123;</span><br><span class="line">                <span class="string">'sub'</span>: user_id,</span><br><span class="line">                <span class="string">'exp'</span>: datetime.utcnow() + timedelta(days=<span class="number">7</span>),</span><br><span class="line">                <span class="string">'iat'</span>: datetime.utcnow(),</span><br><span class="line">                <span class="string">'nbf'</span>: datetime.utcnow(),</span><br><span class="line">                <span class="string">'iss'</span>: <span class="string">'ken'</span>,</span><br><span class="line">                <span class="string">'data'</span>: &#123;</span><br><span class="line">                    <span class="string">'id'</span>: user_id,</span><br><span class="line">                    <span class="string">'login_time'</span>: login_time</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> jwt.encode(</span><br><span class="line">                payload,</span><br><span class="line">                secure.SECRET_KEY,</span><br><span class="line">                algorithm=<span class="string">'HS256'</span></span><br><span class="line">            )</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">            <span class="keyword">return</span> e</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">authenticate</span><span class="params">(self, email, password)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        用户登录，登录成功返回token，写将登录时间写入数据库；登录失败返回失败原因</span></span><br><span class="line"><span class="string">        :param email:</span></span><br><span class="line"><span class="string">        :param password:</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        userInfo = User.verify(email, password)</span><br><span class="line">        <span class="keyword">if</span> userInfo <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            <span class="keyword">raise</span> NotFound(msg=<span class="string">'找不到该用户'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            token = self.encode_auth_token(userInfo.id, int(datetime.now().timestamp()))</span><br><span class="line">            print(token)</span><br><span class="line">            <span class="keyword">return</span> &#123;<span class="string">'id'</span>: userInfo.id,</span><br><span class="line">                    <span class="string">'email'</span>: userInfo.email,</span><br><span class="line">                    <span class="string">'nickname'</span>: userInfo.nickname,</span><br><span class="line">                    <span class="string">'token'</span>: str(token, encoding=<span class="string">"utf-8"</span>)</span><br><span class="line">                    &#125;</span><br></pre></td></tr></table></figure>
-<h2 id="认证获取数据"><a href="#认证获取数据" class="headerlink" title="认证获取数据"></a>认证获取数据</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">identity</span><span class="params">(self, payload)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> User.query.filter_by(id=payload[<span class="string">'data'</span>][<span class="string">'id'</span>]).first()</span><br></pre></td></tr></table></figure>
-<h2 id="Flask注册"><a href="#Flask注册" class="headerlink" title="Flask注册"></a>Flask注册</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">reg_jwt</span><span class="params">(app)</span>:</span></span><br><span class="line">    auth = Auth()</span><br><span class="line">    jwt = JWT(app, auth.authenticate, auth.identity)</span><br></pre></td></tr></table></figure>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>配置方面可以查看<a href="https://pythonhosted.org/Flask-JWT/" target="_blank" rel="noopener">官方文档</a>,不过多解释了，不懂的可以在公众号下面留言。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2018/11/15/2018-11-15-Android设计模式/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Labradors">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Labradors">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/15/2018-11-15-Android设计模式/" itemprop="url">Android设计模式</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-15T10:32:45+08:00">
-                2018-11-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>本篇文章重温一下Android面向对象六大原则，Android设计模式，Android架构模式，多线程，Android性能分析工具。当然，不需要这些东西也可以写出代码，不过使用了面向对象原则，设计模式，架构模式能使程序更健壮、更稳定、容易扩展、更规范等等优点。</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/11/15/2018-11-15-Android设计模式/#more" rel="contents">
+            <a class="btn" href="/2018/11/16/三角套利项目搭建之Flask Jwt用户认证/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1331,169 +1295,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2018/11/13/Flask-APScheduler使用教程/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Labradors">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Labradors">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/13/Flask-APScheduler使用教程/" itemprop="url">Flask-APScheduler使用教程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-13T10:32:45+08:00">
-                2018-11-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/后端/" itemprop="url" rel="index">
-                    <span itemprop="name">后端</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>项目中需要用到定时器和循环执行。去网上搜了一下，比较常见的有一下集中。运用Python线程执行轮询操作，也有运用Linux系统的Cron,Celery的文章最多，但是太麻烦。看看就知道，<em>Celery</em> 需要一个发送和接受消息的传输者。RabbitMQ 和 Redis 中间人的消息传输支持所有特性，但也提供大量其他实验性方案的支持，包括用 SQLite 进行本地开发。需要用到队列，对于这点需求简直就是大材小用。最后找到了比较合适的Flask-APScheduler。</p>
-<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fv8f1ln9yhj20s30g70vi.jpg" alt=""></p>
-<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>看看  github的<a href="https://github.com/viniciuschiele/flask-apscheduler" target="_blank" rel="noopener"><strong>flask-apscheduler</strong></a>介绍。</p>
-<ul>
-<li>Loads scheduler configuration from Flask configuration.(支持从Flask中加载调度)</li>
-<li>Loads job definitions from Flask configuration.(支持从Flask中加载任务配置)</li>
-<li>Allows to specify the hostname which the scheduler will run on.(允许指定服务器运行任务)</li>
-<li>Provides a REST API to manage the scheduled jobs.(提供Rest接口管理任务)</li>
-<li>Provides authentication for the REST API.(提供Rest接口认证)</li>
-</ul>
-<h2 id="安装及配置"><a href="#安装及配置" class="headerlink" title="安装及配置"></a>安装及配置</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install Flask-APScheduler</span><br></pre></td></tr></table></figure>
-<p>在Flask配置文件中添加</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">SCHEDULER_API_ENABLED = <span class="keyword">True</span></span><br><span class="line">JOBS = [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">'id'</span>: <span class="string">'job_1h_data'</span>,</span><br><span class="line">            <span class="string">'func'</span>: job_1h_data,</span><br><span class="line">            <span class="string">'args'</span>: <span class="string">''</span>,</span><br><span class="line">            <span class="string">'trigger'</span>: &#123;</span><br><span class="line">                <span class="string">'type'</span>: <span class="string">'cron'</span>,</span><br><span class="line">                <span class="string">'day_of_week'</span>: <span class="string">"0-6"</span>,</span><br><span class="line">                <span class="string">'hour'</span>: <span class="string">'*'</span>,</span><br><span class="line">                <span class="string">'minute'</span>: <span class="string">'1'</span>,</span><br><span class="line">                <span class="string">'second'</span>: <span class="string">'0'</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        &#125;,</span><br><span class="line"></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">'id'</span>: <span class="string">'job_announce'</span>,</span><br><span class="line">            <span class="string">'func'</span>: exchange_an,</span><br><span class="line">            <span class="string">'args'</span>: <span class="string">''</span>,</span><br><span class="line">            <span class="string">'trigger'</span>: <span class="string">'interval'</span>,</span><br><span class="line">            <span class="string">'seconds'</span>: <span class="number">300</span></span><br><span class="line">        &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<p>上面指定了每一小时获取所有货币24h最高位以及交易所公告。</p>
-<h2 id="获取公告"><a href="#获取公告" class="headerlink" title="获取公告"></a>获取公告</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exchange_an</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param start_date: 开始时间 YYYY-MM-DD HH:MM:SS</span></span><br><span class="line"><span class="string">    :param end_date: 结束时间 YYYY-MM-DD HH:MM:SS</span></span><br><span class="line"><span class="string">    :return: 推送消息,保持数据库</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    current_local = time.time()</span><br><span class="line">    start_date = time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>, time.localtime(current_local - <span class="number">300</span>))</span><br><span class="line">    end_date = time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>, time.localtime(current_local))</span><br><span class="line">    announce = pro.query(<span class="string">'exchange_ann'</span>, start_date=start_date, end_date=end_date)</span><br><span class="line">    print(<span class="string">'请求交易所公告...'</span>)</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> announce.values:</span><br><span class="line">        s = &#123;</span><br><span class="line">            <span class="string">'title'</span>: x[<span class="number">0</span>],</span><br><span class="line">            <span class="string">'content'</span>: x[<span class="number">1</span>],</span><br><span class="line">            <span class="string">'type'</span>: x[<span class="number">2</span>],</span><br><span class="line">            <span class="string">'url'</span>: x[<span class="number">3</span>],</span><br><span class="line">            <span class="string">'datetime'</span>: x[<span class="number">4</span>]</span><br><span class="line">        &#125;</span><br><span class="line">        value = json.dumps(s)</span><br><span class="line">        print(value)</span><br><span class="line">        mqttClient.publish(<span class="string">'system/ex_announce'</span>, value)</span><br></pre></td></tr></table></figure>
-<h2 id="动态添加任务"><a href="#动态添加任务" class="headerlink" title="动态添加任务"></a>动态添加任务</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> apscheduler.schedulers.blocking <span class="keyword">import</span> BlockingScheduler</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">aps_test</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">print</span> datetime.datetime.now().strftime(<span class="string">'%Y-%m-%d %H:%M:%S'</span>), x</span><br><span class="line"></span><br><span class="line">scheduler = BlockingScheduler()</span><br><span class="line">scheduler.add_job(func=aps_test, args=(<span class="string">'定时任务'</span>,), trigger=<span class="string">'cron'</span>, second=<span class="string">'*/5'</span>)</span><br><span class="line">scheduler.add_job(func=aps_test, args=(<span class="string">'一次性任务'</span>,), next_run_time=datetime.datetime.now() + datetime.timedelta(seconds=<span class="number">12</span>))</span><br><span class="line">scheduler.add_job(func=aps_test, args=(<span class="string">'循环任务'</span>,), trigger=<span class="string">'interval'</span>, seconds=<span class="number">3</span>, id=<span class="string">'interval_task'</span>)</span><br><span class="line"></span><br><span class="line">scheduler.start()</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">暂停任务</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">scheduler.pause_job(<span class="string">'interval_task'</span>)</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">恢复任务</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">scheduler.resume_job(<span class="string">'interval_task'</span>)</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">删除任务</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">scheduler.remove_job(<span class="string">'interval_task'</span>)</span><br></pre></td></tr></table></figure>
-<p>apscheduler支持添加三种方式的任务，分别是定时任务，一次性任务及循环任务。同时也包含了对任务的控制。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>因为是单机版本，所以指定服务器运行任务，Rest接口管理任务，Rest接口认证就不写了。后续有需求在继续。</p>
-<hr>
-<blockquote>
-<p>欢迎<strong>长按下图 -&gt; 识别图中二维码</strong>或者微信<strong>扫一扫</strong>关注我的公众号<br><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fpzuv3q8ayj20w60ea11n.jpg" alt=""></p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2018/11/13/Flask-Admin使用教程/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1617,6 +1418,169 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserView</span><span class="params">(ModelView)</span>:</span></span><br><span class="line">    <span class="comment"># 这里是为了自定义显示的column名字</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_accessible</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> current_user.is_authenticated</span><br><span class="line"></span><br><span class="line">    column_labels = dict(</span><br><span class="line">        id=<span class="string">u'用户ID'</span>,</span><br><span class="line">        email=<span class="string">u'邮箱'</span>,</span><br><span class="line">        nickname=<span class="string">u'用户名'</span>,</span><br><span class="line">        create_time=<span class="string">u'创建时间'</span>,</span><br><span class="line">        status=<span class="string">u'状态'</span></span><br><span class="line"></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 如果不想显示某些字段，可以重载这个变量</span></span><br><span class="line"></span><br><span class="line">    column_exclude_list = (</span><br><span class="line"></span><br><span class="line">        <span class="string">'_password'</span>,</span><br><span class="line"></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AnnouncementView</span><span class="params">(ModelView)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_accessible</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> current_user.is_authenticated</span><br><span class="line"></span><br><span class="line">    column_labels = dict(</span><br><span class="line">        id=<span class="string">u'资讯ID'</span>,</span><br><span class="line">        title=<span class="string">u'标题'</span>,</span><br><span class="line">        content=<span class="string">u'内容'</span>,</span><br><span class="line">        type=<span class="string">u'子类型'</span>,</span><br><span class="line">        url=<span class="string">u'资讯地址'</span>,</span><br><span class="line">        datetime=<span class="string">u'时间'</span>,</span><br><span class="line">        news_type=<span class="string">u'类型'</span>,</span><br><span class="line">        create_time=<span class="string">u'创建时间'</span>,</span><br><span class="line">        status=<span class="string">u'状态'</span></span><br><span class="line"></span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
 <p>已在代码中作出注释。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文因为开发进度，暂时只使用Flask-Admin这些功能。后续将介绍更多功能的使用。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2018/11/13/Flask-APScheduler使用教程/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/13/Flask-APScheduler使用教程/" itemprop="url">Flask-APScheduler使用教程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-13T10:32:45+08:00">
+                2018-11-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/后端/" itemprop="url" rel="index">
+                    <span itemprop="name">后端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>项目中需要用到定时器和循环执行。去网上搜了一下，比较常见的有一下集中。运用Python线程执行轮询操作，也有运用Linux系统的Cron,Celery的文章最多，但是太麻烦。看看就知道，<em>Celery</em> 需要一个发送和接受消息的传输者。RabbitMQ 和 Redis 中间人的消息传输支持所有特性，但也提供大量其他实验性方案的支持，包括用 SQLite 进行本地开发。需要用到队列，对于这点需求简直就是大材小用。最后找到了比较合适的Flask-APScheduler。</p>
+<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fv8f1ln9yhj20s30g70vi.jpg" alt=""></p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>看看  github的<a href="https://github.com/viniciuschiele/flask-apscheduler" target="_blank" rel="noopener"><strong>flask-apscheduler</strong></a>介绍。</p>
+<ul>
+<li>Loads scheduler configuration from Flask configuration.(支持从Flask中加载调度)</li>
+<li>Loads job definitions from Flask configuration.(支持从Flask中加载任务配置)</li>
+<li>Allows to specify the hostname which the scheduler will run on.(允许指定服务器运行任务)</li>
+<li>Provides a REST API to manage the scheduled jobs.(提供Rest接口管理任务)</li>
+<li>Provides authentication for the REST API.(提供Rest接口认证)</li>
+</ul>
+<h2 id="安装及配置"><a href="#安装及配置" class="headerlink" title="安装及配置"></a>安装及配置</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install Flask-APScheduler</span><br></pre></td></tr></table></figure>
+<p>在Flask配置文件中添加</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">SCHEDULER_API_ENABLED = <span class="keyword">True</span></span><br><span class="line">JOBS = [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">'id'</span>: <span class="string">'job_1h_data'</span>,</span><br><span class="line">            <span class="string">'func'</span>: job_1h_data,</span><br><span class="line">            <span class="string">'args'</span>: <span class="string">''</span>,</span><br><span class="line">            <span class="string">'trigger'</span>: &#123;</span><br><span class="line">                <span class="string">'type'</span>: <span class="string">'cron'</span>,</span><br><span class="line">                <span class="string">'day_of_week'</span>: <span class="string">"0-6"</span>,</span><br><span class="line">                <span class="string">'hour'</span>: <span class="string">'*'</span>,</span><br><span class="line">                <span class="string">'minute'</span>: <span class="string">'1'</span>,</span><br><span class="line">                <span class="string">'second'</span>: <span class="string">'0'</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        &#125;,</span><br><span class="line"></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">'id'</span>: <span class="string">'job_announce'</span>,</span><br><span class="line">            <span class="string">'func'</span>: exchange_an,</span><br><span class="line">            <span class="string">'args'</span>: <span class="string">''</span>,</span><br><span class="line">            <span class="string">'trigger'</span>: <span class="string">'interval'</span>,</span><br><span class="line">            <span class="string">'seconds'</span>: <span class="number">300</span></span><br><span class="line">        &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>上面指定了每一小时获取所有货币24h最高位以及交易所公告。</p>
+<h2 id="获取公告"><a href="#获取公告" class="headerlink" title="获取公告"></a>获取公告</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exchange_an</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param start_date: 开始时间 YYYY-MM-DD HH:MM:SS</span></span><br><span class="line"><span class="string">    :param end_date: 结束时间 YYYY-MM-DD HH:MM:SS</span></span><br><span class="line"><span class="string">    :return: 推送消息,保持数据库</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    current_local = time.time()</span><br><span class="line">    start_date = time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>, time.localtime(current_local - <span class="number">300</span>))</span><br><span class="line">    end_date = time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>, time.localtime(current_local))</span><br><span class="line">    announce = pro.query(<span class="string">'exchange_ann'</span>, start_date=start_date, end_date=end_date)</span><br><span class="line">    print(<span class="string">'请求交易所公告...'</span>)</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> announce.values:</span><br><span class="line">        s = &#123;</span><br><span class="line">            <span class="string">'title'</span>: x[<span class="number">0</span>],</span><br><span class="line">            <span class="string">'content'</span>: x[<span class="number">1</span>],</span><br><span class="line">            <span class="string">'type'</span>: x[<span class="number">2</span>],</span><br><span class="line">            <span class="string">'url'</span>: x[<span class="number">3</span>],</span><br><span class="line">            <span class="string">'datetime'</span>: x[<span class="number">4</span>]</span><br><span class="line">        &#125;</span><br><span class="line">        value = json.dumps(s)</span><br><span class="line">        print(value)</span><br><span class="line">        mqttClient.publish(<span class="string">'system/ex_announce'</span>, value)</span><br></pre></td></tr></table></figure>
+<h2 id="动态添加任务"><a href="#动态添加任务" class="headerlink" title="动态添加任务"></a>动态添加任务</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> apscheduler.schedulers.blocking <span class="keyword">import</span> BlockingScheduler</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">aps_test</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">print</span> datetime.datetime.now().strftime(<span class="string">'%Y-%m-%d %H:%M:%S'</span>), x</span><br><span class="line"></span><br><span class="line">scheduler = BlockingScheduler()</span><br><span class="line">scheduler.add_job(func=aps_test, args=(<span class="string">'定时任务'</span>,), trigger=<span class="string">'cron'</span>, second=<span class="string">'*/5'</span>)</span><br><span class="line">scheduler.add_job(func=aps_test, args=(<span class="string">'一次性任务'</span>,), next_run_time=datetime.datetime.now() + datetime.timedelta(seconds=<span class="number">12</span>))</span><br><span class="line">scheduler.add_job(func=aps_test, args=(<span class="string">'循环任务'</span>,), trigger=<span class="string">'interval'</span>, seconds=<span class="number">3</span>, id=<span class="string">'interval_task'</span>)</span><br><span class="line"></span><br><span class="line">scheduler.start()</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">暂停任务</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">scheduler.pause_job(<span class="string">'interval_task'</span>)</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">恢复任务</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">scheduler.resume_job(<span class="string">'interval_task'</span>)</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">删除任务</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">scheduler.remove_job(<span class="string">'interval_task'</span>)</span><br></pre></td></tr></table></figure>
+<p>apscheduler支持添加三种方式的任务，分别是定时任务，一次性任务及循环任务。同时也包含了对任务的控制。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>因为是单机版本，所以指定服务器运行任务，Rest接口管理任务，Rest接口认证就不写了。后续有需求在继续。</p>
+<hr>
+<blockquote>
+<p>欢迎<strong>长按下图 -&gt; 识别图中二维码</strong>或者微信<strong>扫一扫</strong>关注我的公众号<br><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fpzuv3q8ayj20w60ea11n.jpg" alt=""></p>
+</blockquote>
 
           
         

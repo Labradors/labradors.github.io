@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="项目中需要使用登陆，注册等，很多字段需要进行验证，其实我们自己编写代码进行实现，不过不太清真，而且也麻烦，所以使用WTForms库。文章记录在Flask下表单框架WTForms的使用。  表单12345678910111213141516171819202122232425262728class RegForm(Form):    account = StringField(validators=">
+<meta name="description" content="项目中需要使用登陆，注册等，很多字段需要进行验证，其实我们自己编写代码进行实现，不过不太清真，而且也麻烦，所以使用WTForms库。文章记录在Flask下表单框架WTForms的使用。">
 <meta name="keywords" content="Flask">
 <meta property="og:type" content="article">
 <meta property="og:title" content="三角套利项目搭建之Flask WTForms表单处理">
 <meta property="og:url" content="http://blog.labradors.work/2018/11/16/三角套利项目搭建之Flask WTForms表单处理/index.html">
 <meta property="og:site_name" content="Labradors">
-<meta property="og:description" content="项目中需要使用登陆，注册等，很多字段需要进行验证，其实我们自己编写代码进行实现，不过不太清真，而且也麻烦，所以使用WTForms库。文章记录在Flask下表单框架WTForms的使用。  表单12345678910111213141516171819202122232425262728class RegForm(Form):    account = StringField(validators=">
+<meta property="og:description" content="项目中需要使用登陆，注册等，很多字段需要进行验证，其实我们自己编写代码进行实现，不过不太清真，而且也麻烦，所以使用WTForms库。文章记录在Flask下表单框架WTForms的使用。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu6yl6mbtwj212g0dsgon.jpg">
-<meta property="og:updated_time" content="2018-11-13T12:40:22.650Z">
+<meta property="og:updated_time" content="2018-11-14T12:27:57.816Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="三角套利项目搭建之Flask WTForms表单处理">
-<meta name="twitter:description" content="项目中需要使用登陆，注册等，很多字段需要进行验证，其实我们自己编写代码进行实现，不过不太清真，而且也麻烦，所以使用WTForms库。文章记录在Flask下表单框架WTForms的使用。  表单12345678910111213141516171819202122232425262728class RegForm(Form):    account = StringField(validators=">
+<meta name="twitter:description" content="项目中需要使用登陆，注册等，很多字段需要进行验证，其实我们自己编写代码进行实现，不过不太清真，而且也麻烦，所以使用WTForms库。文章记录在Flask下表单框架WTForms的使用。">
 <meta name="twitter:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu6yl6mbtwj212g0dsgon.jpg">
 
 
@@ -356,6 +356,7 @@
       
         <p>项目中需要使用登陆，注册等，很多字段需要进行验证，其实我们自己编写代码进行实现，不过不太清真，而且也麻烦，所以使用WTForms库。文章记录在Flask下表单框架WTForms的使用。</p>
 <p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu6yl6mbtwj212g0dsgon.jpg" alt=""></p>
+<a id="more"></a>
 <h2 id="表单"><a href="#表单" class="headerlink" title="表单"></a>表单</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RegForm</span><span class="params">(Form)</span>:</span></span><br><span class="line">    account = StringField(validators=[DataRequired(message=<span class="string">'不允许为空'</span>),</span><br><span class="line">                                      length(min=<span class="number">5</span>, max=<span class="number">32</span>)])</span><br><span class="line">    secret = StringField(validators=[</span><br><span class="line">        DataRequired(),</span><br><span class="line">        Regexp(<span class="string">r'^[A-Za-z0-9_*&amp;$#@]&#123;6,22&#125;$'</span>)</span><br><span class="line">    ])</span><br><span class="line">    nickname = StringField(validators=[DataRequired(),</span><br><span class="line">                                       length(min=<span class="number">2</span>, max=<span class="number">22</span>)])</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate_account</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        user = User.query.filter_by(email=value.data).first()</span><br><span class="line">        <span class="keyword">if</span> user:</span><br><span class="line">            <span class="keyword">raise</span> ParameterError(msg=<span class="string">"邮箱已使用..."</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate_nickname</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        user = User.query.filter_by(nickname=value.data).first()</span><br><span class="line">        <span class="keyword">if</span> user:</span><br><span class="line">            <span class="keyword">raise</span> ParameterError(msg=<span class="string">"用户名已使用..."</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginForm</span><span class="params">(Form)</span>:</span></span><br><span class="line">    account = StringField(validators=[DataRequired(message=<span class="string">'不允许为空'</span>),</span><br><span class="line">                                      length(min=<span class="number">5</span>, max=<span class="number">32</span>)])</span><br><span class="line">    secret = StringField(validators=[</span><br><span class="line">        DataRequired(),</span><br><span class="line">        Regexp(<span class="string">r'^[A-Za-z0-9_*&amp;$#@]&#123;6,22&#125;$'</span>)</span><br><span class="line">    ])</span><br></pre></td></tr></table></figure>
 <p>上面一部分是注册表单，一部分是登陆表单。</p>
 <h2 id="views中使用"><a href="#views中使用" class="headerlink" title="views中使用"></a>views中使用</h2><p>写完表单代码后，我们需要在views中实现，具体代码如下:</p>
