@@ -259,7 +259,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2018/11/16/三角套利项目搭建之Flask WTForms表单处理/">
+    <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2018/11/16/EMQ百万级MQTT MySql鉴权/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Labradors">
@@ -278,7 +278,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/16/三角套利项目搭建之Flask WTForms表单处理/" itemprop="url">三角套利项目搭建之Flask WTForms表单处理</a></h1>
+                <a class="post-title-link" href="/2018/11/16/EMQ百万级MQTT MySql鉴权/" itemprop="url">EMQ百万级MQTT MySql鉴权</a></h1>
         
 
         <div class="post-meta">
@@ -313,8 +313,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Flask/" itemprop="url" rel="index">
-                    <span itemprop="name">Flask</span>
+                  <a href="/categories/后端/" itemprop="url" rel="index">
+                    <span itemprop="name">后端</span>
                   </a>
                 </span>
 
@@ -352,13 +352,27 @@
       
         
           
-            <p>项目中需要使用登陆，注册等，很多字段需要进行验证，其实我们自己编写代码进行实现，不过不太清真，而且也麻烦，所以使用WTForms库。文章记录在Flask下表单框架WTForms的使用。</p>
-<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu6yl6mbtwj212g0dsgon.jpg" alt=""></p>
-<h2 id="表单"><a href="#表单" class="headerlink" title="表单"></a>表单</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RegForm</span><span class="params">(Form)</span>:</span></span><br><span class="line">    account = StringField(validators=[DataRequired(message=<span class="string">'不允许为空'</span>),</span><br><span class="line">                                      length(min=<span class="number">5</span>, max=<span class="number">32</span>)])</span><br><span class="line">    secret = StringField(validators=[</span><br><span class="line">        DataRequired(),</span><br><span class="line">        Regexp(<span class="string">r'^[A-Za-z0-9_*&amp;$#@]&#123;6,22&#125;$'</span>)</span><br><span class="line">    ])</span><br><span class="line">    nickname = StringField(validators=[DataRequired(),</span><br><span class="line">                                       length(min=<span class="number">2</span>, max=<span class="number">22</span>)])</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate_account</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        user = User.query.filter_by(email=value.data).first()</span><br><span class="line">        <span class="keyword">if</span> user:</span><br><span class="line">            <span class="keyword">raise</span> ParameterError(msg=<span class="string">"邮箱已使用..."</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate_nickname</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        user = User.query.filter_by(nickname=value.data).first()</span><br><span class="line">        <span class="keyword">if</span> user:</span><br><span class="line">            <span class="keyword">raise</span> ParameterError(msg=<span class="string">"用户名已使用..."</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginForm</span><span class="params">(Form)</span>:</span></span><br><span class="line">    account = StringField(validators=[DataRequired(message=<span class="string">'不允许为空'</span>),</span><br><span class="line">                                      length(min=<span class="number">5</span>, max=<span class="number">32</span>)])</span><br><span class="line">    secret = StringField(validators=[</span><br><span class="line">        DataRequired(),</span><br><span class="line">        Regexp(<span class="string">r'^[A-Za-z0-9_*&amp;$#@]&#123;6,22&#125;$'</span>)</span><br><span class="line">    ])</span><br></pre></td></tr></table></figure>
-<p>上面一部分是注册表单，一部分是登陆表单。</p>
-<h2 id="views中使用"><a href="#views中使用" class="headerlink" title="views中使用"></a>views中使用</h2><p>写完表单代码后，我们需要在views中实现，具体代码如下:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@api.route('/create', methods=['POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_user</span><span class="params">()</span>:</span></span><br><span class="line">    form = RegForm().validate_for_api()</span><br><span class="line">    user = User.register_by_email(form.nickname.data,</span><br><span class="line">                                  form.account.data,</span><br><span class="line">                                  form.secret.data)</span><br><span class="line">    <span class="keyword">return</span> Success(obj=user)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@api.route('/login', methods=['POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">login_user</span><span class="params">()</span>:</span></span><br><span class="line">    form = LoginForm().validate_for_api()</span><br><span class="line">    user = Auth().authenticate(form.account.data, form.secret.data)</span><br><span class="line">    <span class="keyword">return</span> Success(obj=user)</span><br></pre></td></tr></table></figure>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>文章记录flask表单的使用，后续会涉及表单文件上传等内容。。</p>
+            <p>EMQ基于高并发的Erlang/OTP语言平台设计，支持百万级连接和分布式集群，发布订阅模式的开源MQTT消息服务器，完整支持MQTT V3.1/V3.1.1协议规范，扩展支持WebSocket、Stomp、CoAP、MQTT-SN或私有TCP协议。</p>
+<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu2ad6natuj20mi0b6wgh.jpg" alt=""></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><em>EMQ</em> 2.0 Docker 镜像下载: <a href="http://emqtt.com/downloads/latest/docker" target="_blank" rel="noopener">http://emqtt.com/downloads/latest/docker</a></p>
+<p>解压 emqttd-docker 镜像包:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unzip emqttd-docker-v2.0.zip</span><br></pre></td></tr></table></figure>
+<p>加载镜像:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker load &lt; emqttd-docker-v2.0</span><br></pre></td></tr></table></figure>
+<p>启动容器:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -tid --name emq20 -p 1883:1883 -p 8083:8083 -p 8883:8883 -p 8084:8084 -p 18083:18083 emqttd-docker-v2.0</span><br></pre></td></tr></table></figure>
+<p>停止容器:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop emq20</span><br></pre></td></tr></table></figure>
+<p>开启容器:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker start emq20</span><br></pre></td></tr></table></figure>
+<p>进入 Docker 控制台:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it emq20 /bin/sh</span><br></pre></td></tr></table></figure>
+<h2 id="MySQL认证"><a href="#MySQL认证" class="headerlink" title="MySQL认证"></a>MySQL认证</h2><p>通过命令进入emq，关闭匿名认证</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim etc/emq.conf </span><br><span class="line">mqtt.allow_anonymous = false</span><br></pre></td></tr></table></figure>
+<h3 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `mqtt_user` (</span><br><span class="line">  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `username` varchar(100) DEFAULT NULL,</span><br><span class="line">  `password` varchar(100) DEFAULT NULL,</span><br><span class="line">  `salt` varchar(20) DEFAULT NULL,</span><br><span class="line">  `is_superuser` tinyint(1) DEFAULT 0,</span><br><span class="line">  `created` datetime DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`),</span><br><span class="line">  UNIQUE KEY `mqtt_username` (`username`)</span><br><span class="line">) ENGINE=MyISAM DEFAULT CHARSET=utf8;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">CREATE TABLE `mqtt_acl` (</span><br><span class="line">  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `allow` int(1) DEFAULT NULL COMMENT &apos;0: deny, 1: allow&apos;,</span><br><span class="line">  `ipaddr` varchar(60) DEFAULT NULL COMMENT &apos;IpAddress&apos;,</span><br><span class="line">  `username` varchar(100) DEFAULT NULL COMMENT &apos;Username&apos;,</span><br><span class="line">  `clientid` varchar(100) DEFAULT NULL COMMENT &apos;ClientId&apos;,</span><br><span class="line">  `access` int(2) NOT NULL COMMENT &apos;1: subscribe, 2: publish, 3: pubsub&apos;,</span><br><span class="line">  `topic` varchar(100) NOT NULL DEFAULT &apos;&apos; COMMENT &apos;Topic Filter&apos;,</span><br><span class="line">  PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-- 建立ACL默认访问控制</span><br><span class="line">INSERT INTO `mqtt_acl` (`id`, `allow`, `ipaddr`, `username`, `clientid`, `access`, `topic`)</span><br><span class="line">VALUES</span><br><span class="line">    (1,1,NULL,&apos;$all&apos;,NULL,2,&apos;#&apos;),</span><br><span class="line">    (2,0,NULL,&apos;$all&apos;,NULL,1,&apos;$SYS/#&apos;),</span><br><span class="line">    (3,0,NULL,&apos;$all&apos;,NULL,1,&apos;eq #&apos;),</span><br><span class="line">    (5,1,&apos;127.0.0.1&apos;,NULL,NULL,2,&apos;$SYS/#&apos;),</span><br><span class="line">    (6,1,&apos;127.0.0.1&apos;,NULL,NULL,2,&apos;#&apos;),</span><br><span class="line">    (7,1,NULL,&apos;dashboard&apos;,NULL,1,&apos;$SYS/#&apos;);</span><br></pre></td></tr></table></figure>
+<h3 id="修改mysql配置文件"><a href="#修改mysql配置文件" class="headerlink" title="修改mysql配置文件"></a>修改mysql配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd etc/plugins/emq_auth_mysql.conf</span><br><span class="line"></span><br><span class="line">auth.mysql.server = xxxxxxxxx:3306</span><br><span class="line">auth.mysql.username = root</span><br><span class="line">auth.mysql.password = xxxxxxxx</span><br><span class="line">auth.mysql.database = emq</span><br></pre></td></tr></table></figure>
+<p>最后重启emq</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker restart emq20</span><br></pre></td></tr></table></figure>
 
           
         
@@ -576,7 +590,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2018/11/16/EMQ百万级MQTT MySql鉴权/">
+    <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2018/11/16/三角套利项目搭建之Flask WTForms表单处理/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Labradors">
@@ -595,7 +609,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/11/16/EMQ百万级MQTT MySql鉴权/" itemprop="url">EMQ百万级MQTT MySql鉴权</a></h1>
+                <a class="post-title-link" href="/2018/11/16/三角套利项目搭建之Flask WTForms表单处理/" itemprop="url">三角套利项目搭建之Flask WTForms表单处理</a></h1>
         
 
         <div class="post-meta">
@@ -630,8 +644,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/后端/" itemprop="url" rel="index">
-                    <span itemprop="name">后端</span>
+                  <a href="/categories/Flask/" itemprop="url" rel="index">
+                    <span itemprop="name">Flask</span>
                   </a>
                 </span>
 
@@ -669,27 +683,13 @@
       
         
           
-            <p>EMQ基于高并发的Erlang/OTP语言平台设计，支持百万级连接和分布式集群，发布订阅模式的开源MQTT消息服务器，完整支持MQTT V3.1/V3.1.1协议规范，扩展支持WebSocket、Stomp、CoAP、MQTT-SN或私有TCP协议。</p>
-<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu2ad6natuj20mi0b6wgh.jpg" alt=""></p>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><em>EMQ</em> 2.0 Docker 镜像下载: <a href="http://emqtt.com/downloads/latest/docker" target="_blank" rel="noopener">http://emqtt.com/downloads/latest/docker</a></p>
-<p>解压 emqttd-docker 镜像包:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unzip emqttd-docker-v2.0.zip</span><br></pre></td></tr></table></figure>
-<p>加载镜像:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker load &lt; emqttd-docker-v2.0</span><br></pre></td></tr></table></figure>
-<p>启动容器:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -tid --name emq20 -p 1883:1883 -p 8083:8083 -p 8883:8883 -p 8084:8084 -p 18083:18083 emqttd-docker-v2.0</span><br></pre></td></tr></table></figure>
-<p>停止容器:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop emq20</span><br></pre></td></tr></table></figure>
-<p>开启容器:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker start emq20</span><br></pre></td></tr></table></figure>
-<p>进入 Docker 控制台:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it emq20 /bin/sh</span><br></pre></td></tr></table></figure>
-<h2 id="MySQL认证"><a href="#MySQL认证" class="headerlink" title="MySQL认证"></a>MySQL认证</h2><p>通过命令进入emq，关闭匿名认证</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vim etc/emq.conf </span><br><span class="line">mqtt.allow_anonymous = false</span><br></pre></td></tr></table></figure>
-<h3 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `mqtt_user` (</span><br><span class="line">  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `username` varchar(100) DEFAULT NULL,</span><br><span class="line">  `password` varchar(100) DEFAULT NULL,</span><br><span class="line">  `salt` varchar(20) DEFAULT NULL,</span><br><span class="line">  `is_superuser` tinyint(1) DEFAULT 0,</span><br><span class="line">  `created` datetime DEFAULT NULL,</span><br><span class="line">  PRIMARY KEY (`id`),</span><br><span class="line">  UNIQUE KEY `mqtt_username` (`username`)</span><br><span class="line">) ENGINE=MyISAM DEFAULT CHARSET=utf8;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">CREATE TABLE `mqtt_acl` (</span><br><span class="line">  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,</span><br><span class="line">  `allow` int(1) DEFAULT NULL COMMENT &apos;0: deny, 1: allow&apos;,</span><br><span class="line">  `ipaddr` varchar(60) DEFAULT NULL COMMENT &apos;IpAddress&apos;,</span><br><span class="line">  `username` varchar(100) DEFAULT NULL COMMENT &apos;Username&apos;,</span><br><span class="line">  `clientid` varchar(100) DEFAULT NULL COMMENT &apos;ClientId&apos;,</span><br><span class="line">  `access` int(2) NOT NULL COMMENT &apos;1: subscribe, 2: publish, 3: pubsub&apos;,</span><br><span class="line">  `topic` varchar(100) NOT NULL DEFAULT &apos;&apos; COMMENT &apos;Topic Filter&apos;,</span><br><span class="line">  PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-- 建立ACL默认访问控制</span><br><span class="line">INSERT INTO `mqtt_acl` (`id`, `allow`, `ipaddr`, `username`, `clientid`, `access`, `topic`)</span><br><span class="line">VALUES</span><br><span class="line">    (1,1,NULL,&apos;$all&apos;,NULL,2,&apos;#&apos;),</span><br><span class="line">    (2,0,NULL,&apos;$all&apos;,NULL,1,&apos;$SYS/#&apos;),</span><br><span class="line">    (3,0,NULL,&apos;$all&apos;,NULL,1,&apos;eq #&apos;),</span><br><span class="line">    (5,1,&apos;127.0.0.1&apos;,NULL,NULL,2,&apos;$SYS/#&apos;),</span><br><span class="line">    (6,1,&apos;127.0.0.1&apos;,NULL,NULL,2,&apos;#&apos;),</span><br><span class="line">    (7,1,NULL,&apos;dashboard&apos;,NULL,1,&apos;$SYS/#&apos;);</span><br></pre></td></tr></table></figure>
-<h3 id="修改mysql配置文件"><a href="#修改mysql配置文件" class="headerlink" title="修改mysql配置文件"></a>修改mysql配置文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd etc/plugins/emq_auth_mysql.conf</span><br><span class="line"></span><br><span class="line">auth.mysql.server = xxxxxxxxx:3306</span><br><span class="line">auth.mysql.username = root</span><br><span class="line">auth.mysql.password = xxxxxxxx</span><br><span class="line">auth.mysql.database = emq</span><br></pre></td></tr></table></figure>
-<p>最后重启emq</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker restart emq20</span><br></pre></td></tr></table></figure>
+            <p>项目中需要使用登陆，注册等，很多字段需要进行验证，其实我们自己编写代码进行实现，不过不太清真，而且也麻烦，所以使用WTForms库。文章记录在Flask下表单框架WTForms的使用。</p>
+<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu6yl6mbtwj212g0dsgon.jpg" alt=""></p>
+<h2 id="表单"><a href="#表单" class="headerlink" title="表单"></a>表单</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RegForm</span><span class="params">(Form)</span>:</span></span><br><span class="line">    account = StringField(validators=[DataRequired(message=<span class="string">'不允许为空'</span>),</span><br><span class="line">                                      length(min=<span class="number">5</span>, max=<span class="number">32</span>)])</span><br><span class="line">    secret = StringField(validators=[</span><br><span class="line">        DataRequired(),</span><br><span class="line">        Regexp(<span class="string">r'^[A-Za-z0-9_*&amp;$#@]&#123;6,22&#125;$'</span>)</span><br><span class="line">    ])</span><br><span class="line">    nickname = StringField(validators=[DataRequired(),</span><br><span class="line">                                       length(min=<span class="number">2</span>, max=<span class="number">22</span>)])</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate_account</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        user = User.query.filter_by(email=value.data).first()</span><br><span class="line">        <span class="keyword">if</span> user:</span><br><span class="line">            <span class="keyword">raise</span> ParameterError(msg=<span class="string">"邮箱已使用..."</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">validate_nickname</span><span class="params">(self, value)</span>:</span></span><br><span class="line">        user = User.query.filter_by(nickname=value.data).first()</span><br><span class="line">        <span class="keyword">if</span> user:</span><br><span class="line">            <span class="keyword">raise</span> ParameterError(msg=<span class="string">"用户名已使用..."</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginForm</span><span class="params">(Form)</span>:</span></span><br><span class="line">    account = StringField(validators=[DataRequired(message=<span class="string">'不允许为空'</span>),</span><br><span class="line">                                      length(min=<span class="number">5</span>, max=<span class="number">32</span>)])</span><br><span class="line">    secret = StringField(validators=[</span><br><span class="line">        DataRequired(),</span><br><span class="line">        Regexp(<span class="string">r'^[A-Za-z0-9_*&amp;$#@]&#123;6,22&#125;$'</span>)</span><br><span class="line">    ])</span><br></pre></td></tr></table></figure>
+<p>上面一部分是注册表单，一部分是登陆表单。</p>
+<h2 id="views中使用"><a href="#views中使用" class="headerlink" title="views中使用"></a>views中使用</h2><p>写完表单代码后，我们需要在views中实现，具体代码如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@api.route('/create', methods=['POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_user</span><span class="params">()</span>:</span></span><br><span class="line">    form = RegForm().validate_for_api()</span><br><span class="line">    user = User.register_by_email(form.nickname.data,</span><br><span class="line">                                  form.account.data,</span><br><span class="line">                                  form.secret.data)</span><br><span class="line">    <span class="keyword">return</span> Success(obj=user)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@api.route('/login', methods=['POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">login_user</span><span class="params">()</span>:</span></span><br><span class="line">    form = LoginForm().validate_for_api()</span><br><span class="line">    user = Auth().authenticate(form.account.data, form.secret.data)</span><br><span class="line">    <span class="keyword">return</span> Success(obj=user)</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>文章记录flask表单的使用，后续会涉及表单文件上传等内容。。</p>
 
           
         
@@ -839,6 +839,152 @@
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>配置方面可以查看<a href="https://pythonhosted.org/Flask-JWT/" target="_blank" rel="noopener">官方文档</a>,不过多解释了，不懂的可以在公众号下面留言。</p>
 
           
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2018/11/15/2018-11-15-Android设计模式/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/15/2018-11-15-Android设计模式/" itemprop="url">Android设计模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-15T10:32:45+08:00">
+                2018-11-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>本篇文章重温一下Android面向对象六大原则，Android设计模式，Android架构模式，多线程，Android性能分析工具。当然，不需要这些东西也可以写出代码，不过使用了面向对象原则，设计模式，架构模式能使程序更健壮、更稳定、容易扩展、更规范等等优点。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/11/15/2018-11-15-Android设计模式/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1185,6 +1331,169 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2018/11/13/Flask-APScheduler使用教程/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/13/Flask-APScheduler使用教程/" itemprop="url">Flask-APScheduler使用教程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-13T10:32:45+08:00">
+                2018-11-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/后端/" itemprop="url" rel="index">
+                    <span itemprop="name">后端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>项目中需要用到定时器和循环执行。去网上搜了一下，比较常见的有一下集中。运用Python线程执行轮询操作，也有运用Linux系统的Cron,Celery的文章最多，但是太麻烦。看看就知道，<em>Celery</em> 需要一个发送和接受消息的传输者。RabbitMQ 和 Redis 中间人的消息传输支持所有特性，但也提供大量其他实验性方案的支持，包括用 SQLite 进行本地开发。需要用到队列，对于这点需求简直就是大材小用。最后找到了比较合适的Flask-APScheduler。</p>
+<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fv8f1ln9yhj20s30g70vi.jpg" alt=""></p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>看看  github的<a href="https://github.com/viniciuschiele/flask-apscheduler" target="_blank" rel="noopener"><strong>flask-apscheduler</strong></a>介绍。</p>
+<ul>
+<li>Loads scheduler configuration from Flask configuration.(支持从Flask中加载调度)</li>
+<li>Loads job definitions from Flask configuration.(支持从Flask中加载任务配置)</li>
+<li>Allows to specify the hostname which the scheduler will run on.(允许指定服务器运行任务)</li>
+<li>Provides a REST API to manage the scheduled jobs.(提供Rest接口管理任务)</li>
+<li>Provides authentication for the REST API.(提供Rest接口认证)</li>
+</ul>
+<h2 id="安装及配置"><a href="#安装及配置" class="headerlink" title="安装及配置"></a>安装及配置</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install Flask-APScheduler</span><br></pre></td></tr></table></figure>
+<p>在Flask配置文件中添加</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">SCHEDULER_API_ENABLED = <span class="keyword">True</span></span><br><span class="line">JOBS = [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">'id'</span>: <span class="string">'job_1h_data'</span>,</span><br><span class="line">            <span class="string">'func'</span>: job_1h_data,</span><br><span class="line">            <span class="string">'args'</span>: <span class="string">''</span>,</span><br><span class="line">            <span class="string">'trigger'</span>: &#123;</span><br><span class="line">                <span class="string">'type'</span>: <span class="string">'cron'</span>,</span><br><span class="line">                <span class="string">'day_of_week'</span>: <span class="string">"0-6"</span>,</span><br><span class="line">                <span class="string">'hour'</span>: <span class="string">'*'</span>,</span><br><span class="line">                <span class="string">'minute'</span>: <span class="string">'1'</span>,</span><br><span class="line">                <span class="string">'second'</span>: <span class="string">'0'</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        &#125;,</span><br><span class="line"></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">'id'</span>: <span class="string">'job_announce'</span>,</span><br><span class="line">            <span class="string">'func'</span>: exchange_an,</span><br><span class="line">            <span class="string">'args'</span>: <span class="string">''</span>,</span><br><span class="line">            <span class="string">'trigger'</span>: <span class="string">'interval'</span>,</span><br><span class="line">            <span class="string">'seconds'</span>: <span class="number">300</span></span><br><span class="line">        &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>上面指定了每一小时获取所有货币24h最高位以及交易所公告。</p>
+<h2 id="获取公告"><a href="#获取公告" class="headerlink" title="获取公告"></a>获取公告</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exchange_an</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param start_date: 开始时间 YYYY-MM-DD HH:MM:SS</span></span><br><span class="line"><span class="string">    :param end_date: 结束时间 YYYY-MM-DD HH:MM:SS</span></span><br><span class="line"><span class="string">    :return: 推送消息,保持数据库</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    current_local = time.time()</span><br><span class="line">    start_date = time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>, time.localtime(current_local - <span class="number">300</span>))</span><br><span class="line">    end_date = time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>, time.localtime(current_local))</span><br><span class="line">    announce = pro.query(<span class="string">'exchange_ann'</span>, start_date=start_date, end_date=end_date)</span><br><span class="line">    print(<span class="string">'请求交易所公告...'</span>)</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> announce.values:</span><br><span class="line">        s = &#123;</span><br><span class="line">            <span class="string">'title'</span>: x[<span class="number">0</span>],</span><br><span class="line">            <span class="string">'content'</span>: x[<span class="number">1</span>],</span><br><span class="line">            <span class="string">'type'</span>: x[<span class="number">2</span>],</span><br><span class="line">            <span class="string">'url'</span>: x[<span class="number">3</span>],</span><br><span class="line">            <span class="string">'datetime'</span>: x[<span class="number">4</span>]</span><br><span class="line">        &#125;</span><br><span class="line">        value = json.dumps(s)</span><br><span class="line">        print(value)</span><br><span class="line">        mqttClient.publish(<span class="string">'system/ex_announce'</span>, value)</span><br></pre></td></tr></table></figure>
+<h2 id="动态添加任务"><a href="#动态添加任务" class="headerlink" title="动态添加任务"></a>动态添加任务</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> apscheduler.schedulers.blocking <span class="keyword">import</span> BlockingScheduler</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">aps_test</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">print</span> datetime.datetime.now().strftime(<span class="string">'%Y-%m-%d %H:%M:%S'</span>), x</span><br><span class="line"></span><br><span class="line">scheduler = BlockingScheduler()</span><br><span class="line">scheduler.add_job(func=aps_test, args=(<span class="string">'定时任务'</span>,), trigger=<span class="string">'cron'</span>, second=<span class="string">'*/5'</span>)</span><br><span class="line">scheduler.add_job(func=aps_test, args=(<span class="string">'一次性任务'</span>,), next_run_time=datetime.datetime.now() + datetime.timedelta(seconds=<span class="number">12</span>))</span><br><span class="line">scheduler.add_job(func=aps_test, args=(<span class="string">'循环任务'</span>,), trigger=<span class="string">'interval'</span>, seconds=<span class="number">3</span>, id=<span class="string">'interval_task'</span>)</span><br><span class="line"></span><br><span class="line">scheduler.start()</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">暂停任务</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">scheduler.pause_job(<span class="string">'interval_task'</span>)</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">恢复任务</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">scheduler.resume_job(<span class="string">'interval_task'</span>)</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">删除任务</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">scheduler.remove_job(<span class="string">'interval_task'</span>)</span><br></pre></td></tr></table></figure>
+<p>apscheduler支持添加三种方式的任务，分别是定时任务，一次性任务及循环任务。同时也包含了对任务的控制。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>因为是单机版本，所以指定服务器运行任务，Rest接口管理任务，Rest接口认证就不写了。后续有需求在继续。</p>
+<hr>
+<blockquote>
+<p>欢迎<strong>长按下图 -&gt; 识别图中二维码</strong>或者微信<strong>扫一扫</strong>关注我的公众号<br><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fpzuv3q8ayj20w60ea11n.jpg" alt=""></p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2018/11/13/Flask-Admin使用教程/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1308,169 +1617,6 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserView</span><span class="params">(ModelView)</span>:</span></span><br><span class="line">    <span class="comment"># 这里是为了自定义显示的column名字</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_accessible</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> current_user.is_authenticated</span><br><span class="line"></span><br><span class="line">    column_labels = dict(</span><br><span class="line">        id=<span class="string">u'用户ID'</span>,</span><br><span class="line">        email=<span class="string">u'邮箱'</span>,</span><br><span class="line">        nickname=<span class="string">u'用户名'</span>,</span><br><span class="line">        create_time=<span class="string">u'创建时间'</span>,</span><br><span class="line">        status=<span class="string">u'状态'</span></span><br><span class="line"></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 如果不想显示某些字段，可以重载这个变量</span></span><br><span class="line"></span><br><span class="line">    column_exclude_list = (</span><br><span class="line"></span><br><span class="line">        <span class="string">'_password'</span>,</span><br><span class="line"></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AnnouncementView</span><span class="params">(ModelView)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_accessible</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> current_user.is_authenticated</span><br><span class="line"></span><br><span class="line">    column_labels = dict(</span><br><span class="line">        id=<span class="string">u'资讯ID'</span>,</span><br><span class="line">        title=<span class="string">u'标题'</span>,</span><br><span class="line">        content=<span class="string">u'内容'</span>,</span><br><span class="line">        type=<span class="string">u'子类型'</span>,</span><br><span class="line">        url=<span class="string">u'资讯地址'</span>,</span><br><span class="line">        datetime=<span class="string">u'时间'</span>,</span><br><span class="line">        news_type=<span class="string">u'类型'</span>,</span><br><span class="line">        create_time=<span class="string">u'创建时间'</span>,</span><br><span class="line">        status=<span class="string">u'状态'</span></span><br><span class="line"></span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
 <p>已在代码中作出注释。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文因为开发进度，暂时只使用Flask-Admin这些功能。后续将介绍更多功能的使用。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2018/11/13/Flask-APScheduler使用教程/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Labradors">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Labradors">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/13/Flask-APScheduler使用教程/" itemprop="url">Flask-APScheduler使用教程</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-13T10:32:45+08:00">
-                2018-11-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/后端/" itemprop="url" rel="index">
-                    <span itemprop="name">后端</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>项目中需要用到定时器和循环执行。去网上搜了一下，比较常见的有一下集中。运用Python线程执行轮询操作，也有运用Linux系统的Cron,Celery的文章最多，但是太麻烦。看看就知道，<em>Celery</em> 需要一个发送和接受消息的传输者。RabbitMQ 和 Redis 中间人的消息传输支持所有特性，但也提供大量其他实验性方案的支持，包括用 SQLite 进行本地开发。需要用到队列，对于这点需求简直就是大材小用。最后找到了比较合适的Flask-APScheduler。</p>
-<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fv8f1ln9yhj20s30g70vi.jpg" alt=""></p>
-<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>看看  github的<a href="https://github.com/viniciuschiele/flask-apscheduler" target="_blank" rel="noopener"><strong>flask-apscheduler</strong></a>介绍。</p>
-<ul>
-<li>Loads scheduler configuration from Flask configuration.(支持从Flask中加载调度)</li>
-<li>Loads job definitions from Flask configuration.(支持从Flask中加载任务配置)</li>
-<li>Allows to specify the hostname which the scheduler will run on.(允许指定服务器运行任务)</li>
-<li>Provides a REST API to manage the scheduled jobs.(提供Rest接口管理任务)</li>
-<li>Provides authentication for the REST API.(提供Rest接口认证)</li>
-</ul>
-<h2 id="安装及配置"><a href="#安装及配置" class="headerlink" title="安装及配置"></a>安装及配置</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install Flask-APScheduler</span><br></pre></td></tr></table></figure>
-<p>在Flask配置文件中添加</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">SCHEDULER_API_ENABLED = <span class="keyword">True</span></span><br><span class="line">JOBS = [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">'id'</span>: <span class="string">'job_1h_data'</span>,</span><br><span class="line">            <span class="string">'func'</span>: job_1h_data,</span><br><span class="line">            <span class="string">'args'</span>: <span class="string">''</span>,</span><br><span class="line">            <span class="string">'trigger'</span>: &#123;</span><br><span class="line">                <span class="string">'type'</span>: <span class="string">'cron'</span>,</span><br><span class="line">                <span class="string">'day_of_week'</span>: <span class="string">"0-6"</span>,</span><br><span class="line">                <span class="string">'hour'</span>: <span class="string">'*'</span>,</span><br><span class="line">                <span class="string">'minute'</span>: <span class="string">'1'</span>,</span><br><span class="line">                <span class="string">'second'</span>: <span class="string">'0'</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        &#125;,</span><br><span class="line"></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">'id'</span>: <span class="string">'job_announce'</span>,</span><br><span class="line">            <span class="string">'func'</span>: exchange_an,</span><br><span class="line">            <span class="string">'args'</span>: <span class="string">''</span>,</span><br><span class="line">            <span class="string">'trigger'</span>: <span class="string">'interval'</span>,</span><br><span class="line">            <span class="string">'seconds'</span>: <span class="number">300</span></span><br><span class="line">        &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<p>上面指定了每一小时获取所有货币24h最高位以及交易所公告。</p>
-<h2 id="获取公告"><a href="#获取公告" class="headerlink" title="获取公告"></a>获取公告</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">exchange_an</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    :param start_date: 开始时间 YYYY-MM-DD HH:MM:SS</span></span><br><span class="line"><span class="string">    :param end_date: 结束时间 YYYY-MM-DD HH:MM:SS</span></span><br><span class="line"><span class="string">    :return: 推送消息,保持数据库</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    current_local = time.time()</span><br><span class="line">    start_date = time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>, time.localtime(current_local - <span class="number">300</span>))</span><br><span class="line">    end_date = time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>, time.localtime(current_local))</span><br><span class="line">    announce = pro.query(<span class="string">'exchange_ann'</span>, start_date=start_date, end_date=end_date)</span><br><span class="line">    print(<span class="string">'请求交易所公告...'</span>)</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> announce.values:</span><br><span class="line">        s = &#123;</span><br><span class="line">            <span class="string">'title'</span>: x[<span class="number">0</span>],</span><br><span class="line">            <span class="string">'content'</span>: x[<span class="number">1</span>],</span><br><span class="line">            <span class="string">'type'</span>: x[<span class="number">2</span>],</span><br><span class="line">            <span class="string">'url'</span>: x[<span class="number">3</span>],</span><br><span class="line">            <span class="string">'datetime'</span>: x[<span class="number">4</span>]</span><br><span class="line">        &#125;</span><br><span class="line">        value = json.dumps(s)</span><br><span class="line">        print(value)</span><br><span class="line">        mqttClient.publish(<span class="string">'system/ex_announce'</span>, value)</span><br></pre></td></tr></table></figure>
-<h2 id="动态添加任务"><a href="#动态添加任务" class="headerlink" title="动态添加任务"></a>动态添加任务</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding:utf-8</span></span><br><span class="line"><span class="keyword">from</span> apscheduler.schedulers.blocking <span class="keyword">import</span> BlockingScheduler</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">aps_test</span><span class="params">(x)</span>:</span></span><br><span class="line">    <span class="keyword">print</span> datetime.datetime.now().strftime(<span class="string">'%Y-%m-%d %H:%M:%S'</span>), x</span><br><span class="line"></span><br><span class="line">scheduler = BlockingScheduler()</span><br><span class="line">scheduler.add_job(func=aps_test, args=(<span class="string">'定时任务'</span>,), trigger=<span class="string">'cron'</span>, second=<span class="string">'*/5'</span>)</span><br><span class="line">scheduler.add_job(func=aps_test, args=(<span class="string">'一次性任务'</span>,), next_run_time=datetime.datetime.now() + datetime.timedelta(seconds=<span class="number">12</span>))</span><br><span class="line">scheduler.add_job(func=aps_test, args=(<span class="string">'循环任务'</span>,), trigger=<span class="string">'interval'</span>, seconds=<span class="number">3</span>, id=<span class="string">'interval_task'</span>)</span><br><span class="line"></span><br><span class="line">scheduler.start()</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">暂停任务</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">scheduler.pause_job(<span class="string">'interval_task'</span>)</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">恢复任务</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">scheduler.resume_job(<span class="string">'interval_task'</span>)</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">删除任务</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">scheduler.remove_job(<span class="string">'interval_task'</span>)</span><br></pre></td></tr></table></figure>
-<p>apscheduler支持添加三种方式的任务，分别是定时任务，一次性任务及循环任务。同时也包含了对任务的控制。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>因为是单机版本，所以指定服务器运行任务，Rest接口管理任务，Rest接口认证就不写了。后续有需求在继续。</p>
-<hr>
-<blockquote>
-<p>欢迎<strong>长按下图 -&gt; 识别图中二维码</strong>或者微信<strong>扫一扫</strong>关注我的公众号<br><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fpzuv3q8ayj20w60ea11n.jpg" alt=""></p>
-</blockquote>
 
           
         
@@ -2555,321 +2701,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2018/10/16/CoinMarketCap接口分析/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Labradors">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Labradors">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/16/CoinMarketCap接口分析/" itemprop="url">coinmarketcap接口分析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-16T10:32:45+08:00">
-                2018-10-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/后端/" itemprop="url" rel="index">
-                    <span itemprop="name">后端</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="币列表-https-api-coinmarketcap-com-v2-listings"><a href="#币列表-https-api-coinmarketcap-com-v2-listings" class="headerlink" title="币列表(https://api.coinmarketcap.com/v2/listings/)"></a>币列表(<a href="https://api.coinmarketcap.com/v2/listings/" target="_blank" rel="noopener">https://api.coinmarketcap.com/v2/listings/</a>)</h3><ul>
-<li>字段</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&quot;name&quot; : 名字</span><br><span class="line">&quot;symbol&quot; ： 符号</span><br><span class="line">&quot;website_slug&quot; ： 网站简称</span><br><span class="line">&quot;timestamp&quot; : 时间戳</span><br><span class="line">&quot;num_cryptocurrencies&quot; : 数字货币数量</span><br></pre></td></tr></table></figure>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"data"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"id"</span>: <span class="number">1</span>, </span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Bitcoin"</span>, </span><br><span class="line">            <span class="attr">"symbol"</span>: <span class="string">"BTC"</span>, </span><br><span class="line">            <span class="attr">"website_slug"</span>: <span class="string">"bitcoin"</span></span><br><span class="line">        &#125;, </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"id"</span>: <span class="number">2</span>, </span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Litecoin"</span>, </span><br><span class="line">            <span class="attr">"symbol"</span>: <span class="string">"LTC"</span>, </span><br><span class="line">            <span class="attr">"website_slug"</span>: <span class="string">"litecoin"</span></span><br><span class="line">        &#125;, </span><br><span class="line">        ...</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">"metadata"</span>: &#123;</span><br><span class="line">        <span class="attr">"timestamp"</span>: <span class="number">1525137187</span>, </span><br><span class="line">        <span class="attr">"num_cryptocurrencies"</span>: <span class="number">1602</span>, </span><br><span class="line">        <span class="attr">"error"</span>: <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<h2 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h2><ul>
-<li>rank 市值排名</li>
-<li>circulating_supply ： 流通总量</li>
-<li>total_supply：流通总量</li>
-<li>max_supply 发行总量</li>
-<li>quotes ： 报价</li>
-<li>percent_change_1h : 一小时涨跌幅</li>
-<li>percent_change_24h ：二小时涨跌幅</li>
-<li>percent_change_7d：七天涨跌幅</li>
-<li>volume_24：24小时成交额</li>
-<li>market_cap：流通总市值</li>
-<li>bitcoin_percentage_of_market_cap : 比特币占比</li>
-<li>total_market_cap : 市场总量</li>
-<li>total_volume_24h : 24小时交易总量</li>
-</ul>
-<p>### </p>
-<h3 id="币市值，当前价格，24小时涨跌幅，1小时涨跌幅，七天涨跌幅，24小时成交额，流通总市值https-api-coinmarketcap-com-v2-ticker"><a href="#币市值，当前价格，24小时涨跌幅，1小时涨跌幅，七天涨跌幅，24小时成交额，流通总市值https-api-coinmarketcap-com-v2-ticker" class="headerlink" title="币市值，当前价格，24小时涨跌幅，1小时涨跌幅，七天涨跌幅，24小时成交额，流通总市值https://api.coinmarketcap.com/v2/ticker/"></a>币市值，当前价格，24小时涨跌幅，1小时涨跌幅，七天涨跌幅，24小时成交额，流通总市值<a href="https://api.coinmarketcap.com/v2/ticker/" target="_blank" rel="noopener">https://api.coinmarketcap.com/v2/ticker/</a></h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"data"</span>: &#123;</span><br><span class="line">        <span class="attr">"1"</span>: &#123;</span><br><span class="line">            <span class="attr">"id"</span>: <span class="number">1</span>, </span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Bitcoin"</span>, </span><br><span class="line">            <span class="attr">"symbol"</span>: <span class="string">"BTC"</span>, </span><br><span class="line">            <span class="attr">"website_slug"</span>: <span class="string">"bitcoin"</span>, </span><br><span class="line">            <span class="attr">"rank"</span>: <span class="number">1</span>, </span><br><span class="line">            <span class="attr">"circulating_supply"</span>: <span class="number">17008162.0</span>, </span><br><span class="line">            <span class="attr">"total_supply"</span>: <span class="number">17008162.0</span>, </span><br><span class="line">            <span class="attr">"max_supply"</span>: <span class="number">21000000.0</span>, </span><br><span class="line">            <span class="attr">"quotes"</span>: &#123;</span><br><span class="line">                <span class="attr">"USD"</span>: &#123;</span><br><span class="line">                    <span class="attr">"price"</span>: <span class="number">9024.09</span>, </span><br><span class="line">                    <span class="attr">"volume_24h"</span>: <span class="number">8765400000.0</span>, </span><br><span class="line">                    <span class="attr">"market_cap"</span>: <span class="number">153483184623.0</span>, </span><br><span class="line">                    <span class="attr">"percent_change_1h"</span>: <span class="number">-2.31</span>, </span><br><span class="line">                    <span class="attr">"percent_change_24h"</span>: <span class="number">-4.18</span>, </span><br><span class="line">                    <span class="attr">"percent_change_7d"</span>: <span class="number">-0.47</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;, </span><br><span class="line">            <span class="attr">"last_updated"</span>: <span class="number">1525137271</span></span><br><span class="line">        &#125;, </span><br><span class="line">        <span class="attr">"1027"</span>: &#123;</span><br><span class="line">            <span class="attr">"id"</span>: <span class="number">1027</span>, </span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Ethereum"</span>, </span><br><span class="line">            <span class="attr">"symbol"</span>: <span class="string">"ETH"</span>, </span><br><span class="line">            <span class="attr">"website_slug"</span>: <span class="string">"ethereum"</span>, </span><br><span class="line">            <span class="attr">"rank"</span>: <span class="number">2</span>, </span><br><span class="line">            <span class="attr">"circulating_supply"</span>: <span class="number">99151888.0</span>, </span><br><span class="line">            <span class="attr">"total_supply"</span>: <span class="number">99151888.0</span>, </span><br><span class="line">            <span class="attr">"max_supply"</span>: <span class="literal">null</span>, </span><br><span class="line">            <span class="attr">"quotes"</span>: &#123;</span><br><span class="line">                <span class="attr">"USD"</span>: &#123;</span><br><span class="line">                    <span class="attr">"price"</span>: <span class="number">642.399</span>, </span><br><span class="line">                    <span class="attr">"volume_24h"</span>: <span class="number">2871290000.0</span>, </span><br><span class="line">                    <span class="attr">"market_cap"</span>: <span class="number">63695073558.0</span>, </span><br><span class="line">                    <span class="attr">"percent_change_1h"</span>: <span class="number">-3.75</span>, </span><br><span class="line">                    <span class="attr">"percent_change_24h"</span>: <span class="number">-7.01</span>, </span><br><span class="line">                    <span class="attr">"percent_change_7d"</span>: <span class="number">-2.32</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;, </span><br><span class="line">            <span class="attr">"last_updated"</span>: <span class="number">1525137260</span></span><br><span class="line">        &#125; </span><br><span class="line">        ...</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"metadata"</span>: &#123;</span><br><span class="line">        <span class="attr">"timestamp"</span>: <span class="number">1525137187</span>, </span><br><span class="line">        <span class="attr">"num_cryptocurrencies"</span>: <span class="number">1602</span>, </span><br><span class="line">        <span class="attr">"error"</span>: <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<h3 id="币币互转-https-api-coinmarketcap-com-v2-ticker-convert-BTC-amp-limit-10"><a href="#币币互转-https-api-coinmarketcap-com-v2-ticker-convert-BTC-amp-limit-10" class="headerlink" title="币币互转(https://api.coinmarketcap.com/v2/ticker/?convert=BTC&amp;limit=10 )"></a>币币互转(<a href="https://api.coinmarketcap.com/v2/ticker/?convert=BTC&amp;limit=10" target="_blank" rel="noopener">https://api.coinmarketcap.com/v2/ticker/?convert=BTC&amp;limit=10</a> )</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"data"</span>: &#123;</span><br><span class="line">        <span class="attr">"1"</span>: &#123;</span><br><span class="line">            <span class="attr">"id"</span>: <span class="number">1</span>, </span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Bitcoin"</span>, </span><br><span class="line">            <span class="attr">"symbol"</span>: <span class="string">"BTC"</span>, </span><br><span class="line">            <span class="attr">"website_slug"</span>: <span class="string">"bitcoin"</span>, </span><br><span class="line">            <span class="attr">"rank"</span>: <span class="number">1</span>, </span><br><span class="line">            <span class="attr">"circulating_supply"</span>: <span class="number">17078075.0</span>, </span><br><span class="line">            <span class="attr">"total_supply"</span>: <span class="number">17078075.0</span>, </span><br><span class="line">            <span class="attr">"max_supply"</span>: <span class="number">21000000.0</span>, </span><br><span class="line">            <span class="attr">"quotes"</span>: &#123;</span><br><span class="line">                <span class="attr">"USD"</span>: &#123;</span><br><span class="line">                    <span class="attr">"price"</span>: <span class="number">7635.04</span>, </span><br><span class="line">                    <span class="attr">"volume_24h"</span>: <span class="number">4712820000.0</span>, </span><br><span class="line">                    <span class="attr">"market_cap"</span>: <span class="number">130391785748.0</span>, </span><br><span class="line">                    <span class="attr">"percent_change_1h"</span>: <span class="number">0.44</span>, </span><br><span class="line">                    <span class="attr">"percent_change_24h"</span>: <span class="number">2.71</span>, </span><br><span class="line">                    <span class="attr">"percent_change_7d"</span>: <span class="number">1.6</span></span><br><span class="line">                &#125;, </span><br><span class="line">                <span class="attr">"CNY"</span>: &#123;</span><br><span class="line">                    <span class="attr">"price"</span>: <span class="number">48840.4999808093</span>, </span><br><span class="line">                    <span class="attr">"volume_24h"</span>: <span class="number">30147384312.27051</span>, </span><br><span class="line">                    <span class="attr">"market_cap"</span>: <span class="number">834101721710.0</span>, </span><br><span class="line">                    <span class="attr">"percent_change_1h"</span>: <span class="number">0.44</span>, </span><br><span class="line">                    <span class="attr">"percent_change_24h"</span>: <span class="number">2.71</span>, </span><br><span class="line">                    <span class="attr">"percent_change_7d"</span>: <span class="number">1.6</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;, </span><br><span class="line">            <span class="attr">"last_updated"</span>: <span class="number">1528266575</span></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="具体货币-https-api-coinmarketcap-com-v2-ticker-1"><a href="#具体货币-https-api-coinmarketcap-com-v2-ticker-1" class="headerlink" title="具体货币(https://api.coinmarketcap.com/v2/ticker/1/ )"></a>具体货币(<a href="https://api.coinmarketcap.com/v2/ticker/1/" target="_blank" rel="noopener">https://api.coinmarketcap.com/v2/ticker/1/</a> )</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"data"</span>: &#123;</span><br><span class="line">        <span class="attr">"id"</span>: <span class="number">1</span>, </span><br><span class="line">        <span class="attr">"name"</span>: <span class="string">"Bitcoin"</span>, </span><br><span class="line">        <span class="attr">"symbol"</span>: <span class="string">"BTC"</span>, </span><br><span class="line">        <span class="attr">"website_slug"</span>: <span class="string">"bitcoin"</span>, </span><br><span class="line">        <span class="attr">"rank"</span>: <span class="number">1</span>, </span><br><span class="line">        <span class="attr">"circulating_supply"</span>: <span class="number">17008162.0</span>, </span><br><span class="line">        <span class="attr">"total_supply"</span>: <span class="number">17008162.0</span>, </span><br><span class="line">        <span class="attr">"max_supply"</span>: <span class="number">21000000.0</span>, </span><br><span class="line">        <span class="attr">"quotes"</span>: &#123;</span><br><span class="line">            <span class="attr">"USD"</span>: &#123;</span><br><span class="line">                <span class="attr">"price"</span>: <span class="number">9024.09</span>, </span><br><span class="line">                <span class="attr">"volume_24h"</span>: <span class="number">8765400000.0</span>, </span><br><span class="line">                <span class="attr">"market_cap"</span>: <span class="number">153483184623.0</span>, </span><br><span class="line">                <span class="attr">"percent_change_1h"</span>: <span class="number">-2.31</span>, </span><br><span class="line">                <span class="attr">"percent_change_24h"</span>: <span class="number">-4.18</span>, </span><br><span class="line">                <span class="attr">"percent_change_7d"</span>: <span class="number">-0.47</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, </span><br><span class="line">        <span class="attr">"last_updated"</span>: <span class="number">1525137271</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"metadata"</span>: &#123;</span><br><span class="line">        <span class="attr">"timestamp"</span>: <span class="number">1525237332</span>, </span><br><span class="line">        <span class="attr">"error"</span>: <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="具体货币互转-https-api-coinmarketcap-com-v2-ticker-1-convert-CNY"><a href="#具体货币互转-https-api-coinmarketcap-com-v2-ticker-1-convert-CNY" class="headerlink" title="具体货币互转(https://api.coinmarketcap.com/v2/ticker/1/?convert=CNY)"></a>具体货币互转(<a href="https://api.coinmarketcap.com/v2/ticker/1/?convert=CNY" target="_blank" rel="noopener">https://api.coinmarketcap.com/v2/ticker/1/?convert=CNY</a>)</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"data"</span>: &#123;</span><br><span class="line">        <span class="attr">"id"</span>: <span class="number">1</span>, </span><br><span class="line">        <span class="attr">"name"</span>: <span class="string">"Bitcoin"</span>, </span><br><span class="line">        <span class="attr">"symbol"</span>: <span class="string">"BTC"</span>, </span><br><span class="line">        <span class="attr">"website_slug"</span>: <span class="string">"bitcoin"</span>, </span><br><span class="line">        <span class="attr">"rank"</span>: <span class="number">1</span>, </span><br><span class="line">        <span class="attr">"circulating_supply"</span>: <span class="number">17078075.0</span>, </span><br><span class="line">        <span class="attr">"total_supply"</span>: <span class="number">17078075.0</span>, </span><br><span class="line">        <span class="attr">"max_supply"</span>: <span class="number">21000000.0</span>, </span><br><span class="line">        <span class="attr">"quotes"</span>: &#123;</span><br><span class="line">            <span class="attr">"USD"</span>: &#123;</span><br><span class="line">                <span class="attr">"price"</span>: <span class="number">7637.54</span>, </span><br><span class="line">                <span class="attr">"volume_24h"</span>: <span class="number">4717060000.0</span>, </span><br><span class="line">                <span class="attr">"market_cap"</span>: <span class="number">130434480936.0</span>, </span><br><span class="line">                <span class="attr">"percent_change_1h"</span>: <span class="number">0.44</span>, </span><br><span class="line">                <span class="attr">"percent_change_24h"</span>: <span class="number">2.74</span>, </span><br><span class="line">                <span class="attr">"percent_change_7d"</span>: <span class="number">1.63</span></span><br><span class="line">            &#125;, </span><br><span class="line">            <span class="attr">"CNY"</span>: &#123;</span><br><span class="line">                <span class="attr">"price"</span>: <span class="number">48856.4922021929</span>, </span><br><span class="line">                <span class="attr">"volume_24h"</span>: <span class="number">30174507119.73696</span>, </span><br><span class="line">                <span class="attr">"market_cap"</span>: <span class="number">834374838066.0</span>, </span><br><span class="line">                <span class="attr">"percent_change_1h"</span>: <span class="number">0.44</span>, </span><br><span class="line">                <span class="attr">"percent_change_24h"</span>: <span class="number">2.74</span>, </span><br><span class="line">                <span class="attr">"percent_change_7d"</span>: <span class="number">1.63</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, </span><br><span class="line">        <span class="attr">"last_updated"</span>: <span class="number">1528266875</span></span><br><span class="line">    &#125;, </span><br><span class="line">    <span class="attr">"metadata"</span>: &#123;</span><br><span class="line">        <span class="attr">"timestamp"</span>: <span class="number">1528266628</span>, </span><br><span class="line">        <span class="attr">"error"</span>: <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="流通总量-https-api-coinmarketcap-com-v2-global-convert-CNY"><a href="#流通总量-https-api-coinmarketcap-com-v2-global-convert-CNY" class="headerlink" title="流通总量(https://api.coinmarketcap.com/v2/global/?convert=CNY)"></a>流通总量(<a href="https://api.coinmarketcap.com/v2/global/?convert=CNY" target="_blank" rel="noopener">https://api.coinmarketcap.com/v2/global/?convert=CNY</a>)</h2><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"data"</span>: &#123;</span><br><span class="line">        <span class="attr">"active_cryptocurrencies"</span>: <span class="number">1644</span>, </span><br><span class="line">        <span class="attr">"active_markets"</span>: <span class="number">11216</span>, </span><br><span class="line">        <span class="attr">"bitcoin_percentage_of_market_cap"</span>: <span class="number">37.77</span>, </span><br><span class="line">        <span class="attr">"quotes"</span>: &#123;</span><br><span class="line">            <span class="attr">"USD"</span>: &#123;</span><br><span class="line">                <span class="attr">"total_market_cap"</span>: <span class="number">345376710236.0</span>, </span><br><span class="line">                <span class="attr">"total_volume_24h"</span>: <span class="number">15338509256.0</span></span><br><span class="line">            &#125;, </span><br><span class="line">            <span class="attr">"CNY"</span>: &#123;</span><br><span class="line">                <span class="attr">"total_market_cap"</span>: <span class="number">2209336324320.0</span>, </span><br><span class="line">                <span class="attr">"total_volume_24h"</span>: <span class="number">98118734289.0</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, </span><br><span class="line">        <span class="attr">"last_updated"</span>: <span class="number">1528266875</span></span><br><span class="line">    &#125;, </span><br><span class="line">    <span class="attr">"metadata"</span>: &#123;</span><br><span class="line">        <span class="attr">"timestamp"</span>: <span class="number">1528266861</span>, </span><br><span class="line">        <span class="attr">"error"</span>: <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2018/10/16/Android自定义小红点消息提示/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Labradors">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Labradors">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/16/Android自定义小红点消息提示/" itemprop="url">Android自定义小红点消息提示</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-16T10:32:45+08:00">
-                2018-10-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>我们在开发的时候，会经常遇到小红点的需求，比如类似微信的聊天信息，新消息的通知这样的需求。如果通过图片来实现，会比较麻烦，一换图片就要多做一张图片。我们有万能的画笔，为什么不画出来呢。我们底部菜单栏是通过RadioButton来实现的，那么我们现在就开始对RadionButton来进行重写 。</p>
-<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu6ylx74jbj20ge07x3yb.jpg" alt=""></p>
-<h2 id="TipButton类"><a href="#TipButton类" class="headerlink" title="TipButton类"></a><strong>TipButton类</strong></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TipButton</span> <span class="keyword">extends</span> <span class="title">RadioButton</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> mTipOn = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Dot mDot;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Dot</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> color;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> radius;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> marginTop;</span><br><span class="line">        <span class="keyword">int</span> marginRight;</span><br><span class="line"></span><br><span class="line">        Dot() &#123;</span><br><span class="line">            <span class="keyword">float</span> density = getContext().getResources().getDisplayMetrics().density;</span><br><span class="line">            radius = (<span class="keyword">int</span>) (<span class="number">5</span> * density);</span><br><span class="line">            marginTop = (<span class="keyword">int</span>) (<span class="number">3</span> * density);</span><br><span class="line">            marginRight = (<span class="keyword">int</span>) (<span class="number">3</span> * density);</span><br><span class="line"></span><br><span class="line">            color = getContext().getResources().getColor(R.color.tip_red);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TipButton</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context);</span><br><span class="line">        init();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TipButton</span><span class="params">(Context context, AttributeSet attrs)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context, attrs);</span><br><span class="line">        init();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TipButton</span><span class="params">(Context context, AttributeSet attrs, <span class="keyword">int</span> defStyle)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context, attrs, defStyle);</span><br><span class="line">        init();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        mDot = <span class="keyword">new</span> Dot();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onDraw(canvas);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mTipOn) &#123;</span><br><span class="line">            <span class="keyword">float</span> cx = getWidth() - mDot.marginRight - mDot.radius;</span><br><span class="line">            <span class="keyword">float</span> cy = mDot.marginTop + mDot.radius;</span><br><span class="line"></span><br><span class="line">            Drawable drawableTop = getCompoundDrawables()[<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">if</span> (drawableTop != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">int</span> drawableTopWidth = drawableTop.getIntrinsicWidth();</span><br><span class="line">                <span class="keyword">if</span> (drawableTopWidth &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="keyword">int</span> dotLeft = getWidth() / <span class="number">2</span> + drawableTopWidth / <span class="number">2</span>;</span><br><span class="line">                    cx = dotLeft + mDot.radius;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            Paint paint = getPaint();</span><br><span class="line">            <span class="comment">//save</span></span><br><span class="line">            <span class="keyword">int</span> tempColor = paint.getColor();</span><br><span class="line"></span><br><span class="line">            paint.setColor(mDot.color);</span><br><span class="line">            paint.setStyle(Paint.Style.FILL);</span><br><span class="line">            canvas.drawCircle(cx, cy, mDot.radius, paint);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//restore</span></span><br><span class="line">            paint.setColor(tempColor);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTipOn</span><span class="params">(<span class="keyword">boolean</span> tip)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.mTipOn = tip;</span><br><span class="line"></span><br><span class="line">        invalidate();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isTipOn</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> mTipOn;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>定义好之后，我们来调用它，很简单 布局文件中直接声明就行。  布局文件代码实现 上代码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;work.labradors.ui.view.TipButton</span><br><span class="line">    android:id=<span class="string">"@+id/home_user_rb"</span></span><br><span class="line">    style=<span class="string">"@style/TabMenuText"</span></span><br><span class="line">    android:drawableTop=<span class="string">"@drawable/tab_user_btn"</span></span><br><span class="line">    android:text=<span class="string">"@string/home_mine_text"</span></span><br><span class="line">             /&gt;</span><br></pre></td></tr></table></figure>
-<p>里面的具体样式，根据你的需求来实现就行。  里面我们还实现了一个是否显示小红点的方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTipOn</span><span class="params">(<span class="keyword">boolean</span> tip)</span> </span>&#123;</span><br><span class="line">     <span class="keyword">this</span>.mTipOn = tip;</span><br><span class="line">    	invalidate();</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2018/10/16/cctx Python使用/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -3071,6 +2902,173 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2018/10/16/CoinMarketCap接口分析/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/16/CoinMarketCap接口分析/" itemprop="url">coinmarketcap接口分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-16T10:32:45+08:00">
+                2018-10-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/后端/" itemprop="url" rel="index">
+                    <span itemprop="name">后端</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="币列表-https-api-coinmarketcap-com-v2-listings"><a href="#币列表-https-api-coinmarketcap-com-v2-listings" class="headerlink" title="币列表(https://api.coinmarketcap.com/v2/listings/)"></a>币列表(<a href="https://api.coinmarketcap.com/v2/listings/" target="_blank" rel="noopener">https://api.coinmarketcap.com/v2/listings/</a>)</h3><ul>
+<li>字段</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&quot;name&quot; : 名字</span><br><span class="line">&quot;symbol&quot; ： 符号</span><br><span class="line">&quot;website_slug&quot; ： 网站简称</span><br><span class="line">&quot;timestamp&quot; : 时间戳</span><br><span class="line">&quot;num_cryptocurrencies&quot; : 数字货币数量</span><br></pre></td></tr></table></figure>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"data"</span>: [</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"id"</span>: <span class="number">1</span>, </span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Bitcoin"</span>, </span><br><span class="line">            <span class="attr">"symbol"</span>: <span class="string">"BTC"</span>, </span><br><span class="line">            <span class="attr">"website_slug"</span>: <span class="string">"bitcoin"</span></span><br><span class="line">        &#125;, </span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"id"</span>: <span class="number">2</span>, </span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Litecoin"</span>, </span><br><span class="line">            <span class="attr">"symbol"</span>: <span class="string">"LTC"</span>, </span><br><span class="line">            <span class="attr">"website_slug"</span>: <span class="string">"litecoin"</span></span><br><span class="line">        &#125;, </span><br><span class="line">        ...</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">"metadata"</span>: &#123;</span><br><span class="line">        <span class="attr">"timestamp"</span>: <span class="number">1525137187</span>, </span><br><span class="line">        <span class="attr">"num_cryptocurrencies"</span>: <span class="number">1602</span>, </span><br><span class="line">        <span class="attr">"error"</span>: <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h2 id="笔记"><a href="#笔记" class="headerlink" title="笔记"></a>笔记</h2><ul>
+<li>rank 市值排名</li>
+<li>circulating_supply ： 流通总量</li>
+<li>total_supply：流通总量</li>
+<li>max_supply 发行总量</li>
+<li>quotes ： 报价</li>
+<li>percent_change_1h : 一小时涨跌幅</li>
+<li>percent_change_24h ：二小时涨跌幅</li>
+<li>percent_change_7d：七天涨跌幅</li>
+<li>volume_24：24小时成交额</li>
+<li>market_cap：流通总市值</li>
+<li>bitcoin_percentage_of_market_cap : 比特币占比</li>
+<li>total_market_cap : 市场总量</li>
+<li>total_volume_24h : 24小时交易总量</li>
+</ul>
+<p>### </p>
+<h3 id="币市值，当前价格，24小时涨跌幅，1小时涨跌幅，七天涨跌幅，24小时成交额，流通总市值https-api-coinmarketcap-com-v2-ticker"><a href="#币市值，当前价格，24小时涨跌幅，1小时涨跌幅，七天涨跌幅，24小时成交额，流通总市值https-api-coinmarketcap-com-v2-ticker" class="headerlink" title="币市值，当前价格，24小时涨跌幅，1小时涨跌幅，七天涨跌幅，24小时成交额，流通总市值https://api.coinmarketcap.com/v2/ticker/"></a>币市值，当前价格，24小时涨跌幅，1小时涨跌幅，七天涨跌幅，24小时成交额，流通总市值<a href="https://api.coinmarketcap.com/v2/ticker/" target="_blank" rel="noopener">https://api.coinmarketcap.com/v2/ticker/</a></h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"data"</span>: &#123;</span><br><span class="line">        <span class="attr">"1"</span>: &#123;</span><br><span class="line">            <span class="attr">"id"</span>: <span class="number">1</span>, </span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Bitcoin"</span>, </span><br><span class="line">            <span class="attr">"symbol"</span>: <span class="string">"BTC"</span>, </span><br><span class="line">            <span class="attr">"website_slug"</span>: <span class="string">"bitcoin"</span>, </span><br><span class="line">            <span class="attr">"rank"</span>: <span class="number">1</span>, </span><br><span class="line">            <span class="attr">"circulating_supply"</span>: <span class="number">17008162.0</span>, </span><br><span class="line">            <span class="attr">"total_supply"</span>: <span class="number">17008162.0</span>, </span><br><span class="line">            <span class="attr">"max_supply"</span>: <span class="number">21000000.0</span>, </span><br><span class="line">            <span class="attr">"quotes"</span>: &#123;</span><br><span class="line">                <span class="attr">"USD"</span>: &#123;</span><br><span class="line">                    <span class="attr">"price"</span>: <span class="number">9024.09</span>, </span><br><span class="line">                    <span class="attr">"volume_24h"</span>: <span class="number">8765400000.0</span>, </span><br><span class="line">                    <span class="attr">"market_cap"</span>: <span class="number">153483184623.0</span>, </span><br><span class="line">                    <span class="attr">"percent_change_1h"</span>: <span class="number">-2.31</span>, </span><br><span class="line">                    <span class="attr">"percent_change_24h"</span>: <span class="number">-4.18</span>, </span><br><span class="line">                    <span class="attr">"percent_change_7d"</span>: <span class="number">-0.47</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;, </span><br><span class="line">            <span class="attr">"last_updated"</span>: <span class="number">1525137271</span></span><br><span class="line">        &#125;, </span><br><span class="line">        <span class="attr">"1027"</span>: &#123;</span><br><span class="line">            <span class="attr">"id"</span>: <span class="number">1027</span>, </span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Ethereum"</span>, </span><br><span class="line">            <span class="attr">"symbol"</span>: <span class="string">"ETH"</span>, </span><br><span class="line">            <span class="attr">"website_slug"</span>: <span class="string">"ethereum"</span>, </span><br><span class="line">            <span class="attr">"rank"</span>: <span class="number">2</span>, </span><br><span class="line">            <span class="attr">"circulating_supply"</span>: <span class="number">99151888.0</span>, </span><br><span class="line">            <span class="attr">"total_supply"</span>: <span class="number">99151888.0</span>, </span><br><span class="line">            <span class="attr">"max_supply"</span>: <span class="literal">null</span>, </span><br><span class="line">            <span class="attr">"quotes"</span>: &#123;</span><br><span class="line">                <span class="attr">"USD"</span>: &#123;</span><br><span class="line">                    <span class="attr">"price"</span>: <span class="number">642.399</span>, </span><br><span class="line">                    <span class="attr">"volume_24h"</span>: <span class="number">2871290000.0</span>, </span><br><span class="line">                    <span class="attr">"market_cap"</span>: <span class="number">63695073558.0</span>, </span><br><span class="line">                    <span class="attr">"percent_change_1h"</span>: <span class="number">-3.75</span>, </span><br><span class="line">                    <span class="attr">"percent_change_24h"</span>: <span class="number">-7.01</span>, </span><br><span class="line">                    <span class="attr">"percent_change_7d"</span>: <span class="number">-2.32</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;, </span><br><span class="line">            <span class="attr">"last_updated"</span>: <span class="number">1525137260</span></span><br><span class="line">        &#125; </span><br><span class="line">        ...</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"metadata"</span>: &#123;</span><br><span class="line">        <span class="attr">"timestamp"</span>: <span class="number">1525137187</span>, </span><br><span class="line">        <span class="attr">"num_cryptocurrencies"</span>: <span class="number">1602</span>, </span><br><span class="line">        <span class="attr">"error"</span>: <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h3 id="币币互转-https-api-coinmarketcap-com-v2-ticker-convert-BTC-amp-limit-10"><a href="#币币互转-https-api-coinmarketcap-com-v2-ticker-convert-BTC-amp-limit-10" class="headerlink" title="币币互转(https://api.coinmarketcap.com/v2/ticker/?convert=BTC&amp;limit=10 )"></a>币币互转(<a href="https://api.coinmarketcap.com/v2/ticker/?convert=BTC&amp;limit=10" target="_blank" rel="noopener">https://api.coinmarketcap.com/v2/ticker/?convert=BTC&amp;limit=10</a> )</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"data"</span>: &#123;</span><br><span class="line">        <span class="attr">"1"</span>: &#123;</span><br><span class="line">            <span class="attr">"id"</span>: <span class="number">1</span>, </span><br><span class="line">            <span class="attr">"name"</span>: <span class="string">"Bitcoin"</span>, </span><br><span class="line">            <span class="attr">"symbol"</span>: <span class="string">"BTC"</span>, </span><br><span class="line">            <span class="attr">"website_slug"</span>: <span class="string">"bitcoin"</span>, </span><br><span class="line">            <span class="attr">"rank"</span>: <span class="number">1</span>, </span><br><span class="line">            <span class="attr">"circulating_supply"</span>: <span class="number">17078075.0</span>, </span><br><span class="line">            <span class="attr">"total_supply"</span>: <span class="number">17078075.0</span>, </span><br><span class="line">            <span class="attr">"max_supply"</span>: <span class="number">21000000.0</span>, </span><br><span class="line">            <span class="attr">"quotes"</span>: &#123;</span><br><span class="line">                <span class="attr">"USD"</span>: &#123;</span><br><span class="line">                    <span class="attr">"price"</span>: <span class="number">7635.04</span>, </span><br><span class="line">                    <span class="attr">"volume_24h"</span>: <span class="number">4712820000.0</span>, </span><br><span class="line">                    <span class="attr">"market_cap"</span>: <span class="number">130391785748.0</span>, </span><br><span class="line">                    <span class="attr">"percent_change_1h"</span>: <span class="number">0.44</span>, </span><br><span class="line">                    <span class="attr">"percent_change_24h"</span>: <span class="number">2.71</span>, </span><br><span class="line">                    <span class="attr">"percent_change_7d"</span>: <span class="number">1.6</span></span><br><span class="line">                &#125;, </span><br><span class="line">                <span class="attr">"CNY"</span>: &#123;</span><br><span class="line">                    <span class="attr">"price"</span>: <span class="number">48840.4999808093</span>, </span><br><span class="line">                    <span class="attr">"volume_24h"</span>: <span class="number">30147384312.27051</span>, </span><br><span class="line">                    <span class="attr">"market_cap"</span>: <span class="number">834101721710.0</span>, </span><br><span class="line">                    <span class="attr">"percent_change_1h"</span>: <span class="number">0.44</span>, </span><br><span class="line">                    <span class="attr">"percent_change_24h"</span>: <span class="number">2.71</span>, </span><br><span class="line">                    <span class="attr">"percent_change_7d"</span>: <span class="number">1.6</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;, </span><br><span class="line">            <span class="attr">"last_updated"</span>: <span class="number">1528266575</span></span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="具体货币-https-api-coinmarketcap-com-v2-ticker-1"><a href="#具体货币-https-api-coinmarketcap-com-v2-ticker-1" class="headerlink" title="具体货币(https://api.coinmarketcap.com/v2/ticker/1/ )"></a>具体货币(<a href="https://api.coinmarketcap.com/v2/ticker/1/" target="_blank" rel="noopener">https://api.coinmarketcap.com/v2/ticker/1/</a> )</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"data"</span>: &#123;</span><br><span class="line">        <span class="attr">"id"</span>: <span class="number">1</span>, </span><br><span class="line">        <span class="attr">"name"</span>: <span class="string">"Bitcoin"</span>, </span><br><span class="line">        <span class="attr">"symbol"</span>: <span class="string">"BTC"</span>, </span><br><span class="line">        <span class="attr">"website_slug"</span>: <span class="string">"bitcoin"</span>, </span><br><span class="line">        <span class="attr">"rank"</span>: <span class="number">1</span>, </span><br><span class="line">        <span class="attr">"circulating_supply"</span>: <span class="number">17008162.0</span>, </span><br><span class="line">        <span class="attr">"total_supply"</span>: <span class="number">17008162.0</span>, </span><br><span class="line">        <span class="attr">"max_supply"</span>: <span class="number">21000000.0</span>, </span><br><span class="line">        <span class="attr">"quotes"</span>: &#123;</span><br><span class="line">            <span class="attr">"USD"</span>: &#123;</span><br><span class="line">                <span class="attr">"price"</span>: <span class="number">9024.09</span>, </span><br><span class="line">                <span class="attr">"volume_24h"</span>: <span class="number">8765400000.0</span>, </span><br><span class="line">                <span class="attr">"market_cap"</span>: <span class="number">153483184623.0</span>, </span><br><span class="line">                <span class="attr">"percent_change_1h"</span>: <span class="number">-2.31</span>, </span><br><span class="line">                <span class="attr">"percent_change_24h"</span>: <span class="number">-4.18</span>, </span><br><span class="line">                <span class="attr">"percent_change_7d"</span>: <span class="number">-0.47</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, </span><br><span class="line">        <span class="attr">"last_updated"</span>: <span class="number">1525137271</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"metadata"</span>: &#123;</span><br><span class="line">        <span class="attr">"timestamp"</span>: <span class="number">1525237332</span>, </span><br><span class="line">        <span class="attr">"error"</span>: <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="具体货币互转-https-api-coinmarketcap-com-v2-ticker-1-convert-CNY"><a href="#具体货币互转-https-api-coinmarketcap-com-v2-ticker-1-convert-CNY" class="headerlink" title="具体货币互转(https://api.coinmarketcap.com/v2/ticker/1/?convert=CNY)"></a>具体货币互转(<a href="https://api.coinmarketcap.com/v2/ticker/1/?convert=CNY" target="_blank" rel="noopener">https://api.coinmarketcap.com/v2/ticker/1/?convert=CNY</a>)</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"data"</span>: &#123;</span><br><span class="line">        <span class="attr">"id"</span>: <span class="number">1</span>, </span><br><span class="line">        <span class="attr">"name"</span>: <span class="string">"Bitcoin"</span>, </span><br><span class="line">        <span class="attr">"symbol"</span>: <span class="string">"BTC"</span>, </span><br><span class="line">        <span class="attr">"website_slug"</span>: <span class="string">"bitcoin"</span>, </span><br><span class="line">        <span class="attr">"rank"</span>: <span class="number">1</span>, </span><br><span class="line">        <span class="attr">"circulating_supply"</span>: <span class="number">17078075.0</span>, </span><br><span class="line">        <span class="attr">"total_supply"</span>: <span class="number">17078075.0</span>, </span><br><span class="line">        <span class="attr">"max_supply"</span>: <span class="number">21000000.0</span>, </span><br><span class="line">        <span class="attr">"quotes"</span>: &#123;</span><br><span class="line">            <span class="attr">"USD"</span>: &#123;</span><br><span class="line">                <span class="attr">"price"</span>: <span class="number">7637.54</span>, </span><br><span class="line">                <span class="attr">"volume_24h"</span>: <span class="number">4717060000.0</span>, </span><br><span class="line">                <span class="attr">"market_cap"</span>: <span class="number">130434480936.0</span>, </span><br><span class="line">                <span class="attr">"percent_change_1h"</span>: <span class="number">0.44</span>, </span><br><span class="line">                <span class="attr">"percent_change_24h"</span>: <span class="number">2.74</span>, </span><br><span class="line">                <span class="attr">"percent_change_7d"</span>: <span class="number">1.63</span></span><br><span class="line">            &#125;, </span><br><span class="line">            <span class="attr">"CNY"</span>: &#123;</span><br><span class="line">                <span class="attr">"price"</span>: <span class="number">48856.4922021929</span>, </span><br><span class="line">                <span class="attr">"volume_24h"</span>: <span class="number">30174507119.73696</span>, </span><br><span class="line">                <span class="attr">"market_cap"</span>: <span class="number">834374838066.0</span>, </span><br><span class="line">                <span class="attr">"percent_change_1h"</span>: <span class="number">0.44</span>, </span><br><span class="line">                <span class="attr">"percent_change_24h"</span>: <span class="number">2.74</span>, </span><br><span class="line">                <span class="attr">"percent_change_7d"</span>: <span class="number">1.63</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, </span><br><span class="line">        <span class="attr">"last_updated"</span>: <span class="number">1528266875</span></span><br><span class="line">    &#125;, </span><br><span class="line">    <span class="attr">"metadata"</span>: &#123;</span><br><span class="line">        <span class="attr">"timestamp"</span>: <span class="number">1528266628</span>, </span><br><span class="line">        <span class="attr">"error"</span>: <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="流通总量-https-api-coinmarketcap-com-v2-global-convert-CNY"><a href="#流通总量-https-api-coinmarketcap-com-v2-global-convert-CNY" class="headerlink" title="流通总量(https://api.coinmarketcap.com/v2/global/?convert=CNY)"></a>流通总量(<a href="https://api.coinmarketcap.com/v2/global/?convert=CNY" target="_blank" rel="noopener">https://api.coinmarketcap.com/v2/global/?convert=CNY</a>)</h2><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"data"</span>: &#123;</span><br><span class="line">        <span class="attr">"active_cryptocurrencies"</span>: <span class="number">1644</span>, </span><br><span class="line">        <span class="attr">"active_markets"</span>: <span class="number">11216</span>, </span><br><span class="line">        <span class="attr">"bitcoin_percentage_of_market_cap"</span>: <span class="number">37.77</span>, </span><br><span class="line">        <span class="attr">"quotes"</span>: &#123;</span><br><span class="line">            <span class="attr">"USD"</span>: &#123;</span><br><span class="line">                <span class="attr">"total_market_cap"</span>: <span class="number">345376710236.0</span>, </span><br><span class="line">                <span class="attr">"total_volume_24h"</span>: <span class="number">15338509256.0</span></span><br><span class="line">            &#125;, </span><br><span class="line">            <span class="attr">"CNY"</span>: &#123;</span><br><span class="line">                <span class="attr">"total_market_cap"</span>: <span class="number">2209336324320.0</span>, </span><br><span class="line">                <span class="attr">"total_volume_24h"</span>: <span class="number">98118734289.0</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, </span><br><span class="line">        <span class="attr">"last_updated"</span>: <span class="number">1528266875</span></span><br><span class="line">    &#125;, </span><br><span class="line">    <span class="attr">"metadata"</span>: &#123;</span><br><span class="line">        <span class="attr">"timestamp"</span>: <span class="number">1528266861</span>, </span><br><span class="line">        <span class="attr">"error"</span>: <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2018/10/16/三角套利项目搭建之Flask全局异常处理/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -3172,6 +3170,154 @@
 <p>异常处理类定义完成后我们要定义一个异常处理器，告诉flask，如下:</p>
 <h2 id="异常处理器"><a href="#异常处理器" class="headerlink" title="异常处理器"></a>异常处理器</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.errorhandler(Exception)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">handle_invalid_usage</span><span class="params">(error)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(error, APIException):</span><br><span class="line">        <span class="keyword">return</span> error.get_body()</span><br><span class="line">    <span class="keyword">elif</span> isinstance(error, HTTPException):</span><br><span class="line">        code = error.code</span><br><span class="line">        msg = error.description</span><br><span class="line">        error_code = <span class="number">1007</span></span><br><span class="line">        <span class="keyword">return</span> APIException(msg, code, error_code).get_body()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># if not app.config['DEBUG']:</span></span><br><span class="line">        <span class="comment">#     return ServerError()</span></span><br><span class="line">        <span class="comment"># else:</span></span><br><span class="line">        <span class="keyword">raise</span> error</span><br></pre></td></tr></table></figure>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>文章代码比较多，没有深入的异常处理核心代码。算是工作笔记吧。以后flask源码分析的时候再写。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2018/10/16/Android自定义小红点消息提示/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Labradors">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Labradors">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/16/Android自定义小红点消息提示/" itemprop="url">Android自定义小红点消息提示</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-16T10:32:45+08:00">
+                2018-10-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>我们在开发的时候，会经常遇到小红点的需求，比如类似微信的聊天信息，新消息的通知这样的需求。如果通过图片来实现，会比较麻烦，一换图片就要多做一张图片。我们有万能的画笔，为什么不画出来呢。我们底部菜单栏是通过RadioButton来实现的，那么我们现在就开始对RadionButton来进行重写 。</p>
+<p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu6ylx74jbj20ge07x3yb.jpg" alt=""></p>
+<h2 id="TipButton类"><a href="#TipButton类" class="headerlink" title="TipButton类"></a><strong>TipButton类</strong></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TipButton</span> <span class="keyword">extends</span> <span class="title">RadioButton</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> mTipOn = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Dot mDot;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Dot</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> color;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> radius;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> marginTop;</span><br><span class="line">        <span class="keyword">int</span> marginRight;</span><br><span class="line"></span><br><span class="line">        Dot() &#123;</span><br><span class="line">            <span class="keyword">float</span> density = getContext().getResources().getDisplayMetrics().density;</span><br><span class="line">            radius = (<span class="keyword">int</span>) (<span class="number">5</span> * density);</span><br><span class="line">            marginTop = (<span class="keyword">int</span>) (<span class="number">3</span> * density);</span><br><span class="line">            marginRight = (<span class="keyword">int</span>) (<span class="number">3</span> * density);</span><br><span class="line"></span><br><span class="line">            color = getContext().getResources().getColor(R.color.tip_red);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TipButton</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context);</span><br><span class="line">        init();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TipButton</span><span class="params">(Context context, AttributeSet attrs)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context, attrs);</span><br><span class="line">        init();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TipButton</span><span class="params">(Context context, AttributeSet attrs, <span class="keyword">int</span> defStyle)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context, attrs, defStyle);</span><br><span class="line">        init();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        mDot = <span class="keyword">new</span> Dot();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onDraw(canvas);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (mTipOn) &#123;</span><br><span class="line">            <span class="keyword">float</span> cx = getWidth() - mDot.marginRight - mDot.radius;</span><br><span class="line">            <span class="keyword">float</span> cy = mDot.marginTop + mDot.radius;</span><br><span class="line"></span><br><span class="line">            Drawable drawableTop = getCompoundDrawables()[<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">if</span> (drawableTop != <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">int</span> drawableTopWidth = drawableTop.getIntrinsicWidth();</span><br><span class="line">                <span class="keyword">if</span> (drawableTopWidth &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                    <span class="keyword">int</span> dotLeft = getWidth() / <span class="number">2</span> + drawableTopWidth / <span class="number">2</span>;</span><br><span class="line">                    cx = dotLeft + mDot.radius;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            Paint paint = getPaint();</span><br><span class="line">            <span class="comment">//save</span></span><br><span class="line">            <span class="keyword">int</span> tempColor = paint.getColor();</span><br><span class="line"></span><br><span class="line">            paint.setColor(mDot.color);</span><br><span class="line">            paint.setStyle(Paint.Style.FILL);</span><br><span class="line">            canvas.drawCircle(cx, cy, mDot.radius, paint);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//restore</span></span><br><span class="line">            paint.setColor(tempColor);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTipOn</span><span class="params">(<span class="keyword">boolean</span> tip)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.mTipOn = tip;</span><br><span class="line"></span><br><span class="line">        invalidate();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isTipOn</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> mTipOn;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>定义好之后，我们来调用它，很简单 布局文件中直接声明就行。  布局文件代码实现 上代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;work.labradors.ui.view.TipButton</span><br><span class="line">    android:id=<span class="string">"@+id/home_user_rb"</span></span><br><span class="line">    style=<span class="string">"@style/TabMenuText"</span></span><br><span class="line">    android:drawableTop=<span class="string">"@drawable/tab_user_btn"</span></span><br><span class="line">    android:text=<span class="string">"@string/home_mine_text"</span></span><br><span class="line">             /&gt;</span><br></pre></td></tr></table></figure>
+<p>里面的具体样式，根据你的需求来实现就行。  里面我们还实现了一个是否显示小红点的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setTipOn</span><span class="params">(<span class="keyword">boolean</span> tip)</span> </span>&#123;</span><br><span class="line">     <span class="keyword">this</span>.mTipOn = tip;</span><br><span class="line">    	invalidate();</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
 
           
         
@@ -3363,151 +3509,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.labradors.work/2018/09/16/推送集成/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Labradors">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Labradors">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/16/推送集成/" itemprop="url">推送集成</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-16T10:32:45+08:00">
-                2018-09-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Android/" itemprop="url" rel="index">
-                    <span itemprop="name">Android</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="build-gradle"><a href="#build-gradle" class="headerlink" title="build.gradle"></a><code>build.gradle</code></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">repositories &#123;</span><br><span class="line">    mavenCentral()</span><br><span class="line">    maven &#123;</span><br><span class="line">        url &quot;http://mvn.gt.igexin.com/nexus/content/repositories/releases/&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    compile <span class="string">'com.gexin.platform:gexin-rp-sdk-http:4.0.1.17'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Application-yml"><a href="#Application-yml" class="headerlink" title="Application.yml"></a><code>Application.yml</code></h3><figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">getui:</span></span><br><span class="line"><span class="attr">  url:</span> <span class="attr">http://sdk.open.api.igexin.com/apiex.htm</span></span><br><span class="line"><span class="attr">  appId:</span> <span class="string">dWdMXTe8Rt836BXSU3AjP9</span></span><br><span class="line"><span class="attr">  appKey:</span> <span class="string">BR3XCaRuiv8bhtHfvimhX8</span></span><br><span class="line"><span class="attr">  masterSecret:</span> <span class="number">3</span><span class="string">GdFgUH7qv7jE8ERKQeux1</span></span><br></pre></td></tr></table></figure>
-<h3 id="AppPushService-java"><a href="#AppPushService-java" class="headerlink" title="AppPushService.java"></a><code>AppPushService.java</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppPushService</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;getui.url&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String url;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;getui.appId&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String appId;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;getui.appKey&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String appKey;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Value</span>(<span class="string">"$&#123;getui.masterSecret&#125;"</span>)</span><br><span class="line">    <span class="keyword">private</span> String masterSecret;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * </span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> type: &#123;NOTICE,WARNING,OFFICE&#125;</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> messageId: 记录ID</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IPushResult <span class="title">pushTransmission</span><span class="params">(String type,String messageId)</span> </span>&#123;</span><br><span class="line">        IGtPush push = <span class="keyword">new</span> IGtPush(url, appKey, masterSecret);</span><br><span class="line">        TransmissionTemplate template = <span class="keyword">new</span> TransmissionTemplate();</span><br><span class="line">        template.setAppId(appId);</span><br><span class="line">        template.setAppkey(appKey);</span><br><span class="line">        template.setTransmissionType(<span class="number">2</span>);</span><br><span class="line">        Map&lt;String,String&gt; value = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        value.put(<span class="string">"type"</span>,type);</span><br><span class="line">        value.put(<span class="string">"content"</span>,messageId);</span><br><span class="line">        template.setTransmissionContent(<span class="keyword">new</span> Gson().toJson(value));</span><br><span class="line">        List&lt;String&gt; appIds = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        appIds.add(appId);</span><br><span class="line">        AppMessage message = <span class="keyword">new</span> AppMessage();</span><br><span class="line">        message.setData(template);</span><br><span class="line">        message.setAppIdList(appIds);</span><br><span class="line">        message.setOffline(<span class="keyword">true</span>);</span><br><span class="line">        message.setOfflineExpireTime(<span class="number">1000</span> * <span class="number">600</span>);</span><br><span class="line">       <span class="keyword">return</span> push.pushMessageToApp(message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -3560,7 +3561,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">88</span>
+                  <span class="site-state-item-count">89</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -3582,7 +3583,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">42</span>
+                  <span class="site-state-item-count">43</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
