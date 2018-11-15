@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="最新使用Python做三角套利方面的项目，文章简短，主要记录在mac下面使用虚拟环境遇到的问题以及解决方案，方便以后阅览。  虚拟环境要编写 python 代码并且运行,那么必须要安装 python 解释器.通常我们安装的 python 环境是全局性的环境.但我们开发不同的项目可能会需要不同的 python 运行环境,例如不同的包,不同的环境变量设置等.如果都把所需要用的包装到全局性的 pytho">
+<meta name="description" content="最新使用Python做三角套利方面的项目，文章简短，主要记录在mac下面使用虚拟环境遇到的问题以及解决方案，方便以后阅览。">
 <meta name="keywords" content="MQTT">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mac下虚拟环境问题总结">
 <meta property="og:url" content="http://blog.labradors.work/2018/11/15/Mac下虚拟环境问题总结/index.html">
 <meta property="og:site_name" content="Labradors">
-<meta property="og:description" content="最新使用Python做三角套利方面的项目，文章简短，主要记录在mac下面使用虚拟环境遇到的问题以及解决方案，方便以后阅览。  虚拟环境要编写 python 代码并且运行,那么必须要安装 python 解释器.通常我们安装的 python 环境是全局性的环境.但我们开发不同的项目可能会需要不同的 python 运行环境,例如不同的包,不同的环境变量设置等.如果都把所需要用的包装到全局性的 pytho">
+<meta property="og:description" content="最新使用Python做三角套利方面的项目，文章简短，主要记录在mac下面使用虚拟环境遇到的问题以及解决方案，方便以后阅览。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu8j7odn02j20b803hq2q.jpg">
-<meta property="og:updated_time" content="2018-11-13T12:30:38.238Z">
+<meta property="og:updated_time" content="2018-11-15T18:19:32.676Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mac下虚拟环境问题总结">
-<meta name="twitter:description" content="最新使用Python做三角套利方面的项目，文章简短，主要记录在mac下面使用虚拟环境遇到的问题以及解决方案，方便以后阅览。  虚拟环境要编写 python 代码并且运行,那么必须要安装 python 解释器.通常我们安装的 python 环境是全局性的环境.但我们开发不同的项目可能会需要不同的 python 运行环境,例如不同的包,不同的环境变量设置等.如果都把所需要用的包装到全局性的 pytho">
+<meta name="twitter:description" content="最新使用Python做三角套利方面的项目，文章简短，主要记录在mac下面使用虚拟环境遇到的问题以及解决方案，方便以后阅览。">
 <meta name="twitter:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu8j7odn02j20b803hq2q.jpg">
 
 
@@ -356,6 +356,7 @@
       
         <p>最新使用Python做三角套利方面的项目，文章简短，主要记录在mac下面使用虚拟环境遇到的问题以及解决方案，方便以后阅览。</p>
 <p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu8j7odn02j20b803hq2q.jpg" alt=""></p>
+<a id="more"></a>
 <h2 id="虚拟环境"><a href="#虚拟环境" class="headerlink" title="虚拟环境"></a>虚拟环境</h2><p>要编写 python 代码并且运行,那么必须要安装 python 解释器.通常我们安装的 python 环境是全局性的环境.但我们开发不同的项目可能会需要不同的 python 运行环境,例如不同的包,不同的环境变量设置等.如果都把所需要用的包装到全局性的 python 运行环境,那么可能会引起包的冲突, 并且该环境的包一多依赖也多, 维护和管理起来也很麻烦.所以这时候我们需要一个工具, 能够创建一个独立的,类似于沙盒的环境, 该环境中有一个独立的python 解释器的副本, 开发的时候, 可以根据开发需要在该环境下安装相应的软件包等.</p>
 <h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
 <li>能够解决不同项目中包的冲突, 使得开发环境更加干净和纯粹.</li>

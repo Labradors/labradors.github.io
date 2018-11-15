@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Labradors">
 <meta property="og:description" content="搞了个物联网IOT项目，初期板子没有选好，这个坑实在的踩累了，首先需要自动授权USB权限，网上找了很多方案，在不修改系统源码的情况下都是卵的。改了系统源码编译烧录后直接没了IME,需要手动写IME，写完IME后，因为使用的是移动物联卡，还需要配置移动物联卡VPN。最后才可以正常使用4G,最可怕的还是，等了几个月，终于把屏幕等到了。还需要下载他们最新版本的代码才能使用屏幕，而最新版的代码是8.0，而">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-13T12:46:51.178Z">
+<meta property="og:updated_time" content="2018-11-15T18:17:55.596Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于OrangePi 4G问题的解决方案">
 <meta name="twitter:description" content="搞了个物联网IOT项目，初期板子没有选好，这个坑实在的踩累了，首先需要自动授权USB权限，网上找了很多方案，在不修改系统源码的情况下都是卵的。改了系统源码编译烧录后直接没了IME,需要手动写IME，写完IME后，因为使用的是移动物联卡，还需要配置移动物联卡VPN。最后才可以正常使用4G,最可怕的还是，等了几个月，终于把屏幕等到了。还需要下载他们最新版本的代码才能使用屏幕，而最新版的代码是8.0，而">
@@ -353,6 +353,7 @@
 
       
         <p>搞了个物联网IOT项目，初期板子没有选好，这个坑实在的踩累了，首先需要自动授权USB权限，网上找了很多方案，在不修改系统源码的情况下都是卵的。改了系统源码编译烧录后直接没了IME,需要手动写IME，写完IME后，因为使用的是移动物联卡，还需要配置移动物联卡VPN。最后才可以正常使用4G,最可怕的还是，等了几个月，终于把屏幕等到了。还需要下载他们最新版本的代码才能使用屏幕，而最新版的代码是8.0，而我编译的是6.0。</p>
+<a id="more"></a>
 <h2 id="USB自动授权"><a href="#USB自动授权" class="headerlink" title="USB自动授权"></a>USB自动授权</h2><p>找到目录</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/android/frameworks/base/packages/SystemUI/src/com/android/systemui/usb/UsbPermissionActivity.java</span><br></pre></td></tr></table></figure>
 <p>修改如下代码</p>

@@ -88,7 +88,7 @@
 <meta property="og:description" content="介绍下MQTT,MQTT是ISO 标准(ISO/IEC PRF 20922)[2]下基于发布/订阅范式的消息协议。它工作在 TCP/IP协议族上，是为硬件性能低下的远程设备以及网络状况糟糕的情况下而设计的发布/订阅型消息协议，为此，它需要一个消息中间件 。  需求是实现单推和多推，之前不了解MQTT 主题与主题过滤的时候，想过通过客户端去过滤，所有消息发送到一个topic，然后在客户端进行甄别是否">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu2ad6natuj20mi0b6wgh.jpg">
-<meta property="og:updated_time" content="2018-11-13T12:28:59.423Z">
+<meta property="og:updated_time" content="2018-11-15T18:19:41.088Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MQTT下单推和群推的解决方案">
 <meta name="twitter:description" content="介绍下MQTT,MQTT是ISO 标准(ISO/IEC PRF 20922)[2]下基于发布/订阅范式的消息协议。它工作在 TCP/IP协议族上，是为硬件性能低下的远程设备以及网络状况糟糕的情况下而设计的发布/订阅型消息协议，为此，它需要一个消息中间件 。  需求是实现单推和多推，之前不了解MQTT 主题与主题过滤的时候，想过通过客户端去过滤，所有消息发送到一个topic，然后在客户端进行甄别是否">
@@ -356,7 +356,8 @@
       
         <p>介绍下MQTT,<a href="消息队列遥测传输">MQTT</a>是ISO 标准(ISO/IEC PRF 20922)[2]下基于发布/订阅范式的消息协议。它工作在 TCP/IP协议族上，是为硬件性能低下的远程设备以及网络状况糟糕的情况下而设计的发布/订阅型消息协议，为此，它需要一个消息中间件 。</p>
 <p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fu2ad6natuj20mi0b6wgh.jpg" alt=""></p>
-<p>需求是实现单推和多推，之前不了解MQTT 主题与主题过滤的时候，想过通过客户端去过滤，所有消息发送到一个topic，然后在客户端进行甄别是否是发送给当前用户消息。后来看到主题过滤的时候，首先介绍下主题过滤。订阅与发布必须要有主题，只有当定阅了某个主题后，才能收到相应主题的payload,才能进行通信。 </p>
+<p>需求是实现单推和多推，之前不了解MQTT 主题与主题过滤的时候，想过通过客户端去过滤，所有消息发送到一个topic，然后在客户端进行甄别是否是发送给当前用户消息。后来看到主题过滤的时候，首先介绍下主题过滤。订阅与发布必须要有主题，只有当定阅了某个主题后，才能收到相应主题的payload,才能进行通信。</p>
+<a id="more"></a> 
 <h2 id="主题层级分隔符‘-‘"><a href="#主题层级分隔符‘-‘" class="headerlink" title="主题层级分隔符‘/‘"></a>主题层级分隔符<strong>‘/‘</strong></h2><p>主题层级分隔符使得主题名结构化。如果存在分隔符，它将主题名分割为多个主题层级。 斜杠（‘/’ U+002F）用于分割主题的每个层级，为主题名提供一个分层结构。当客户端订阅指定的主题过滤器包含两种通配符时，主题层级分隔符就很有用了。主题层级分隔符可以出现在主题过滤器或主题名字的任何位置。相邻的主题层次分隔符表示一个零长度的主题层级。如</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">room401/light</span><br><span class="line">room401/tv/contrl/sensor</span><br><span class="line">room401/tv/contrl/light</span><br><span class="line">room401/airconditioning/sensor</span><br></pre></td></tr></table></figure>
 <h2 id="多层通配符‘-’"><a href="#多层通配符‘-’" class="headerlink" title="多层通配符‘#’"></a>多层通配符<strong>‘#’</strong></h2><p><strong>#</strong>是用于匹配主题中任意层级的通配符。多层通配符表示它的父级和任意数量的子层级。多层通配符必须位于它自己的层级或者跟在主题层级分隔符后面。不管哪种情况，它都必须是主题过滤器的最后一个字符 .</p>

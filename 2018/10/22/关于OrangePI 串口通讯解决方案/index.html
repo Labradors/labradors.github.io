@@ -79,21 +79,21 @@
 
 
 
-<meta name="description" content="前段时间因为需要做一个物联网项目，需要使用到OrangePi, 定下里的方案是使用gpio通讯，但是发现香橙派没有通用的gpio驱动，所以只得这种选择串口通信。网上找了一波，使用RS232+USB通信是最便宜的解决方案，驱动的话使用开源库UsbSerial。也有之前Google 维护的库，但我觉着不好用。所以在这里献丑写上一篇博客。  导入添加jitpack仓库到你的build.gradle文件">
+<meta name="description" content="前段时间因为需要做一个物联网项目，需要使用到OrangePi, 定下里的方案是使用gpio通讯，但是发现香橙派没有通用的gpio驱动，所以只得这种选择串口通信。网上找了一波，使用RS232+USB通信是最便宜的解决方案，驱动的话使用开源库UsbSerial。也有之前Google 维护的库，但我觉着不好用。所以在这里献丑写上一篇博客。">
 <meta name="keywords" content="OrangePi">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于OrangePI 串口通讯解决方案">
 <meta property="og:url" content="http://blog.labradors.work/2018/10/22/关于OrangePI 串口通讯解决方案/index.html">
 <meta property="og:site_name" content="Labradors">
-<meta property="og:description" content="前段时间因为需要做一个物联网项目，需要使用到OrangePi, 定下里的方案是使用gpio通讯，但是发现香橙派没有通用的gpio驱动，所以只得这种选择串口通信。网上找了一波，使用RS232+USB通信是最便宜的解决方案，驱动的话使用开源库UsbSerial。也有之前Google 维护的库，但我觉着不好用。所以在这里献丑写上一篇博客。  导入添加jitpack仓库到你的build.gradle文件">
+<meta property="og:description" content="前段时间因为需要做一个物联网项目，需要使用到OrangePi, 定下里的方案是使用gpio通讯，但是发现香橙派没有通用的gpio驱动，所以只得这种选择串口通信。网上找了一波，使用RS232+USB通信是最便宜的解决方案，驱动的话使用开源库UsbSerial。也有之前Google 维护的库，但我觉着不好用。所以在这里献丑写上一篇博客。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fvcgmird90g20hs03kaa8.gif">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fvczslfy9dj20ug0jpq5x.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fpzuv3q8ayj20w60ea11n.jpg">
-<meta property="og:updated_time" content="2018-11-13T12:46:23.371Z">
+<meta property="og:updated_time" content="2018-11-15T18:18:13.591Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于OrangePI 串口通讯解决方案">
-<meta name="twitter:description" content="前段时间因为需要做一个物联网项目，需要使用到OrangePi, 定下里的方案是使用gpio通讯，但是发现香橙派没有通用的gpio驱动，所以只得这种选择串口通信。网上找了一波，使用RS232+USB通信是最便宜的解决方案，驱动的话使用开源库UsbSerial。也有之前Google 维护的库，但我觉着不好用。所以在这里献丑写上一篇博客。  导入添加jitpack仓库到你的build.gradle文件">
+<meta name="twitter:description" content="前段时间因为需要做一个物联网项目，需要使用到OrangePi, 定下里的方案是使用gpio通讯，但是发现香橙派没有通用的gpio驱动，所以只得这种选择串口通信。网上找了一波，使用RS232+USB通信是最便宜的解决方案，驱动的话使用开源库UsbSerial。也有之前Google 维护的库，但我觉着不好用。所以在这里献丑写上一篇博客。">
 <meta name="twitter:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fvcgmird90g20hs03kaa8.gif">
 
 
@@ -358,6 +358,7 @@
       
         <p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fvcgmird90g20hs03kaa8.gif" alt=""></p>
 <p>前段时间因为需要做一个物联网项目，需要使用到OrangePi, 定下里的方案是使用gpio通讯，但是发现香橙派没有通用的gpio驱动，所以只得这种选择串口通信。网上找了一波，使用RS232+USB通信是最便宜的解决方案，驱动的话使用开源库<strong>UsbSerial</strong>。也有之前Google 维护的库，但我觉着不好用。所以在这里献丑写上一篇博客。</p>
+<a id="more"></a>
 <p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fvczslfy9dj20ug0jpq5x.jpg" alt=""></p>
 <h2 id="导入"><a href="#导入" class="headerlink" title="导入"></a>导入</h2><p>添加jitpack仓库到你的build.gradle文件</p>
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">allprojects &#123;</span><br><span class="line">	repositories &#123;</span><br><span class="line">		jcenter()</span><br><span class="line">		maven &#123; url <span class="string">"https://jitpack.io"</span> &#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>

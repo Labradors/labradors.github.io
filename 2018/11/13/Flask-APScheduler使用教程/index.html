@@ -89,7 +89,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fv8f1ln9yhj20s30g70vi.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fpzuv3q8ayj20w60ea11n.jpg">
-<meta property="og:updated_time" content="2018-11-13T12:32:25.720Z">
+<meta property="og:updated_time" content="2018-11-15T18:19:04.055Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Flask-APScheduler使用教程">
 <meta name="twitter:description" content="项目中需要用到定时器和循环执行。去网上搜了一下，比较常见的有一下集中。运用Python线程执行轮询操作，也有运用Linux系统的Cron,Celery的文章最多，但是太麻烦。看看就知道，Celery 需要一个发送和接受消息的传输者。RabbitMQ 和 Redis 中间人的消息传输支持所有特性，但也提供大量其他实验性方案的支持，包括用 SQLite 进行本地开发。需要用到队列，对于这点需求简直就是">
@@ -357,6 +357,7 @@
       
         <p>项目中需要用到定时器和循环执行。去网上搜了一下，比较常见的有一下集中。运用Python线程执行轮询操作，也有运用Linux系统的Cron,Celery的文章最多，但是太麻烦。看看就知道，<em>Celery</em> 需要一个发送和接受消息的传输者。RabbitMQ 和 Redis 中间人的消息传输支持所有特性，但也提供大量其他实验性方案的支持，包括用 SQLite 进行本地开发。需要用到队列，对于这点需求简直就是大材小用。最后找到了比较合适的Flask-APScheduler。</p>
 <p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fv8f1ln9yhj20s30g70vi.jpg" alt=""></p>
+<a id="more"></a>
 <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>看看  github的<a href="https://github.com/viniciuschiele/flask-apscheduler" target="_blank" rel="noopener"><strong>flask-apscheduler</strong></a>介绍。</p>
 <ul>
 <li>Loads scheduler configuration from Flask configuration.(支持从Flask中加载调度)</li>

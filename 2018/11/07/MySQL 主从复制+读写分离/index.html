@@ -79,23 +79,23 @@
 
 
 
-<meta name="description" content="今天记录一点链上线的数据库方面的骚操作。主要包括MySQL的安装，主从复制，读写分离等等，其余的找时间再写。  安装系统ubuntu16.04,安装并设置自启动。 1sudo apt-get install mysql-server 1sudo systemctl enable mysql-server 修改主节点master1234vim /etc/my.cnf[mysqld]log-bin=">
+<meta name="description" content="今天记录一点链上线的数据库方面的骚操作。主要包括MySQL的安装，主从复制，读写分离等等，其余的找时间再写。">
 <meta name="keywords" content="MySQL">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL主从复制+读写分离">
 <meta property="og:url" content="http://blog.labradors.work/2018/11/07/MySQL 主从复制+读写分离/index.html">
 <meta property="og:site_name" content="Labradors">
-<meta property="og:description" content="今天记录一点链上线的数据库方面的骚操作。主要包括MySQL的安装，主从复制，读写分离等等，其余的找时间再写。  安装系统ubuntu16.04,安装并设置自启动。 1sudo apt-get install mysql-server 1sudo systemctl enable mysql-server 修改主节点master1234vim /etc/my.cnf[mysqld]log-bin=">
+<meta property="og:description" content="今天记录一点链上线的数据库方面的骚操作。主要包括MySQL的安装，主从复制，读写分离等等，其余的找时间再写。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fvcgmird90g20hs03kaa8.gif">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fvlk670hlwj20gt0gt74y.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fvlki9rbfrj20nm05bgm2.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fvlkqf4utfj20r20wan2b.jpg">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fpzuv3q8ayj20w60ea11n.jpg">
-<meta property="og:updated_time" content="2018-11-13T12:24:40.581Z">
+<meta property="og:updated_time" content="2018-11-15T18:19:54.391Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL主从复制+读写分离">
-<meta name="twitter:description" content="今天记录一点链上线的数据库方面的骚操作。主要包括MySQL的安装，主从复制，读写分离等等，其余的找时间再写。  安装系统ubuntu16.04,安装并设置自启动。 1sudo apt-get install mysql-server 1sudo systemctl enable mysql-server 修改主节点master1234vim /etc/my.cnf[mysqld]log-bin=">
+<meta name="twitter:description" content="今天记录一点链上线的数据库方面的骚操作。主要包括MySQL的安装，主从复制，读写分离等等，其余的找时间再写。">
 <meta name="twitter:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fvcgmird90g20hs03kaa8.gif">
 
 
@@ -361,6 +361,7 @@
         <p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fvcgmird90g20hs03kaa8.gif" alt=""></p>
 <p>今天记录一点链上线的数据库方面的骚操作。主要包括MySQL的安装，主从复制，读写分离等等，其余的找时间再写。</p>
 <p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fvlk670hlwj20gt0gt74y.jpg" alt=""></p>
+<a id="more"></a>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>系统ubuntu16.04,安装并设置自启动。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install mysql-server</span><br></pre></td></tr></table></figure>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl enable mysql-server</span><br></pre></td></tr></table></figure>

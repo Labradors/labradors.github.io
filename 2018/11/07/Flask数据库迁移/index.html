@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="本文记录Flask数据库升级过程。使用Java Hibernate在模型中加入字段自动就更新了。但是在Flask中就唧唧了，那么Flask中如何更新字段呢。需要用到Flask-Migrate和Flask-Script两个库。如何使用？继续往下看。  安装12Flask-Migrate==2.2.1Flask-Script==2.0.6 安装两个库，然后注册到Flask app中。 注册123456">
+<meta name="description" content="本文记录Flask数据库升级过程。使用Java Hibernate在模型中加入字段自动就更新了。但是在Flask中就唧唧了，那么Flask中如何更新字段呢。需要用到Flask-Migrate和Flask-Script两个库。如何使用？继续往下看。">
 <meta name="keywords" content="Flask">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Flask数据库迁移">
 <meta property="og:url" content="http://blog.labradors.work/2018/11/07/Flask数据库迁移/index.html">
 <meta property="og:site_name" content="Labradors">
-<meta property="og:description" content="本文记录Flask数据库升级过程。使用Java Hibernate在模型中加入字段自动就更新了。但是在Flask中就唧唧了，那么Flask中如何更新字段呢。需要用到Flask-Migrate和Flask-Script两个库。如何使用？继续往下看。  安装12Flask-Migrate==2.2.1Flask-Script==2.0.6 安装两个库，然后注册到Flask app中。 注册123456">
+<meta property="og:description" content="本文记录Flask数据库升级过程。使用Java Hibernate在模型中加入字段自动就更新了。但是在Flask中就唧唧了，那么Flask中如何更新字段呢。需要用到Flask-Migrate和Flask-Script两个库。如何使用？继续往下看。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fveu2g5kkaj20pp0e9ac1.jpg">
-<meta property="og:updated_time" content="2018-11-13T12:32:29.508Z">
+<meta property="og:updated_time" content="2018-11-15T18:19:22.416Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Flask数据库迁移">
-<meta name="twitter:description" content="本文记录Flask数据库升级过程。使用Java Hibernate在模型中加入字段自动就更新了。但是在Flask中就唧唧了，那么Flask中如何更新字段呢。需要用到Flask-Migrate和Flask-Script两个库。如何使用？继续往下看。  安装12Flask-Migrate==2.2.1Flask-Script==2.0.6 安装两个库，然后注册到Flask app中。 注册123456">
+<meta name="twitter:description" content="本文记录Flask数据库升级过程。使用Java Hibernate在模型中加入字段自动就更新了。但是在Flask中就唧唧了，那么Flask中如何更新字段呢。需要用到Flask-Migrate和Flask-Script两个库。如何使用？继续往下看。">
 <meta name="twitter:image" content="https://ws1.sinaimg.cn/large/c0bee4a0gy1fveu2g5kkaj20pp0e9ac1.jpg">
 
 
@@ -356,6 +356,7 @@
       
         <p>本文记录<em>Flask</em>数据库升级过程。使用<em>Java Hibernate</em>在模型中加入字段自动就更新了。但是在<em>Flask</em>中就唧唧了，那么<em>Flask</em>中如何更新字段呢。需要用到<em>Flask-Migrate</em>和<em>Flask-Script</em>两个库。如何使用？继续往下看。</p>
 <p><img src="https://ws1.sinaimg.cn/large/c0bee4a0gy1fveu2g5kkaj20pp0e9ac1.jpg" alt=""></p>
+<a id="more"></a>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Flask-Migrate==<span class="number">2.2</span><span class="number">.1</span></span><br><span class="line">Flask-Script==<span class="number">2.0</span><span class="number">.6</span></span><br></pre></td></tr></table></figure>
 <p>安装两个库，然后注册到Flask app中。</p>
 <h2 id="注册"><a href="#注册" class="headerlink" title="注册"></a>注册</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> app.models.base <span class="keyword">import</span> db</span><br><span class="line"></span><br><span class="line">__author__ = <span class="string">'Labrador'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> flask_migrate <span class="keyword">import</span> Migrate, MigrateCommand  <span class="comment"># 载入migrate扩展</span></span><br><span class="line"><span class="keyword">from</span> flask_script <span class="keyword">import</span> Manager</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> app.app <span class="keyword">import</span> create_app</span><br><span class="line"></span><br><span class="line">app = create_app()</span><br><span class="line">manager = Manager(app)</span><br><span class="line">migrate = Migrate(app, db)  <span class="comment"># 注册migrate到flask</span></span><br><span class="line"></span><br><span class="line">manager.add_command(<span class="string">'db'</span>, MigrateCommand)  <span class="comment"># 在终端环境下添加一个db命令</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    manager.run()</span><br></pre></td></tr></table></figure>
